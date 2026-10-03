@@ -17,6 +17,7 @@ import {
 import { ArrowRightIcon, PlusIcon } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
+import { BadgeWorkbench } from '../components/PropsWorkbench';
 
 const CARD = `<Card>
   <CardHeader
@@ -122,6 +123,7 @@ export function SurfacesPage() {
       </Section>
 
       <Section title="Badge" description="Status labels. Tones map to semantic tokens, so a rebrand updates them for free.">
+        <BadgeWorkbench />
         <Showcase code={BADGE}>
           <div className="row-wrap">
             <Badge tone="neutral">Draft</Badge>

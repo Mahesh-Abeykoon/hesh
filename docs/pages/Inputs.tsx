@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Input, Textarea, Select, MailIcon, SearchIcon } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
+import { InputWorkbench } from '../components/PropsWorkbench';
 
 const BASIC = `import { Input } from 'hesh';
 
@@ -61,6 +62,10 @@ export function InputsPage() {
       title="Input · Textarea · Select"
       lede="Field components that own their label, hint and error wiring. Every control associates its description and error message automatically, so screen readers announce validation without extra props."
     >
+      <Section title="Interactive Playground" description="Customize field labels, error states, and hints live.">
+        <InputWorkbench />
+      </Section>
+
       <Section title="Anatomy" description="Label, control, then hint or error. Errors replace hints so the field never shows two lines of competing guidance.">
         <Showcase code={BASIC} defaultOpen width="md">
           <div className="stack">

@@ -3,6 +3,7 @@ import { Button, ButtonGroup, IconButton, Tooltip } from '../../src/index';
 import { ArrowRightIcon, PlusIcon, SparklesIcon, TrashIcon } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
+import { ButtonWorkbench } from '../components/PropsWorkbench';
 
 const VARIANTS = `import { Button } from 'hesh';
 
@@ -47,6 +48,10 @@ export function ButtonPage() {
       title="Button"
       lede="Actions. Seven variants, five sizes, loading and icon support — all built on a native <button>, so form submission and keyboard activation work without extra wiring."
     >
+      <Section title="Interactive Playground" description="Customize button props in real time and copy the generated JSX snippet.">
+        <ButtonWorkbench />
+      </Section>
+
       <Section title="Variants" description="Each variant maps to a semantic token, so rebranding updates every button at once.">
         <Showcase code={VARIANTS} defaultOpen>
           <div className="row-wrap">

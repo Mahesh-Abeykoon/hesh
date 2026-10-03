@@ -1,0 +1,311 @@
+/* ==========================================================================
+   Premium UI — Design Tokens
+   Layer 1: primitives · Layer 2: semantic intent · Layer 3: component knobs
+   Override anything here to re-theme the entire library.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------- 1. PRIMITIVES */
+
+  /* Brand ramp — "Electric Indigo". Swap these 11 values for a new identity. */
+  --pui-brand-50:  #eef2ff;
+  --pui-brand-100: #e0e7ff;
+  --pui-brand-200: #c7d2fe;
+  --pui-brand-300: #a5b4fc;
+  --pui-brand-400: #818cf8;
+  --pui-brand-500: #6366f1;   /* ← primary brand — Linear/Stripe indigo */
+  --pui-brand-600: #4f46e5;
+  --pui-brand-700: #4338ca;
+  --pui-brand-800: #3730a3;
+  --pui-brand-900: #312e81;
+  --pui-brand-950: #1e1b4b;
+
+  /* Neutral ramp — cool graphite; pairs with a warm accent */
+  --pui-neutral-0:   #ffffff;
+  --pui-neutral-50:  #fafafa;
+  --pui-neutral-100: #f3f4f5;
+  --pui-neutral-200: #e5e7e9;
+  --pui-neutral-300: #d0d3d7;
+  --pui-neutral-400: #a2a7ae;
+  --pui-neutral-500: #757b84;
+  --pui-neutral-600: #545a63;
+  --pui-neutral-700: #3d424a;
+  --pui-neutral-800: #23272d;
+  --pui-neutral-900: #14171b;
+  --pui-neutral-950: #0a0c0e;
+
+  /* State ramps */
+  --pui-success-50:  #ecfdf3;
+  --pui-success-200: #a9efc5;
+  --pui-success-500: #12b76a;
+  --pui-success-600: #039855;
+  --pui-success-700: #027a48;
+
+  --pui-warning-50:  #fffaeb;
+  --pui-warning-200: #fedf89;
+  --pui-warning-500: #f79009;
+  --pui-warning-600: #dc6803;
+  --pui-warning-700: #b54708;
+
+  --pui-danger-50:   #fef3f2;
+  --pui-danger-200:  #fecdca;
+  --pui-danger-500:  #f04438;
+  --pui-danger-600:  #d92d20;
+  --pui-danger-700:  #b42318;
+
+  --pui-info-50:  #eff8ff;
+  --pui-info-200: #b2ddff;
+  --pui-info-500: #2e90fa;
+  --pui-info-600: #1570ef;
+  --pui-info-700: #175cd3;
+
+  /* ---------------------------------------------------------- Typography */
+  --pui-font-sans: "Inter var", Inter, ui-sans-serif, -apple-system,
+                   BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --pui-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+                   Consolas, monospace;
+
+  --pui-text-xs:   0.75rem;
+  --pui-text-sm:   0.8125rem;
+  --pui-text-base: 0.875rem;
+  --pui-text-md:   1rem;
+  --pui-text-lg:   1.125rem;
+  --pui-text-xl:   1.25rem;
+  --pui-text-2xl:  1.5rem;
+  --pui-text-3xl:  1.875rem;
+  --pui-text-4xl:  2.25rem;
+  --pui-text-5xl:  3rem;
+  --pui-text-6xl:  3.75rem;
+
+  --pui-leading-tight:  1.15;
+  --pui-leading-snug:   1.35;
+  --pui-leading-normal: 1.6;
+
+  --pui-weight-normal:   400;
+  --pui-weight-medium:   500;
+  --pui-weight-semibold: 600;
+  --pui-weight-bold:     700;
+
+  --pui-tracking-tighter: -0.035em;
+  --pui-tracking-tight:   -0.02em;
+  --pui-tracking-normal:  0;
+  --pui-tracking-wide:    0.04em;
+
+  /* ---------------------------------------------------------- Spacing (4px) */
+  --pui-space-0:   0;
+  --pui-space-1:   0.25rem;
+  --pui-space-1_5: 0.375rem;
+  --pui-space-2:   0.5rem;
+  --pui-space-2_5: 0.625rem;
+  --pui-space-3:   0.75rem;
+  --pui-space-3_5: 0.875rem;
+  --pui-space-4:   1rem;
+  --pui-space-5:   1.25rem;
+  --pui-space-6:   1.5rem;
+  --pui-space-8:   2rem;
+  --pui-space-10:  2.5rem;
+  --pui-space-12:  3rem;
+  --pui-space-16:  4rem;
+
+  /* ---------------------------------------------------------- Radii */
+  --pui-radius-xs:  0.25rem;
+  --pui-radius-sm:  0.375rem;
+  --pui-radius-md:  0.625rem;   /* controls — soft, modern */
+  --pui-radius-lg:  0.75rem;
+  --pui-radius-xl:  1rem;       /* cards */
+  --pui-radius-2xl: 1.5rem;     /* modals */
+  --pui-radius-3xl: 2rem;
+  --pui-radius-full: 9999px;
+
+  /* ---------------------------------------------------------- Elevation
+     Layered + tinted. A single flat shadow reads cheap; two stacked ones
+     with different blur radii read like real light. */
+  --pui-shadow-color: 16 20 28;
+  --pui-shadow-xs: 0 1px 2px 0 rgb(var(--pui-shadow-color) / 0.05);
+  --pui-shadow-sm: 0 1px 2px 0 rgb(var(--pui-shadow-color) / 0.06),
+                   0 1px 3px 0 rgb(var(--pui-shadow-color) / 0.07);
+  --pui-shadow-md: 0 2px 4px -1px rgb(var(--pui-shadow-color) / 0.06),
+                   0 4px 8px -2px rgb(var(--pui-shadow-color) / 0.06);
+  --pui-shadow-lg: 0 4px 8px -2px rgb(var(--pui-shadow-color) / 0.07),
+                   0 12px 20px -4px rgb(var(--pui-shadow-color) / 0.09);
+  --pui-shadow-xl: 0 8px 12px -4px rgb(var(--pui-shadow-color) / 0.06),
+                   0 24px 40px -8px rgb(var(--pui-shadow-color) / 0.14);
+  --pui-shadow-2xl: 0 12px 20px -6px rgb(var(--pui-shadow-color) / 0.08),
+                    0 40px 64px -12px rgb(var(--pui-shadow-color) / 0.20);
+  --pui-shadow-inner: inset 0 1px 0 0 rgb(255 255 255 / 0.08),
+                      inset 0 -1px 0 0 rgb(0 0 0 / 0.10);
+
+  /* ---------------------------------------------------------- Motion
+     `spring` is for anything that pops into place (menus, dialogs, toasts);
+     `out` for things that settle. */
+  --pui-ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --pui-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --pui-ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --pui-duration-fast: 110ms;
+  --pui-duration-base: 180ms;
+  --pui-duration-slow: 280ms;
+  --pui-duration-slower: 420ms;
+
+  /* ---------------------------------------------------------- Layering */
+  --pui-z-dropdown: 1000;
+  --pui-z-overlay:  1100;
+  --pui-z-modal:    1200;
+  --pui-z-popover:  1300;
+  --pui-z-toast:    1400;
+
+  /* Density — every control height multiplies by this */
+  --pui-density: 1;
+
+  /* Focus */
+  --pui-focus-width: 2px;
+  --pui-focus-offset: 2px;
+
+  /* ---------------------------------------------------------- Data-viz palette
+     Ordered so adjacent series stay distinguishable in both themes. */
+  --pui-chart-1: #6366f1;
+  --pui-chart-2: #0ea5e9;
+  --pui-chart-3: #10b981;
+  --pui-chart-4: #8b5cf6;
+  --pui-chart-5: #f43f5e;
+  --pui-chart-6: #ec4899;
+  --pui-chart-7: #06b6d4;
+  --pui-chart-8: #84cc16;
+}
+
+/* ---------------------------------------------------------- 2. SEMANTIC (light) */
+:root,
+[data-pui-theme="light"] {
+  --pui-bg:             var(--pui-neutral-50);
+  --pui-bg-subtle:      var(--pui-neutral-100);
+  --pui-bg-muted:       var(--pui-neutral-200);
+  --pui-surface:        var(--pui-neutral-0);
+  --pui-surface-hover:  var(--pui-neutral-50);
+  --pui-surface-sunken: var(--pui-neutral-100);
+  --pui-surface-elevated: var(--pui-neutral-0);
+
+  /* Translucent surface for sticky bars and overlays */
+  --pui-glass: color-mix(in oklab, var(--pui-surface) 72%, transparent);
+  --pui-glass-border: color-mix(in oklab, var(--pui-neutral-900) 8%, transparent);
+
+  --pui-fg:         var(--pui-neutral-900);
+  --pui-fg-muted:   var(--pui-neutral-600);
+  --pui-fg-subtle:  var(--pui-neutral-500);
+  --pui-fg-onbrand: #ffffff;
+
+  --pui-border:        var(--pui-neutral-200);
+  --pui-border-strong: var(--pui-neutral-300);
+  --pui-border-subtle: var(--pui-neutral-100);
+
+  --pui-primary:        var(--pui-brand-500);
+  --pui-primary-hover:  var(--pui-brand-600);
+  --pui-primary-active: var(--pui-brand-700);
+  --pui-primary-subtle: var(--pui-brand-50);
+  --pui-primary-border: var(--pui-brand-200);
+  --pui-primary-fg:     var(--pui-brand-700);
+  --pui-on-primary:     #ffffff;
+
+  --pui-danger:        var(--pui-danger-500);
+  --pui-danger-hover:  var(--pui-danger-600);
+  --pui-danger-subtle: var(--pui-danger-50);
+  --pui-danger-fg:     var(--pui-danger-700);
+  --pui-on-danger:     #ffffff;
+
+  --pui-success:        var(--pui-success-500);
+  --pui-success-subtle: var(--pui-success-50);
+  --pui-success-fg:     var(--pui-success-700);
+
+  --pui-warning:        var(--pui-warning-500);
+  --pui-warning-subtle: var(--pui-warning-50);
+  --pui-warning-fg:     var(--pui-warning-700);
+
+  --pui-info:        var(--pui-info-500);
+  --pui-info-subtle: var(--pui-info-50);
+  --pui-info-fg:     var(--pui-info-700);
+
+  --pui-overlay: rgb(12 16 22 / 0.42);
+  --pui-focus-ring: var(--pui-brand-500);
+  --pui-focus-ring-offset: var(--pui-neutral-0);
+
+  /* Grid lines and axis text for charts */
+  --pui-chart-grid: var(--pui-neutral-200);
+  --pui-chart-axis: var(--pui-neutral-500);
+
+  /* The hairline highlight that separates "premium" from "flat".
+     A 1px light line along the top edge of every raised surface. */
+  --pui-edge-highlight: rgb(255 255 255 / 0.9);
+}
+
+/* ---------------------------------------------------------- 3. SEMANTIC (dark) */
+[data-pui-theme="dark"] {
+  --pui-bg:             var(--pui-neutral-950);
+  --pui-bg-subtle:      var(--pui-neutral-900);
+  --pui-bg-muted:       var(--pui-neutral-800);
+  --pui-surface:        var(--pui-neutral-900);
+  --pui-surface-hover:  var(--pui-neutral-800);
+  --pui-surface-sunken: var(--pui-neutral-950);
+  --pui-surface-elevated: var(--pui-neutral-800);
+
+  --pui-glass: color-mix(in oklab, var(--pui-neutral-900) 78%, transparent);
+  --pui-glass-border: color-mix(in oklab, var(--pui-neutral-0) 10%, transparent);
+
+  --pui-fg:         var(--pui-neutral-50);
+  --pui-fg-muted:   var(--pui-neutral-400);
+  --pui-fg-subtle:  var(--pui-neutral-500);
+  --pui-fg-onbrand: #ffffff;
+
+  --pui-border:        var(--pui-neutral-800);
+  --pui-border-strong: var(--pui-neutral-700);
+  --pui-border-subtle: var(--pui-neutral-800);
+
+  --pui-primary:        var(--pui-brand-400);
+  --pui-primary-hover:  var(--pui-brand-300);
+  --pui-primary-active: var(--pui-brand-500);
+  --pui-primary-subtle: color-mix(in oklab, var(--pui-brand-500) 16%, transparent);
+  --pui-primary-border: color-mix(in oklab, var(--pui-brand-500) 42%, transparent);
+  --pui-primary-fg:     var(--pui-brand-200);
+  --pui-on-primary:     var(--pui-neutral-950);
+
+  --pui-danger:        var(--pui-danger-500);
+  --pui-danger-hover:  var(--pui-danger-600);
+  --pui-danger-subtle: color-mix(in oklab, var(--pui-danger-500) 16%, transparent);
+  --pui-danger-fg:     var(--pui-danger-200);
+  --pui-on-danger:     #ffffff;
+
+  --pui-success:        var(--pui-success-500);
+  --pui-success-subtle: color-mix(in oklab, var(--pui-success-500) 16%, transparent);
+  --pui-success-fg:     var(--pui-success-200);
+
+  --pui-warning:        var(--pui-warning-500);
+  --pui-warning-subtle: color-mix(in oklab, var(--pui-warning-500) 16%, transparent);
+  --pui-warning-fg:     var(--pui-warning-200);
+
+  --pui-info:        var(--pui-info-500);
+  --pui-info-subtle: color-mix(in oklab, var(--pui-info-500) 16%, transparent);
+  --pui-info-fg:     var(--pui-info-200);
+
+  --pui-overlay: rgb(0 0 0 / 0.66);
+  --pui-focus-ring: var(--pui-brand-300);
+  --pui-focus-ring-offset: var(--pui-neutral-950);
+
+  --pui-chart-grid: var(--pui-neutral-800);
+  --pui-chart-axis: var(--pui-neutral-500);
+
+  /* On dark, the highlight moves to the *inside* top edge and stays faint. */
+  --pui-edge-highlight: rgb(255 255 255 / 0.06);
+
+  /* Shadows are near-useless on near-black; borders carry elevation instead. */
+  --pui-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.40);
+  --pui-shadow-md: 0 2px 4px -1px rgb(0 0 0 / 0.40),
+                   0 6px 14px -3px rgb(0 0 0 / 0.50);
+  --pui-shadow-lg: 0 4px 8px -2px rgb(0 0 0 / 0.45),
+                   0 16px 32px -8px rgb(0 0 0 / 0.60);
+  --pui-shadow-xl: 0 8px 16px -4px rgb(0 0 0 / 0.50),
+                   0 28px 48px -12px rgb(0 0 0 / 0.70);
+  --pui-shadow-2xl: 0 12px 24px -6px rgb(0 0 0 / 0.55),
+                    0 48px 80px -16px rgb(0 0 0 / 0.80);
+  --pui-shadow-inner: inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+}
+
+/* ---------------------------------------------------------- 4. DENSITY */
+[data-pui-density="compact"] { --pui-density: 0.82; }
+[data-pui-density="comfortable"] { --pui-density: 1.18; }

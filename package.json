@@ -1,0 +1,79 @@
+{
+  "name": "hesh",
+  "version": "0.1.0",
+  "description": "A high-performance React component library with polished defaults, token-driven theming, and built-in accessibility. Zero runtime dependencies beyond React.",
+  "license": "MIT",
+  "author": {
+    "name": "Mahesh Abeykoon",
+    "url": "https://github.com/Mahesh-Abeykoon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahesh-Abeykoon/hesh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mahesh-Abeykoon/hesh/issues"
+  },
+  "homepage": "https://github.com/Mahesh-Abeykoon/hesh#readme",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/hesh.css",
+    "./styles": "./dist/hesh.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && vite build --mode lib && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
+    "build:docs": "vite build",
+    "build:demo": "npm run build:docs",
+    "build:html": "npm run build:docs && node scripts/bundle-html.mjs && node scripts/verify-html.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node scripts/smoke.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^30.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.21.5",
+    "jsdom": "^29.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "ui-library",
+    "design-system",
+    "accessible",
+    "typescript",
+    "tailwind-alternative"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -70,10 +70,12 @@ export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastTone, ToastProviderProps, ToastPlacement } from './components/Toast';
 
 /* ---------------------------------------------------------------- theming */
-export { ThemeProvider, useTheme, themeInitScript, THEME_STORAGE_KEY } from './hooks/useTheme';
-export type { ThemeProviderProps, ThemeMode, ResolvedTheme } from './hooks/useTheme';
+export { ThemeProvider, useTheme, themeInitScript, THEME_STORAGE_KEY, PRESET_STORAGE_KEY, THEME_PRESETS } from './hooks/useTheme';
+export type { ThemeProviderProps, ThemeMode, ResolvedTheme, ThemePreset } from './hooks/useTheme';
 export { ThemeSwitch } from './components/ThemeSwitch';
 export type { ThemeSwitchProps } from './components/ThemeSwitch';
+export { PresetSwitch } from './components/PresetSwitch';
+export type { PresetSwitchProps } from './components/PresetSwitch';
 
 /* ---------------------------------------------------------------- hooks */
 export { useControllableState } from './hooks/useControllableState';

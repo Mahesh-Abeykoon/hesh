@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const files = ['variables.css', 'base.css', 'components.css', 'advanced.css', 'premium.css'];
+const files = ['variables.css', 'presets.css', 'base.css', 'components.css', 'advanced.css', 'premium.css'];
 
 const banner = `/**
  * Hesh — stylesheet

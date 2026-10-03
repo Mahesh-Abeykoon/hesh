@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ComponentType } from 'react';
 import { ThemeProvider, useTheme } from '../src/index';
-import { ThemeSwitch } from '../src/index';
+import { PresetSwitch, ThemeSwitch } from '../src/index';
 import {
   Badge,
   Button,
@@ -226,6 +226,8 @@ function Shell() {
         <div className="topbar__spacer" />
 
         <div className="topbar__actions">
+          <PresetSwitch variant="select" />
+
           <div className="density-switch" role="group" aria-label="Interface density">
             {(['compact', 'default', 'comfortable'] as Density[]).map((value) => (
               <button

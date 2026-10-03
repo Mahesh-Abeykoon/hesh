@@ -10,16 +10,78 @@ import {
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
+export type ThemePreset = 'indigo' | 'forest' | 'sunset' | 'mono' | 'midnight';
 
 export const THEME_STORAGE_KEY = 'pui-theme';
+export const PRESET_STORAGE_KEY = 'pui-preset';
 
-interface ThemeContextValue {
+export interface ThemePresetMeta {
+  id: ThemePreset;
+  name: string;
+  accentColor: string;
+  description: string;
+  palette: [string, string, string, string];
+  radius: string;
+  badgeStyle?: Record<string, string>;
+}
+
+export const THEME_PRESETS: ThemePresetMeta[] = [
+  {
+    id: 'indigo',
+    name: 'Indigo',
+    accentColor: '#6366f1',
+    description: 'Linear & Stripe electric indigo default',
+    palette: ['#6366f1', '#818cf8', '#c7d2fe', '#1e1b4b'],
+    radius: '0.5rem',
+  },
+  {
+    id: 'forest',
+    name: 'Forest',
+    accentColor: '#10b981',
+    description: 'Calm emerald & pine with compact radii for ops',
+    palette: ['#059669', '#10b981', '#a7f3d0', '#022c22'],
+    radius: '0.375rem',
+  },
+  {
+    id: 'sunset',
+    name: 'Sunset',
+    accentColor: '#f43f5e',
+    description: 'Warm terracotta & rose with soft rounded radii',
+    palette: ['#f43f5e', '#fb7185', '#fecdd3', '#4c0519'],
+    radius: '0.75rem',
+  },
+  {
+    id: 'mono',
+    name: 'Mono',
+    accentColor: '#18181b',
+    description: 'Monochrome brutalist zinc with square radii',
+    palette: ['#18181b', '#71717a', '#d4d4d8', '#09090b'],
+    radius: '0px',
+    badgeStyle: {
+      background: 'linear-gradient(135deg, #ffffff 50%, #18181b 50%)',
+      borderColor: 'rgba(255, 255, 255, 0.4)',
+    },
+  },
+  {
+    id: 'midnight',
+    name: 'Midnight',
+    accentColor: '#06b6d4',
+    description: 'Deep cyber navy & electric cyan for data',
+    palette: ['#0891b2', '#06b6d4', '#a5f3fc', '#020617'],
+    radius: '0.625rem',
+  },
+];
+
+export interface ThemeContextValue {
   /** What the user asked for ('light' | 'dark' | 'system'). */
   mode: ThemeMode;
   /** What is actually rendered. */
   theme: ResolvedTheme;
   setMode: (mode: ThemeMode) => void;
   toggle: () => void;
+  /** Active theme preset ('indigo' | 'forest' | 'sunset' | 'mono' | 'midnight'). */
+  preset: ThemePreset;
+  setPreset: (preset: ThemePreset) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
@@ -33,6 +95,19 @@ function readStoredMode(): ThemeMode {
     /* private mode / SSR — fall through */
   }
   return 'system';
+}
+
+function readStoredPreset(): ThemePreset {
+  if (typeof document === 'undefined') return 'indigo';
+  try {
+    const stored = localStorage.getItem(PRESET_STORAGE_KEY) as ThemePreset;
+    if (stored && ['indigo', 'forest', 'sunset', 'mono', 'midnight'].includes(stored)) {
+      return stored;
+    }
+  } catch {
+    /* private mode / SSR — fall through */
+  }
+  return 'indigo';
 }
 
 function safeMatchMedia(query: string): MediaQueryList | null {
@@ -52,19 +127,29 @@ export interface ThemeProviderProps {
   children: ReactNode;
   /** Initial mode, used when nothing is stored yet. */
   defaultMode?: ThemeMode;
-  /** Element that receives `data-pui-theme`. Defaults to <html>. */
+  /** Initial theme preset, used when nothing is stored yet. */
+  defaultPreset?: ThemePreset;
+  /** Element that receives `data-pui-theme` and `data-pui-preset`. Defaults to <html>. */
   target?: HTMLElement | null;
 }
 
 /**
- * Writes `data-pui-theme="light|dark"` on the target element.
+ * Writes `data-pui-theme="light|dark"` and `data-pui-preset="forest|sunset|mono|midnight"` on the target element.
  *
  * No class-name injection, no CSS-in-JS runtime: the stylesheet already ships
- * both themes, so switching is a single attribute write.
+ * themes and presets, so switching is a fast attribute write.
  */
-export function ThemeProvider({ children, defaultMode = 'system', target }: ThemeProviderProps) {
+export function ThemeProvider({
+  children,
+  defaultMode = 'system',
+  defaultPreset = 'indigo',
+  target,
+}: ThemeProviderProps) {
   const [mode, setModeState] = useState<ThemeMode>(() =>
     typeof document === 'undefined' ? defaultMode : (readStoredMode() ?? defaultMode)
+  );
+  const [preset, setPresetState] = useState<ThemePreset>(() =>
+    typeof document === 'undefined' ? defaultPreset : (readStoredPreset() ?? defaultPreset)
   );
   const [systemPreference, setSystemPreference] = useState<ResolvedTheme>(systemTheme);
 
@@ -93,10 +178,29 @@ export function ThemeProvider({ children, defaultMode = 'system', target }: Them
     el.style.colorScheme = theme;
   }, [theme, target]);
 
+  useEffect(() => {
+    const el = target ?? document.documentElement;
+    if (!el) return;
+    if (preset === 'indigo') {
+      el.removeAttribute('data-pui-preset');
+    } else {
+      el.setAttribute('data-pui-preset', preset);
+    }
+  }, [preset, target]);
+
   const setMode = useCallback((next: ThemeMode) => {
     setModeState(next);
     try {
       localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const setPreset = useCallback((next: ThemePreset) => {
+    setPresetState(next);
+    try {
+      localStorage.setItem(PRESET_STORAGE_KEY, next);
     } catch {
       /* ignore */
     }
@@ -107,8 +211,8 @@ export function ThemeProvider({ children, defaultMode = 'system', target }: Them
   }, [setMode, theme]);
 
   const value = useMemo<ThemeContextValue>(
-    () => ({ mode, theme, setMode, toggle }),
-    [mode, theme, setMode, toggle]
+    () => ({ mode, theme, setMode, toggle, preset, setPreset }),
+    [mode, theme, setMode, toggle, preset, setPreset]
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
@@ -128,4 +232,4 @@ export function useTheme(): ThemeContextValue {
  *
  *   <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
  */
-export const themeInitScript = `(function(){try{var m=localStorage.getItem('${THEME_STORAGE_KEY}')||'system';var d=m==='dark'||(m==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);var t=d?'dark':'light';var e=document.documentElement;e.setAttribute('data-pui-theme',t);e.style.colorScheme=t;}catch(e){}})();`;
+export const themeInitScript = `(function(){try{var m=localStorage.getItem('${THEME_STORAGE_KEY}')||'system';var d=m==='dark'||(m==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);var t=d?'dark':'light';var e=document.documentElement;e.setAttribute('data-pui-theme',t);e.style.colorScheme=t;var p=localStorage.getItem('${PRESET_STORAGE_KEY}');if(p&&p!=='indigo')e.setAttribute('data-pui-preset',p);}catch(e){}})();`;

@@ -31,6 +31,7 @@ import { TablePage } from './pages/TablePage';
 import { FeedbackPage } from './pages/FeedbackPage';
 import { NavigationPage } from './pages/NavigationPage';
 import { DashboardPage } from './pages/Dashboard';
+import { DocNavigationContext } from './components/DocPage';
 
 interface DocPage {
   id: string;
@@ -183,7 +184,10 @@ function Shell() {
 
   useCommandShortcut(() => setCommandOpen((prev) => !prev));
 
-  const active = useMemo(() => ALL_PAGES.find((page) => page.id === route), [route]);
+  const activeIndex = useMemo(() => ALL_PAGES.findIndex((page) => page.id === route), [route]);
+  const active = activeIndex >= 0 ? ALL_PAGES[activeIndex] : undefined;
+  const prevPage = activeIndex > 0 ? ALL_PAGES[activeIndex - 1] : undefined;
+  const nextPage = activeIndex >= 0 && activeIndex < ALL_PAGES.length - 1 ? ALL_PAGES[activeIndex + 1] : undefined;
 
   useEffect(() => {
     document.title = active
@@ -295,7 +299,16 @@ function Shell() {
         <main className={`content${route === 'home' ? ' content--home' : ''}`} id="main">
           <div className="content__inner">
             {active ? (
-              <active.Component />
+              <DocNavigationContext.Provider
+                value={{
+                  currentPageId: route,
+                  prevPage: prevPage ? { id: prevPage.id, title: prevPage.title } : undefined,
+                  nextPage: nextPage ? { id: nextPage.id, title: nextPage.title } : undefined,
+                  navigate,
+                }}
+              >
+                <active.Component />
+              </DocNavigationContext.Provider>
             ) : (
               <div className="content__empty">
                 <h1>Page not found</h1>

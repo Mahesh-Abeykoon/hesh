@@ -66,6 +66,12 @@ globalThis.ResizeObserver = class {
   disconnect() {}
 };
 window.ResizeObserver = globalThis.ResizeObserver;
+globalThis.IntersectionObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+window.IntersectionObserver = globalThis.IntersectionObserver;
 window.MutationObserver = window.MutationObserver ?? globalThis.MutationObserver;
 window.matchMedia =
   window.matchMedia ||

@@ -9,12 +9,7 @@
    ========================================================================== */
 
 /* Hairline highlight along the top edge of every raised surface. */
-.pui-card,
-.pui-menu,
-.pui-popover,
-.pui-dialog,
-.pui-toast,
-.pui-combobox__listbox {
+.pui-card {
   position: relative;
 }
 .pui-card::after,

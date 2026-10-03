@@ -362,7 +362,6 @@ input:focus-visible + .pui-choice__box {
   border: 1px solid var(--pui-border);
   border-radius: var(--pui-radius-xl);
   box-shadow: var(--pui-shadow-sm);
-  overflow: hidden;
   transition: box-shadow var(--pui-duration-base) var(--pui-ease-out),
               border-color var(--pui-duration-base) var(--pui-ease-out),
               transform var(--pui-duration-base) var(--pui-ease-out);
@@ -784,6 +783,33 @@ input:focus-visible + .pui-choice__box {
   width: 0.5rem; height: 0.5rem;
   background: inherit;
   transform: rotate(45deg);
+}
+
+/* ==========================================================================
+   POPOVER
+   ========================================================================== */
+.pui-popover {
+  position: fixed;
+  z-index: var(--pui-z-popover);
+  max-width: min(calc(100vw - 2rem), 28rem);
+  padding: var(--pui-space-3);
+  background: var(--pui-surface-elevated);
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius-xl);
+  box-shadow: var(--pui-shadow-xl);
+  animation: pui-fade-in var(--pui-duration-fast) var(--pui-ease-out);
+  outline: none;
+}
+.pui-popover__title {
+  font-size: var(--pui-text-sm);
+  font-weight: var(--pui-weight-semibold);
+  color: var(--pui-fg);
+  margin-bottom: var(--pui-space-1);
+}
+.pui-popover__desc {
+  font-size: var(--pui-text-sm);
+  color: var(--pui-fg-muted);
+  margin-bottom: var(--pui-space-3);
 }
 
 /* ==========================================================================

@@ -227,6 +227,7 @@ export function DropdownMenu({
             }
             className={cn('pui-menu', className)}
             style={{
+              position: 'fixed',
               top: coords.y,
               left: coords.x,
               // Hidden until measured to avoid a visible jump on first paint.

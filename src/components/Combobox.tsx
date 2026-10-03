@@ -230,6 +230,7 @@ export function Combobox({
             role="listbox"
             aria-label={typeof label === 'string' ? label : 'Options'}
             className="pui-combobox__listbox"
+            style={{ position: 'absolute' }}
           >
             {filtered.length === 0 ? (
               <div className="pui-combobox__empty">{emptyMessage}</div>

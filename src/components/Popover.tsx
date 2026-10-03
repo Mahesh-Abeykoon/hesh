@@ -71,7 +71,12 @@ export function Popover({
             tabIndex={-1}
             aria-labelledby={title ? `${id}-title` : undefined}
             className={cn('pui-popover', className)}
-            style={{ top: coords.y, left: coords.x, visibility: ready ? 'visible' : 'hidden' }}
+            style={{
+              position: 'fixed',
+              top: coords.y,
+              left: coords.x,
+              visibility: ready ? 'visible' : 'hidden',
+            }}
           >
             {title && (
               <div id={`${id}-title`} className="pui-popover__title">

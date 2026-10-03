@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, type DragEvent, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import { cn } from '../utils/cn';
 
 export interface DropzoneFile {
@@ -22,6 +22,8 @@ export interface DropzoneProps {
   onFiles?: (files: File[]) => void;
   children?: ReactNode;
   className?: string;
+  /** Optionally simulate progress for showcase/demo purposes. Defaults to false. */
+  simulateProgress?: boolean;
 }
 
 function createPreview(file: File): string | undefined {
@@ -53,11 +55,19 @@ export function Dropzone({
   onFiles,
   children,
   className,
+  simulateProgress = false,
 }: DropzoneProps) {
   const [internalFiles, setInternalFiles] = useState<DropzoneFile[]>([]);
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const timersRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach((t) => window.clearInterval(t));
+    };
+  }, []);
 
   const files = controlledFiles ?? internalFiles;
 
@@ -95,25 +105,27 @@ export function Dropzone({
       onFilesChange?.(merged);
       onFiles?.(next.map((f) => f.file));
 
-      // Simulate upload progress for premium feel
-      next.forEach((item) => {
-        let p = 0;
-        const iv = setInterval(() => {
-          p += Math.random() * 18 + 6;
-          if (p >= 100) {
-            p = 100;
-            clearInterval(iv);
-          }
-          const nextStatus: DropzoneFile['status'] = p === 100 ? 'done' : 'uploading';
-          const updater = (prev: DropzoneFile[]) =>
-            prev.map((f) => (f.id === item.id ? { ...f, progress: p, status: nextStatus } : f));
-          if (controlledFiles === undefined) {
-            setInternalFiles(updater);
-          }
-        }, 120);
-      });
+      if (simulateProgress) {
+        next.forEach((item) => {
+          let p = 0;
+          const iv = window.setInterval(() => {
+            p += Math.random() * 18 + 6;
+            if (p >= 100) {
+              p = 100;
+              window.clearInterval(iv);
+            }
+            const nextStatus: DropzoneFile['status'] = p === 100 ? 'done' : 'uploading';
+            const updater = (prev: DropzoneFile[]) =>
+              prev.map((f) => (f.id === item.id ? { ...f, progress: p, status: nextStatus } : f));
+            if (controlledFiles === undefined) {
+              setInternalFiles(updater);
+            }
+          }, 120);
+          timersRef.current.push(iv);
+        });
+      }
     },
-    [files, maxFiles, maxSize, controlledFiles, onFilesChange, onFiles]
+    [files, maxFiles, maxSize, controlledFiles, onFilesChange, onFiles, simulateProgress]
   );
 
   const onDrop = useCallback(

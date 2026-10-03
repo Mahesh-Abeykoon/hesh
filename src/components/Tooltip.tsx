@@ -72,10 +72,22 @@ export function Tooltip({
       }
     },
     'aria-describedby': open && !disabled ? id : undefined,
-    onMouseEnter: () => show(false),
-    onMouseLeave: hide,
-    onFocus: () => show(true),
-    onBlur: hide,
+    onMouseEnter: (event: React.MouseEvent) => {
+      show(false);
+      (children.props as { onMouseEnter?: (e: React.MouseEvent) => void }).onMouseEnter?.(event);
+    },
+    onMouseLeave: (event: React.MouseEvent) => {
+      hide();
+      (children.props as { onMouseLeave?: (e: React.MouseEvent) => void }).onMouseLeave?.(event);
+    },
+    onFocus: (event: React.FocusEvent) => {
+      show(true);
+      (children.props as { onFocus?: (e: React.FocusEvent) => void }).onFocus?.(event);
+    },
+    onBlur: (event: React.FocusEvent) => {
+      hide();
+      (children.props as { onBlur?: (e: React.FocusEvent) => void }).onBlur?.(event);
+    },
     onKeyDown: (event: React.KeyboardEvent) => {
       if (event.key === 'Escape') hide();
       (children.props as { onKeyDown?: (e: React.KeyboardEvent) => void }).onKeyDown?.(event);

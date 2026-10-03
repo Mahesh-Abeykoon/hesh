@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Popover } from './Popover';
 import { Calendar, type CalendarProps } from './Calendar';
 import { ChevronDownIcon } from './icons';
+import { useControllableState } from '../hooks/useControllableState';
 
 export interface DatePickerProps extends Omit<CalendarProps, 'className'> {
   placeholder?: string;
@@ -17,10 +18,17 @@ export function DatePicker({
   placeholder = 'Select a date',
   className,
   format = defaultFormat,
+  value,
+  defaultValue = null,
+  onChange,
   ...calendarProps
 }: DatePickerProps) {
   const [open, setOpen] = useState(false);
-  const selected = calendarProps.value ?? calendarProps.defaultValue ?? null;
+  const [selected, setSelected] = useControllableState<Date | null>({
+    value,
+    defaultValue,
+    onChange: onChange as ((date: Date | null) => void) | undefined,
+  });
 
   return (
     <div className={className}>
@@ -44,8 +52,9 @@ export function DatePicker({
       >
         <Calendar
           {...calendarProps}
+          value={selected}
           onChange={(date) => {
-            calendarProps.onChange?.(date);
+            setSelected(date);
             setOpen(false);
           }}
         />

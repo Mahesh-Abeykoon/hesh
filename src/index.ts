@@ -6,6 +6,9 @@
  */
 
 /* ---------------------------------------------------------------- primitives */
+export { Slot, composeRefs } from './primitives/Slot';
+export type { SlotProps } from './primitives/Slot';
+
 export { Button, IconButton, ButtonGroup } from './components/Button';
 export type { ButtonProps, ButtonVariant, ButtonSize, IconButtonProps, ButtonGroupProps } from './components/Button';
 
@@ -80,6 +83,10 @@ export type { UseDismissOptions } from './hooks/useDismiss';
 export { useFloating } from './hooks/useFloating';
 export type { Placement, Align, FloatingCoords } from './hooks/useFloating';
 export { useScrollLock } from './hooks/useScrollLock';
+export { useRovingFocus } from './hooks/useRovingFocus';
+export type { UseRovingFocusOptions } from './hooks/useRovingFocus';
+export { useClickOutside } from './hooks/useClickOutside';
+export type { ClickOutsideTarget } from './hooks/useClickOutside';
 
 /* ---------------------------------------------------------------- advanced */
 export { Command, useCommandShortcut } from './components/Command';

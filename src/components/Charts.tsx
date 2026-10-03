@@ -32,6 +32,7 @@ function scaleY(value: number, min: number, max: number, innerH: number, top: nu
 }
 
 function niceBounds(values: number[], padRatio = 0.08) {
+  if (!values.length) return { min: 0, max: 100 };
   const min = Math.min(...values);
   const max = Math.max(...values);
   const pad = (max - min || Math.abs(max) || 1) * padRatio;
@@ -63,6 +64,14 @@ export function AreaChart({
   const [hover, setHover] = useState<number | null>(null);
   const gradientId = useGradientId('area');
   const width = 720;
+
+  if (!data || data.length === 0) {
+    return (
+      <div className={cn('pui-chart pui-chart--empty', className)} style={{ minHeight: height, display: 'grid', placeItems: 'center' }}>
+        <span style={{ fontSize: '0.875rem', color: 'var(--pui-fg-subtle)' }}>No data available</span>
+      </div>
+    );
+  }
 
   const { min, max } = useMemo(() => niceBounds(data.map((d) => d.value)), [data]);
   const innerW = width - PADDING.left - PADDING.right;
@@ -192,6 +201,15 @@ export function BarChart({
 }: BarChartProps) {
   const [hover, setHover] = useState<number | null>(null);
   const width = 720;
+
+  if (!data || data.length === 0) {
+    return (
+      <div className={cn('pui-chart pui-chart--empty', className)} style={{ minHeight: height, display: 'grid', placeItems: 'center' }}>
+        <span style={{ fontSize: '0.875rem', color: 'var(--pui-fg-subtle)' }}>No data available</span>
+      </div>
+    );
+  }
+
   const { min, max } = useMemo(() => niceBounds([0, ...data.map((d) => d.value)], 0.04), [data]);
   const innerW = width - PADDING.left - PADDING.right;
   const innerH = height - PADDING.top - PADDING.bottom;
@@ -285,6 +303,15 @@ export function DonutChart({
   label,
 }: DonutChartProps) {
   const [hover, setHover] = useState<number | null>(null);
+
+  if (!data || data.length === 0) {
+    return (
+      <div className={cn('pui-donut pui-donut--empty', className)} style={{ width: size, height: size, display: 'grid', placeItems: 'center' }}>
+        <span style={{ fontSize: '0.75rem', color: 'var(--pui-fg-subtle)' }}>No data</span>
+      </div>
+    );
+  }
+
   const total = data.reduce((sum, slice) => sum + slice.value, 0) || 1;
   const radius = (size - thickness) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -373,6 +400,10 @@ export function Sparkline({
   filled = true,
   className,
 }: SparklineProps) {
+  if (!data || data.length === 0) {
+    return <span className={cn('pui-sparkline--empty', className)} style={{ display: 'inline-block', width, height }} />;
+  }
+
   const gradientId = useGradientId('spark');
   const min = Math.min(...data);
   const max = Math.max(...data);

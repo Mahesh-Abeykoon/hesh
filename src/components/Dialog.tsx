@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useId,
   useState,
   type HTMLAttributes,
   type MouseEvent,
@@ -9,7 +10,7 @@ import { cn } from '../utils/cn';
 import { Portal, useScrollLock } from './Portal';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useDismiss } from '../hooks/useDismiss';
-import { IconButton } from './Button';
+import { Button, IconButton } from './Button';
 import { XIcon } from './icons';
 
 type Size = 'sm' | 'md' | 'lg' | 'xl';
@@ -51,6 +52,7 @@ export function Dialog({
   className,
   overlayClassName,
 }: DialogProps) {
+  const dialogId = useId();
   // Held in state, not a ref: <Portal> mounts one commit after this component,
   // so a ref would still be empty when the focus-trap effect runs.
   const [panel, setPanel] = useState<HTMLDivElement | null>(null);
@@ -72,8 +74,8 @@ export function Dialog({
 
   if (!open) return null;
 
-  const titleId = title ? 'pui-dialog-title' : undefined;
-  const descId = description ? 'pui-dialog-desc' : undefined;
+  const titleId = title ? `pui-dialog-title-${dialogId}` : undefined;
+  const descId = description ? `pui-dialog-desc-${dialogId}` : undefined;
 
   return (
     <Portal>
@@ -223,19 +225,18 @@ export function ConfirmDialog({
       size="sm"
       footer={
         <>
-          <button type="button" className="pui-btn pui-btn--secondary pui-btn--md" onClick={props.onClose}>
+          <Button variant="secondary" size="md" onClick={props.onClose}>
             {cancelLabel}
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant={tone}
+            size="md"
             data-autofocus
-            className={`pui-btn pui-btn--${tone} pui-btn--md`}
             onClick={onConfirm}
-            aria-busy={loading || undefined}
+            loading={loading}
           >
-            {loading && <span className="pui-btn__spinner" />}
             {confirmLabel}
-          </button>
+          </Button>
         </>
       }
     />

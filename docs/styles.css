@@ -533,25 +533,30 @@ body { margin: 0; min-height: 100vh; background: var(--pui-bg); }
   box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.04) inset;
 }
 .code-block__bar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.625rem 0.875rem 0.625rem 1rem;
+  padding: 0.625rem 0.875rem 0.625rem 1.125rem;
   background: linear-gradient(180deg, var(--code-bg-elevated), var(--code-bg));
   border-bottom: 1px solid rgb(255 255 255 / 0.07);
 }
 .code-block__bar::before {
   content: '';
-  display: inline-flex;
-  width: 2.5rem;
-  height: 0.625rem;
-  margin-right: 0.75rem;
-  background:
-    radial-gradient(circle at 0.25rem 50%, #ff5f57 0 0.25rem, transparent 0.26rem),
-    radial-gradient(circle at 1rem 50%, #ffbd2e 0 0.25rem, transparent 0.26rem),
-    radial-gradient(circle at 1.75rem 50%, #28c840 0 0.25rem, transparent 0.26rem);
-  opacity: 0.9;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(
+    180deg,
+    var(--pui-primary),
+    color-mix(in oklab, var(--pui-primary) 60%, transparent)
+  );
+  opacity: 0.85;
 }
+
 .code-block__lang {
   font-size: 0.6875rem;
   font-weight: 600;

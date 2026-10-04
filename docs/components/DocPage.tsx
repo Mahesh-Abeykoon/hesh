@@ -30,6 +30,75 @@ export interface DocPageProps {
   importStatement?: string;
 }
 
+function QuickImportBar({ statement }: { statement: string }) {
+  const [copied, setCopied] = useState(false);
+
+  // Match: import { ... } from 'hesh'; or import ... from 'hesh';
+  const match = statement.match(/^(import\s+)(\{[^}]+\}|\w+)(\s+from\s+)((?:'[^']+'|"[^"]+"))(;?)$/);
+  const symbols = match?.[2] ?? '';
+  const pkg = match?.[4] ?? '';
+  const semi = match?.[5] ?? '';
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(statement);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  return (
+    <div
+      className={`doc-quick-import ${copied ? 'doc-quick-import--copied' : ''}`}
+      onClick={handleCopy}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCopy();
+        }
+      }}
+      title={copied ? 'Copied to clipboard!' : 'Click to copy import'}
+      aria-label="Click to copy import statement"
+    >
+      <div className="doc-quick-import__code">
+        {match && symbols && pkg ? (
+          <>
+            <span className="doc-syntax__keyword">import</span>
+            <span className="doc-syntax__space"> </span>
+            {symbols.startsWith('{') ? (
+              <>
+                <span className="doc-syntax__punct">&#123;&nbsp;</span>
+                <span className="doc-syntax__symbol">{symbols.slice(1, -1).trim()}</span>
+                <span className="doc-syntax__punct">&nbsp;&#125;</span>
+              </>
+            ) : (
+              <span className="doc-syntax__symbol">{symbols}</span>
+            )}
+            <span className="doc-syntax__keyword"> from </span>
+            <span className="doc-syntax__string">{pkg}</span>
+            {semi && <span className="doc-syntax__punct">{semi}</span>}
+          </>
+        ) : (
+          <code>{statement}</code>
+        )}
+      </div>
+
+      {copied && (
+        <span className="doc-quick-import__copied-tip" aria-live="polite">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+          Copied!
+        </span>
+      )}
+    </div>
+  );
+}
+
 export function DocPage({
   eyebrow,
   title,
@@ -40,7 +109,6 @@ export function DocPage({
 }: DocPageProps) {
   const [sections, setSections] = useState<{ id: string; label: string }[]>(explicitToc || []);
   const [activeSection, setActiveSection] = useState<string>('');
-  const [copiedImport, setCopiedImport] = useState(false);
   const articleRef = useRef<HTMLElement>(null);
   const nav = useContext(DocNavigationContext);
 
@@ -88,7 +156,11 @@ export function DocPage({
   const defaultImport =
     importStatement ||
     (eyebrow && !['Foundations', 'Examples', 'Start here'].includes(eyebrow)
-      ? `import { ${title.split(' · ')[0]?.replace(/\s+/g, '')} } from 'hesh';`
+      ? `import { ${title
+          .split(' · ')
+          .map((s) => s.trim().split(' ')[0])
+          .filter(Boolean)
+          .join(', ')} } from 'hesh';`
       : undefined);
 
   return (
@@ -99,27 +171,7 @@ export function DocPage({
           <h1 className="doc-title">{title}</h1>
           {lede && <p className="doc-lede">{lede}</p>}
 
-          {defaultImport && (
-            <div className="doc-quick-import">
-              <span className="doc-quick-import__code">{defaultImport}</span>
-              <button
-                type="button"
-                className="doc-quick-import__btn"
-                onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(defaultImport);
-                    setCopiedImport(true);
-                    window.setTimeout(() => setCopiedImport(false), 1600);
-                  } catch {
-                    /* ignore */
-                  }
-                }}
-                aria-label="Copy import statement"
-              >
-                {copiedImport ? 'Copied' : 'Copy'}
-              </button>
-            </div>
-          )}
+          {defaultImport && <QuickImportBar statement={defaultImport} />}
         </header>
 
         {children}

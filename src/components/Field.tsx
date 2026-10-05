@@ -93,8 +93,11 @@ export interface FieldBaseProps {
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'className'>,
     FieldBaseProps {
+  size?: 'sm' | 'md' | 'lg';
   leftAddon?: ReactNode;
   rightAddon?: ReactNode;
+  clearable?: boolean;
+  onClear?: () => void;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -107,14 +110,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     containerClassName,
     leftAddon,
     rightAddon,
+    clearable = false,
+    onClear,
+    size = 'md',
     required,
     id: providedId,
+    value,
     ...props
   },
   ref
 ) {
   const generated = useId();
   const id = providedId ?? generated;
+  const showClear = clearable && Boolean(value);
 
   const renderControl = (describedBy?: string) => (
     <input
@@ -123,22 +131,33 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       required={required}
       aria-invalid={error ? true : undefined}
       aria-describedby={describedBy}
-      className={cn('pui-control', className)}
+      value={value}
+      className={cn('pui-control', size !== 'md' && `pui-control--${size}`, className)}
       {...props}
     />
   );
 
   const shell = (describedBy?: string) =>
-    leftAddon || rightAddon ? (
+    leftAddon || rightAddon || showClear ? (
       <div
         className={cn(
           'pui-input-wrap',
           leftAddon && 'pui-input-wrap--start',
-          rightAddon && 'pui-input-wrap--end'
+          (rightAddon || showClear) && 'pui-input-wrap--end'
         )}
       >
         {leftAddon && <span className="pui-affix pui-affix--start">{leftAddon}</span>}
         {renderControl(describedBy)}
+        {showClear && (
+          <button
+            type="button"
+            aria-label="Clear input"
+            onClick={onClear}
+            className="pui-input-clear-btn"
+          >
+            ×
+          </button>
+        )}
         {rightAddon && <span className="pui-affix pui-affix--end">{rightAddon}</span>}
       </div>
     ) : (

@@ -10,7 +10,7 @@ export { Slot, composeRefs } from './primitives/Slot';
 export type { SlotProps } from './primitives/Slot';
 
 export { Button, IconButton, ButtonGroup } from './components/Button';
-export type { ButtonProps, ButtonVariant, ButtonSize, IconButtonProps, ButtonGroupProps } from './components/Button';
+export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape, IconButtonProps, ButtonGroupProps } from './components/Button';
 
 export { Input, Textarea, Select, FieldShell } from './components/Field';
 export type { InputProps, TextareaProps, SelectProps, SelectOption, FieldBaseProps } from './components/Field';
@@ -22,14 +22,14 @@ export { Combobox } from './components/Combobox';
 export type { ComboboxProps, ComboboxOption } from './components/Combobox';
 
 /* ---------------------------------------------------------------- display */
-export { Card, CardHeader, CardBody, CardFooter } from './components/Card';
-export type { CardProps, CardHeaderProps } from './components/Card';
+export { Card, CardHeader, CardBody, CardFooter, CardMedia } from './components/Card';
+export type { CardProps, CardHeaderProps, CardMediaProps } from './components/Card';
 
 export { Carousel } from './components/Carousel';
 export type { CarouselProps } from './components/Carousel';
 
 export { Badge } from './components/Badge';
-export type { BadgeProps, BadgeTone } from './components/Badge';
+export type { BadgeProps, BadgeTone, BadgeVariant, BadgeSize } from './components/Badge';
 
 export { Avatar, AvatarGroup, initialsOf } from './components/Avatar';
 export type { AvatarProps, AvatarGroupProps, AvatarSize, AvatarStatus } from './components/Avatar';
@@ -67,7 +67,7 @@ export type { DataTableProps, Column, SortState, SortDirection, PaginationProps 
 
 /* ---------------------------------------------------------------- feedback */
 export { Spinner, LoadingRow, Alert, EmptyState, Progress, Stat, Kbd } from './components/Feedback';
-export type { SpinnerProps, AlertProps, AlertTone, EmptyStateProps, ProgressProps, StatProps } from './components/Feedback';
+export type { SpinnerProps, AlertProps, AlertTone, AlertVariant, EmptyStateProps, ProgressProps, StatProps } from './components/Feedback';
 
 export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastTone, ToastProviderProps, ToastPlacement } from './components/Toast';
@@ -151,9 +151,73 @@ export type { StepperProps, StepItem } from './components/Stepper';
 export { Tree } from './components/Tree';
 export type { TreeProps, TreeNode } from './components/Tree';
 
+export { Toggle } from './components/Toggle';
+export type { ToggleProps } from './components/Toggle';
+
+export { ToggleGroup, ToggleGroupItem } from './components/ToggleGroup';
+export type { ToggleGroupProps, ToggleGroupItemProps } from './components/ToggleGroup';
+
+export { ScrollArea } from './components/ScrollArea';
+export type { ScrollAreaProps } from './components/ScrollArea';
+
+export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './components/Resizable';
+export type { ResizablePanelGroupProps, ResizablePanelProps, ResizableHandleProps } from './components/Resizable';
+
+export { ColorPicker } from './components/ColorPicker';
+export type { ColorPickerProps } from './components/ColorPicker';
+
+export { CopyButton } from './components/CopyButton';
+export type { CopyButtonProps } from './components/CopyButton';
+
+export { CodeSnippet } from './components/CodeSnippet';
+export type { CodeSnippetProps } from './components/CodeSnippet';
+
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './components/Collapsible';
+export type { CollapsibleProps, CollapsibleTriggerProps, CollapsibleContentProps } from './components/Collapsible';
+
+export { Dock, DockIcon } from './components/Dock';
+export type { DockProps, DockIconProps } from './components/Dock';
+
+export { BottomNav, BottomNavItem } from './components/BottomNav';
+export type { BottomNavProps, BottomNavItemProps, BottomNavItemSpec } from './components/BottomNav';
+
+export { SpeedDial } from './components/SpeedDial';
+export type { SpeedDialProps, SpeedDialActionSpec } from './components/SpeedDial';
+
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from './components/NavigationMenu';
+export type {
+  NavigationMenuProps,
+  NavigationMenuListProps,
+  NavigationMenuItemProps,
+  NavigationMenuTriggerProps,
+  NavigationMenuContentProps,
+  NavigationMenuLinkProps,
+} from './components/NavigationMenu';
+
+export { NumberInput } from './components/NumberInput';
+export type { NumberInputProps } from './components/NumberInput';
+
+export { PasswordInput, DEFAULT_PASSWORD_REQUIREMENTS } from './components/PasswordInput';
+export type { PasswordInputProps, PasswordRequirement } from './components/PasswordInput';
+
+export { Marquee } from './components/Marquee';
+export type { MarqueeProps } from './components/Marquee';
+
+export { Gauge } from './components/Gauge';
+export type { GaugeProps } from './components/Gauge';
+
 /* ---------------------------------------------------------------- utilities */
 export { cn } from './utils/cn';
 
 /* ---------------------------------------------------------------- icons */
 export * from './components/icons';
+
+
 

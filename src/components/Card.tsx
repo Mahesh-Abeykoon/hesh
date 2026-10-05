@@ -73,3 +73,30 @@ export function CardBody({ className, ...props }: HTMLAttributes<HTMLDivElement>
 export function CardFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('pui-card__footer', className)} {...props} />;
 }
+
+export interface CardMediaProps extends HTMLAttributes<HTMLDivElement> {
+  src?: string;
+  alt?: string;
+  aspectRatio?: string | number;
+}
+
+export function CardMedia({
+  src,
+  alt = '',
+  aspectRatio = '16/9',
+  className,
+  children,
+  style,
+  ...props
+}: CardMediaProps) {
+  return (
+    <div
+      className={cn('pui-card__media', className)}
+      style={{ aspectRatio: String(aspectRatio), ...style }}
+      {...props}
+    >
+      {src && <img src={src} alt={alt} className="pui-card__media-img" />}
+      {children}
+    </div>
+  );
+}

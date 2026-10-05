@@ -55,10 +55,11 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
     },
     ref
   ) => {
+    const safeOptions = Array.isArray(options) ? options : [];
     const isControlled = controlledValue !== undefined;
     const [internalValue, setInternalValue] = useState<string>(() => {
       if (defaultValue !== undefined) return defaultValue;
-      return options[0]?.value || '';
+      return safeOptions[0]?.value || '';
     });
 
     const activeValue = isControlled ? controlledValue : internalValue;

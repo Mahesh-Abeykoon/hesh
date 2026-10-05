@@ -1,79 +1,149 @@
 import { useState } from 'react';
-import { Input } from '../../../src/index';
+import { Input, SearchIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
 
-const INPUT_DEMO = `<Input
+const BASIC_DEMO = `<Input
   label="Workspace subdomain"
-  hint="Letters, numbers and hyphens only."
+  hint="Lowercase letters, numbers, and dashes only."
   placeholder="acme-corp"
-  suffix=".hesh.dev"
+  rightAddon=".hesh.dev"
 />
 
 <Input
-  label="API Key"
-  error="Invalid key format. Expected hesh_live_..."
-  defaultValue="invalid_key"
+  label="Custom API Endpoint"
+  leftAddon="https://"
+  placeholder="api.company.com/v1"
 />
 
 <Input
-  label="Read-only token"
-  defaultValue="tok_live_94829103"
-  readOnly
+  label="Account Email"
+  error="Please enter a valid work email address"
+  defaultValue="invalid-email@"
+/>`;
+
+const CLEARABLE_DEMO = `const [searchQuery, setSearchQuery] = useState('Production Kubernetes');
+
+<Input
+  label="Search projects"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  clearable
+  onClear={() => setSearchQuery('')}
+  leftAddon={<SearchIcon size={16} />}
 />`;
 
 export function InputPage() {
-  const [val, setVal] = useState('acme-corp');
+  const [subdomain, setSubdomain] = useState('acme-corp');
+  const [search, setSearch] = useState('Design Systems');
 
   return (
     <DocPage
       eyebrow="Components"
       title="Input"
-      lede="Text field with built-in accessible label association, helper hints, error validation messaging, and prefix/suffix add-ons."
+      lede="Text field with built-in accessible label association, helper hints, error validation, affixes, sizes, and clear actions."
       importStatement="import { Input } from 'hesh';"
     >
       <Section
-        title="Form Field States"
-        description="Handles focus rings, error states, hint descriptions, and input adornments."
+        title="1. Labels, Add-ons & Validation States"
+        description="Handles automatic ARIA label and error announcement wiring, plus prefix/suffix add-on attachments."
       >
-        <Showcase code={INPUT_DEMO} defaultOpen width="md">
-          <div className="stack" style={{ gap: '1.25rem' }}>
+        <Showcase code={BASIC_DEMO} defaultOpen width="md">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '380px' }}>
             <Input
               label="Workspace subdomain"
-              hint="Letters, numbers and hyphens only."
-              value={val}
-              onChange={(e) => setVal(e.target.value)}
+              hint="Lowercase letters, numbers, and dashes only."
+              value={subdomain}
+              onChange={(e) => setSubdomain(e.target.value)}
               placeholder="acme-corp"
               rightAddon=".hesh.dev"
             />
             <Input
-              label="Secret API Key"
-              error="Invalid key format. Expected hesh_live_..."
-              defaultValue="invalid_key"
+              label="Custom API Endpoint"
+              leftAddon="https://"
+              placeholder="api.company.com/v1"
             />
             <Input
-              label="Read-only deployment token"
-              defaultValue="tok_live_94829103"
-              readOnly
+              label="Account Email"
+              error="Please enter a valid work email address"
+              defaultValue="invalid-email@"
             />
           </div>
         </Showcase>
       </Section>
 
-      <Section title="Accessibility">
-        <Callout tone="info" title="Automatic ID & ARIA Wiring">
-          When <code>label</code>, <code>hint</code>, or <code>error</code> props are provided, unique IDs are automatically assigned and linked via <code>htmlFor</code>, <code>aria-describedby</code>, and <code>aria-invalid="true"</code>.
-        </Callout>
+      <Section
+        title="2. Clearable Search Input"
+        description="Includes an interactive clear button that appears when text is entered, resetting value on click."
+      >
+        <Showcase code={CLEARABLE_DEMO} width="md">
+          <div style={{ width: '100%', maxWidth: '380px' }}>
+            <Input
+              label="Search projects"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              clearable
+              onClear={() => setSearch('')}
+              leftAddon={<SearchIcon size={16} />}
+              placeholder="Type to filter..."
+            />
+            <span className="cell-sub" style={{ display: 'block', marginTop: '0.5rem' }}>
+              Current query: <strong>{search || '(empty)'}</strong>
+            </span>
+          </div>
+        </Showcase>
       </Section>
 
-      <Section title="API Reference">
+      <Section
+        title="3. Field Sizes"
+        description="Three calibrated input sizes: Small (sm, 32px), Medium (md, 38px), and Large (lg, 46px)."
+      >
+        <Showcase
+          code={`<Input size="sm" placeholder="Small input (sm)" />
+<Input size="md" placeholder="Medium input (md)" />
+<Input size="lg" placeholder="Large input (lg)" />`}
+          width="md"
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '380px' }}>
+            <Input size="sm" placeholder="Small input (32px)" />
+            <Input size="md" placeholder="Medium default input (38px)" />
+            <Input size="lg" placeholder="Large input (46px)" />
+          </div>
+        </Showcase>
+      </Section>
+
+      <Section
+        title="4. Disabled & Read-Only States"
+        description="Disabled inputs prevent interaction and are grayed out; read-only fields remain selectable for copying."
+      >
+        <Showcase
+          code={`<Input label="Read-only Deployment ID" value="dep_01H8Z7W3" readOnly />
+<Input label="Disabled Setting" defaultValue="Managed by Organization" disabled />`}
+          width="md"
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '380px' }}>
+            <Input label="Read-only Deployment ID" value="dep_01H8Z7W3" readOnly />
+            <Input label="Disabled Setting" defaultValue="Managed by Organization" disabled />
+          </div>
+        </Showcase>
+      </Section>
+
+      <Callout tone="info" title="Automatic ID & ARIA Wiring">
+        When <code>label</code>, <code>hint</code>, or <code>error</code> props are provided, unique IDs are automatically generated and linked via <code>htmlFor</code>, <code>aria-describedby</code>, and <code>aria-invalid="true"</code>.
+      </Callout>
+
+      <Section title="Props Reference">
         <PropsTable
-          rows={[
+          items={[
             { name: 'label', type: 'ReactNode', description: 'Associated label displayed above the field.' },
             { name: 'hint', type: 'ReactNode', description: 'Informational message displayed below the input.' },
             { name: 'error', type: 'ReactNode', description: 'Error message with assertive aria announcement.' },
-            { name: 'prefix', type: 'ReactNode', description: 'Element placed inside the leading edge of the input.' },
-            { name: 'suffix', type: 'ReactNode', description: 'Element placed inside the trailing edge of the input.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Field height and font scale.' },
+            { name: 'leftAddon', type: 'ReactNode', description: 'Prefix adornment attached to input.' },
+            { name: 'rightAddon', type: 'ReactNode', description: 'Suffix adornment attached to input.' },
+            { name: 'clearable', type: 'boolean', default: 'false', description: 'Display 1-click clear button when input has value.' },
+            { name: 'onClear', type: '() => void', description: 'Callback fired when clear button is clicked.' },
+            { name: 'required', type: 'boolean', default: 'false', description: 'Marks field as required with asterisk.' },
           ]}
         />
       </Section>

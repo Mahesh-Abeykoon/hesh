@@ -499,17 +499,22 @@ export function Showcase({
   );
 }
 
-export interface PropsTableProps {
-  rows: {
-    name: string;
-    type: string;
-    default?: string;
-    description: string;
-    required?: boolean;
-  }[];
+export interface PropsTableItem {
+  name: string;
+  type: string;
+  default?: string;
+  description: string;
+  required?: boolean;
 }
 
-export function PropsTable({ rows }: PropsTableProps) {
+export interface PropsTableProps {
+  rows?: PropsTableItem[];
+  items?: PropsTableItem[];
+}
+
+export function PropsTable({ rows, items }: PropsTableProps) {
+  const data = rows ?? items ?? [];
+
   return (
     <div className="props-table-wrap">
       <table className="props-table">
@@ -522,7 +527,7 @@ export function PropsTable({ rows }: PropsTableProps) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
+          {data.map((row) => (
             <tr key={row.name}>
               <td>
                 <div className="props-table__prop-cell">

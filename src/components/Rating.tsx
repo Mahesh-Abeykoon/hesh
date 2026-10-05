@@ -64,7 +64,11 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
     const currentValue = isControlled ? controlledValue : internalValue;
     const displayValue = hoverValue !== null ? hoverValue : currentValue;
 
-    const iconSize = SIZE_MAP[size];
+    const safeCount = Math.max(1, Math.min(20, Math.floor(count || 5)));
+    const safeCurrentValue = typeof currentValue === 'number' && !isNaN(currentValue) ? currentValue : 0;
+    const safeDisplayValue = typeof displayValue === 'number' && !isNaN(displayValue) ? displayValue : 0;
+
+    const iconSize = SIZE_MAP[size] ?? SIZE_MAP.md;
 
     const setValue = (newVal: number) => {
       if (readOnly || disabled) return;
@@ -89,7 +93,6 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       const isLeftHalf = e.clientX - rect.left < rect.width / 2;
       const starVal = index + 1;
       const calculatedVal = precision === 0.5 && isLeftHalf ? starVal - 0.5 : starVal;
-      // If clicking same value, can toggle off or retain
       setValue(calculatedVal);
     };
 
@@ -99,16 +102,16 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       const step = precision;
       if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
         e.preventDefault();
-        setValue(Math.min(count, Number((currentValue + step).toFixed(1))));
+        setValue(Math.min(safeCount, Number((safeCurrentValue + step).toFixed(1))));
       } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
         e.preventDefault();
-        setValue(Math.max(0, Number((currentValue - step).toFixed(1))));
+        setValue(Math.max(0, Number((safeCurrentValue - step).toFixed(1))));
       } else if (e.key === 'Home') {
         e.preventDefault();
         setValue(0);
       } else if (e.key === 'End') {
         e.preventDefault();
-        setValue(count);
+        setValue(safeCount);
       }
     };
 
@@ -116,10 +119,10 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       <div
         ref={ref}
         role={readOnly ? 'img' : 'slider'}
-        aria-label={readOnly ? `Rated ${currentValue} out of ${count} stars` : 'Rating'}
+        aria-label={readOnly ? `Rated ${safeCurrentValue} out of ${safeCount} stars` : 'Rating'}
         aria-valuemin={0}
-        aria-valuemax={count}
-        aria-valuenow={currentValue}
+        aria-valuemax={safeCount}
+        aria-valuenow={safeCurrentValue}
         tabIndex={disabled || readOnly ? -1 : 0}
         onKeyDown={handleKeyDown}
         onMouseLeave={() => setHoverValue(null)}
@@ -132,9 +135,9 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
         )}
         {...props}
       >
-        {Array.from({ length: count }, (_, i) => {
+        {Array.from({ length: safeCount }, (_, i) => {
           const starIndex = i + 1;
-          const fillRatio = Math.max(0, Math.min(1, displayValue - i));
+          const fillRatio = Math.max(0, Math.min(1, safeDisplayValue - i));
 
           return (
             <span

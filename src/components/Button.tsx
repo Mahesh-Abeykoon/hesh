@@ -9,13 +9,19 @@ export type ButtonVariant =
   | 'ghost'
   | 'danger'
   | 'subtle'
-  | 'link';
+  | 'link'
+  | 'gradient'
+  | 'glass'
+  | 'success';
 
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type ButtonShape = 'rounded' | 'pill' | 'square';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  shape?: ButtonShape;
+  glow?: boolean;
   /** Swaps the label for a spinner and blocks interaction. */
   loading?: boolean;
   /** Replaces the label while loading — keeps layout from shifting. */
@@ -41,6 +47,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   {
     variant = 'primary',
     size = 'md',
+    shape = 'rounded',
+    glow = false,
     loading = false,
     loadingText,
     leftIcon,
@@ -63,6 +71,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     'pui-btn',
     `pui-btn--${variant}`,
     `pui-btn--${size}`,
+    shape && shape !== 'rounded' && `pui-btn--${shape}`,
+    glow && 'pui-btn--glow',
     fullWidth && 'pui-btn--block',
     iconOnly && 'pui-btn--icon-only',
     className
@@ -129,12 +139,29 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
 export interface ButtonGroupProps {
   children: ReactNode;
   className?: string;
+  orientation?: 'horizontal' | 'vertical';
+  attached?: boolean;
   'aria-label'?: string;
 }
 
-export function ButtonGroup({ children, className, ...props }: ButtonGroupProps) {
+export function ButtonGroup({
+  children,
+  orientation = 'horizontal',
+  attached = true,
+  className,
+  ...props
+}: ButtonGroupProps) {
   return (
-    <div role="group" className={cn('pui-btn-group', className)} {...props}>
+    <div
+      role="group"
+      className={cn(
+        'pui-btn-group',
+        `pui-btn-group--${orientation}`,
+        !attached && 'pui-btn-group--detached',
+        className
+      )}
+      {...props}
+    >
       {children}
     </div>
   );

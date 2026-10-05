@@ -37,11 +37,16 @@ export function LoadingRow({ label = 'Loading…' }: { label?: string }) {
 
 /* ------------------------------------------------------------------ Alert */
 
-export type AlertTone = 'info' | 'success' | 'warning' | 'danger';
+export type AlertTone = 'info' | 'success' | 'warning' | 'danger' | 'neutral';
+export type AlertVariant = 'subtle' | 'solid' | 'outline' | 'accent' | 'glass';
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   tone?: AlertTone;
+  variant?: AlertVariant;
   title?: ReactNode;
+  icon?: ReactNode | false;
+  action?: ReactNode;
+  secondaryAction?: ReactNode;
   /** Renders a dismiss button. */
   onDismiss?: () => void;
 }
@@ -51,6 +56,7 @@ const ALERT_ICONS: Record<AlertTone, typeof InfoIcon> = {
   success: CheckCircleIcon,
   warning: AlertTriangleIcon,
   danger: AlertCircleIcon,
+  neutral: InfoIcon,
 };
 
 /**
@@ -58,31 +64,56 @@ const ALERT_ICONS: Record<AlertTone, typeof InfoIcon> = {
  * those interrupt the screen reader. Assertive announcements on every alert
  * would be hostile to assistive-tech users.
  */
-export function Alert({ tone = 'info', title, onDismiss, children, className, ...props }: AlertProps) {
-  const IconComponent = ALERT_ICONS[tone];
+export function Alert({
+  tone = 'info',
+  variant = 'subtle',
+  title,
+  icon,
+  action,
+  secondaryAction,
+  onDismiss,
+  children,
+  className,
+  ...props
+}: AlertProps) {
+  const IconComponent = ALERT_ICONS[tone] ?? InfoIcon;
   const assertive = tone === 'danger' || tone === 'warning';
+  const renderIcon = icon !== false;
 
   return (
     <div
       role={assertive ? 'alert' : 'status'}
-      className={cn('pui-alert', `pui-alert--${tone}`, className)}
+      className={cn(
+        'pui-alert',
+        `pui-alert--${tone}`,
+        variant !== 'subtle' && `pui-alert--${variant}`,
+        className
+      )}
       {...props}
     >
-      <span className="pui-alert__icon">
-        <IconComponent />
-      </span>
+      {renderIcon && (
+        <span className="pui-alert__icon">
+          {icon ?? <IconComponent />}
+        </span>
+      )}
       <div className="pui-alert__body">
         {title && <div className="pui-alert__title">{title}</div>}
         {children && <div className="pui-alert__desc">{children}</div>}
+        {(action || secondaryAction) && (
+          <div className="pui-alert__actions">
+            {action}
+            {secondaryAction}
+          </div>
+        )}
       </div>
       {onDismiss && (
         <button
           type="button"
           aria-label="Dismiss"
           onClick={onDismiss}
-          style={{ color: 'var(--pui-fg-subtle)', display: 'inline-flex' }}
+          className="pui-alert__dismiss"
         >
-          <span aria-hidden="true" style={{ fontSize: '1.125rem', lineHeight: 1 }}>
+          <span aria-hidden="true" style={{ fontSize: '1.25rem', lineHeight: 1 }}>
             ×
           </span>
         </button>

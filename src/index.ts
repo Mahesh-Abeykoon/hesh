@@ -121,8 +121,39 @@ export type { KanbanProps, KanbanColumn, KanbanCard } from './components/Kanban'
 export { Timeline, TimelineItem } from './components/Timeline';
 export type { TimelineProps, TimelineItemProps } from './components/Timeline';
 
+export { AspectRatio } from './components/AspectRatio';
+export type { AspectRatioProps } from './components/AspectRatio';
+
+export { Banner } from './components/Banner';
+export type { BannerProps, BannerTone } from './components/Banner';
+
+export { ContextMenu } from './components/ContextMenu';
+export type { ContextMenuProps } from './components/ContextMenu';
+
+export { HoverCard } from './components/HoverCard';
+export type { HoverCardProps } from './components/HoverCard';
+
+export { OtpInput } from './components/OtpInput';
+export type { OtpInputProps } from './components/OtpInput';
+
+export { Rating } from './components/Rating';
+export type { RatingProps } from './components/Rating';
+
+export { SegmentedControl } from './components/SegmentedControl';
+export type { SegmentedControlProps, SegmentedControlOption } from './components/SegmentedControl';
+
+export { TagInput } from './components/TagInput';
+export type { TagInputProps } from './components/TagInput';
+
+export { Stepper } from './components/Stepper';
+export type { StepperProps, StepItem } from './components/Stepper';
+
+export { Tree } from './components/Tree';
+export type { TreeProps, TreeNode } from './components/Tree';
+
 /* ---------------------------------------------------------------- utilities */
 export { cn } from './utils/cn';
 
 /* ---------------------------------------------------------------- icons */
 export * from './components/icons';
+

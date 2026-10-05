@@ -26,8 +26,10 @@ import { MenuPage as DropdownMenuPage } from './pages/MenuPage';
 
 import { AccordionPage } from './pages/components/AccordionPage';
 import { AlertPage } from './pages/components/AlertPage';
+import { AspectRatioPage } from './pages/components/AspectRatioPage';
 import { AvatarPage } from './pages/components/AvatarPage';
 import { BadgePage } from './pages/components/BadgePage';
+import { BannerPage } from './pages/components/BannerPage';
 import { BreadcrumbsPage } from './pages/components/BreadcrumbsPage';
 import { CalendarPage } from './pages/components/CalendarPage';
 import { CardPage } from './pages/components/CardPage';
@@ -35,20 +37,25 @@ import { CarouselPage } from './pages/components/CarouselPage';
 import { ChartsPage } from './pages/components/ChartsPage';
 import { CheckboxPage } from './pages/components/CheckboxPage';
 import { CommandPage } from './pages/components/CommandPage';
+import { ContextMenuPage } from './pages/components/ContextMenuPage';
 import { DatePickerPage } from './pages/components/DatePickerPage';
 import { DialogPage } from './pages/components/DialogPage';
 import { DrawerPage } from './pages/components/DrawerPage';
 import { DropzonePage } from './pages/components/DropzonePage';
 import { EmptyStatePage } from './pages/components/EmptyStatePage';
+import { HoverCardPage } from './pages/components/HoverCardPage';
 import { IconButtonPage } from './pages/components/IconButtonPage';
 import { InputPage } from './pages/components/InputPage';
 import { KanbanPage } from './pages/components/KanbanPage';
 import { KbdPage } from './pages/components/KbdPage';
+import { OtpInputPage } from './pages/components/OtpInputPage';
 import { PageHeaderPage } from './pages/components/PageHeaderPage';
 import { PaginationPage } from './pages/components/PaginationPage';
 import { PopoverPage } from './pages/components/PopoverPage';
 import { ProgressPage } from './pages/components/ProgressPage';
 import { RadioPage } from './pages/components/RadioPage';
+import { RatingPage } from './pages/components/RatingPage';
+import { SegmentedControlPage } from './pages/components/SegmentedControlPage';
 import { SelectPage } from './pages/components/SelectPage';
 import { SeparatorPage } from './pages/components/SeparatorPage';
 import { SidebarNavPage } from './pages/components/SidebarNavPage';
@@ -56,11 +63,14 @@ import { SkeletonPage } from './pages/components/SkeletonPage';
 import { SliderPage } from './pages/components/SliderPage';
 import { SpinnerPage } from './pages/components/SpinnerPage';
 import { StatPage } from './pages/components/StatPage';
+import { StepperPage } from './pages/components/StepperPage';
 import { SwitchPage } from './pages/components/SwitchPage';
+import { TagInputPage } from './pages/components/TagInputPage';
 import { TextareaPage } from './pages/components/TextareaPage';
 import { TimelinePage } from './pages/components/TimelinePage';
 import { ToastPage } from './pages/components/ToastPage';
 import { TooltipPage } from './pages/components/TooltipPage';
+import { TreePage } from './pages/components/TreePage';
 import { DocNavigationContext } from './components/DocPage';
 
 interface DocPage {
@@ -92,8 +102,10 @@ export const DOC_GROUPS: DocGroup[] = [
     pages: [
       { id: 'accordion', title: 'Accordion', Component: AccordionPage },
       { id: 'alert', title: 'Alert', Component: AlertPage },
+      { id: 'aspect-ratio', title: 'Aspect ratio', Component: AspectRatioPage },
       { id: 'avatar', title: 'Avatar', Component: AvatarPage },
       { id: 'badge', title: 'Badge', Component: BadgePage },
+      { id: 'banner', title: 'Banner', Component: BannerPage },
       { id: 'breadcrumbs', title: 'Breadcrumbs', Component: BreadcrumbsPage },
       { id: 'button', title: 'Button', Component: ButtonPage },
       { id: 'calendar', title: 'Calendar', Component: CalendarPage },
@@ -103,6 +115,7 @@ export const DOC_GROUPS: DocGroup[] = [
       { id: 'checkbox', title: 'Checkbox', Component: CheckboxPage },
       { id: 'combobox', title: 'Combobox', Component: ComboboxPage },
       { id: 'command', title: 'Command', Component: CommandPage },
+      { id: 'context-menu', title: 'Context menu', Component: ContextMenuPage },
       { id: 'data-table', title: 'Data table', Component: DataTablePage },
       { id: 'date-picker', title: 'Date picker', Component: DatePickerPage },
       { id: 'dialog', title: 'Dialog', Component: DialogPage },
@@ -110,15 +123,19 @@ export const DOC_GROUPS: DocGroup[] = [
       { id: 'dropdown-menu', title: 'Dropdown menu', Component: DropdownMenuPage },
       { id: 'dropzone', title: 'Dropzone', Component: DropzonePage },
       { id: 'empty-state', title: 'Empty state', Component: EmptyStatePage },
+      { id: 'hover-card', title: 'Hover card', Component: HoverCardPage },
       { id: 'icon-button', title: 'Icon button', Component: IconButtonPage },
       { id: 'input', title: 'Input', Component: InputPage },
       { id: 'kanban', title: 'Kanban', Component: KanbanPage },
       { id: 'kbd', title: 'Kbd', Component: KbdPage },
+      { id: 'otp-input', title: 'Otp input', Component: OtpInputPage },
       { id: 'page-header', title: 'Page header', Component: PageHeaderPage },
       { id: 'pagination', title: 'Pagination', Component: PaginationPage },
       { id: 'popover', title: 'Popover', Component: PopoverPage },
       { id: 'progress', title: 'Progress', Component: ProgressPage },
       { id: 'radio', title: 'Radio', Component: RadioPage },
+      { id: 'rating', title: 'Rating', Component: RatingPage },
+      { id: 'segmented-control', title: 'Segmented control', Component: SegmentedControlPage },
       { id: 'select', title: 'Select', Component: SelectPage },
       { id: 'separator', title: 'Separator', Component: SeparatorPage },
       { id: 'sidebar-nav', title: 'Sidebar nav', Component: SidebarNavPage },
@@ -126,12 +143,15 @@ export const DOC_GROUPS: DocGroup[] = [
       { id: 'slider', title: 'Slider', Component: SliderPage },
       { id: 'spinner', title: 'Spinner', Component: SpinnerPage },
       { id: 'stat', title: 'Stat', Component: StatPage },
+      { id: 'stepper', title: 'Stepper', Component: StepperPage },
       { id: 'switch', title: 'Switch', Component: SwitchPage },
       { id: 'tabs', title: 'Tabs', Component: TabsPage },
+      { id: 'tag-input', title: 'Tag input', Component: TagInputPage },
       { id: 'textarea', title: 'Textarea', Component: TextareaPage },
       { id: 'timeline', title: 'Timeline', Component: TimelinePage },
       { id: 'toast', title: 'Toast', Component: ToastPage },
       { id: 'tooltip', title: 'Tooltip', Component: TooltipPage },
+      { id: 'tree', title: 'Tree', Component: TreePage },
     ],
   },
   {

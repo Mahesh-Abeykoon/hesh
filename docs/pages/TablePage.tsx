@@ -118,7 +118,7 @@ function buildColumns(): Column<Customer>[] {
         </div>
       ),
     },
-    { id: 'plan', header: 'Plan', accessor: (row) => row.plan, sortable: true },
+    { id: 'plan', header: 'Plan', accessor: (row) => row.plan, sortable: true, hideBelow: 'mobile' },
     {
       id: 'status',
       header: 'Status',

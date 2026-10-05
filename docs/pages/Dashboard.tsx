@@ -231,11 +231,11 @@ function DashboardScreen() {
       sortable: true,
       accessor: (row) => row.name,
       cell: (row) => (
-        <div className="row-wrap" style={{ gap: '0.625rem' }}>
+        <div className="row-wrap" style={{ gap: '0.5rem', alignItems: 'center' }}>
           <Avatar name={row.name} size="sm" status={row.health > 80 ? 'online' : row.health > 60 ? 'away' : 'busy'} />
-          <div>
-            <div className="pui-table__primary">{row.name}</div>
-            <div className="cell-sub">{row.email}</div>
+          <div style={{ minWidth: 0 }}>
+            <div className="pui-table__primary" style={{ fontSize: '0.8125rem', whiteSpace: 'nowrap' }}>{row.name}</div>
+            <div className="cell-sub" style={{ fontSize: '0.6875rem' }}>{row.email}</div>
           </div>
         </div>
       ),
@@ -246,7 +246,8 @@ function DashboardScreen() {
       header: 'Account health',
       sortable: true,
       accessor: (row) => row.health,
-      width: 180,
+      hideBelow: 'mobile',
+      width: 160,
       cell: (row) => (
         <div className="row-wrap" style={{ gap: '0.5rem' }}>
           <Progress

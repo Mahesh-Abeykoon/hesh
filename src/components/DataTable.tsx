@@ -22,8 +22,10 @@ export interface Column<T> {
   numeric?: boolean;
   width?: string | number;
   align?: 'start' | 'center' | 'end';
-  /** Hide below the given width (px). Requires the consumer's CSS container. */
-  hideBelow?: number;
+  /** Hide below the given breakpoint ('mobile' <= 640px, 'tablet' <= 860px, or custom px). */
+  hideBelow?: number | 'mobile' | 'tablet';
+  /** Additional CSS class for custom column styles. */
+  className?: string;
 }
 
 export interface DataTableProps<T> {
@@ -111,6 +113,12 @@ export function DataTable<T>({
     }
   };
 
+  const getHideClass = (column: Column<T>) => {
+    if (column.hideBelow === 'mobile' || column.hideBelow === 640) return 'pui-table__hide-mobile';
+    if (column.hideBelow === 'tablet' || column.hideBelow === 860) return 'pui-table__hide-tablet';
+    return undefined;
+  };
+
   return (
     <div className={cn('pui-table-wrap', className)}>
       {toolbar && <div className="pui-table-toolbar">{toolbar}</div>}
@@ -135,10 +143,12 @@ export function DataTable<T>({
             )}
             {columns.map((column) => {
               const isSorted = sort?.column === column.id;
+              const hideClass = getHideClass(column);
               return (
                 <th
                   key={column.id}
                   scope="col"
+                  className={cn(hideClass, column.className)}
                   style={{ width: column.width, textAlign: column.align }}
                   aria-sort={
                     isSorted
@@ -182,11 +192,14 @@ export function DataTable<T>({
                     <Skeleton width={16} height={16} />
                   </td>
                 )}
-                {columns.map((column) => (
-                  <td key={column.id}>
-                    <Skeleton width={column.numeric ? '48%' : '78%'} />
-                  </td>
-                ))}
+                {columns.map((column) => {
+                  const hideClass = getHideClass(column);
+                  return (
+                    <td key={column.id} className={cn(hideClass, column.className)}>
+                      <Skeleton width={column.numeric ? '48%' : '78%'} />
+                    </td>
+                  );
+                })}
               </tr>
             ))
           ) : data.length === 0 ? (
@@ -215,23 +228,31 @@ export function DataTable<T>({
                       />
                     </td>
                   )}
-                  {columns.map((column) => (
-                    <td
-                      key={column.id}
-                      style={{ textAlign: column.align }}
-                      className={cn(column.numeric && 'pui-table__cell--num')}
-                    >
-                      {column.cell
-                        ? column.cell(row, index)
-                        : (column.accessor?.(row) as ReactNode)}
-                    </td>
-                  ))}
+                  {columns.map((column) => {
+                    const hideClass = getHideClass(column);
+                    return (
+                      <td
+                        key={column.id}
+                        style={{ textAlign: column.align }}
+                        className={cn(
+                          column.numeric && 'pui-table__cell--num',
+                          hideClass,
+                          column.className
+                        )}
+                      >
+                        {column.cell
+                          ? column.cell(row, index)
+                          : (column.accessor?.(row) as ReactNode)}
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             })
           )}
         </tbody>
       </table>
+
 
       {footer && <div className="pui-table-footer">{footer}</div>}
 

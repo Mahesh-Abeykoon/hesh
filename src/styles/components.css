@@ -1274,3 +1274,118 @@ input:focus-visible + .pui-choice__box {
   border-bottom-width: 2px;
   border-radius: var(--pui-radius-xs);
 }
+
+/* ==========================================================================
+   CAROUSEL
+   ========================================================================== */
+.pui-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--pui-radius-lg);
+  border: 1px solid var(--pui-border-subtle);
+  background: var(--pui-surface);
+  outline: none;
+}
+
+.pui-carousel:focus-visible {
+  box-shadow: 0 0 0 2px var(--pui-primary-subtle);
+}
+
+.pui-carousel__viewport {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.pui-carousel__track {
+  display: flex;
+  width: 100%;
+  transition: transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.pui-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pui-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--pui-border-subtle);
+  background: var(--pui-surface);
+  color: var(--pui-fg);
+  box-shadow: var(--pui-shadow-md);
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 140ms ease, transform 140ms ease, opacity 140ms ease;
+  opacity: 0.9;
+}
+
+.pui-carousel__arrow:hover:not(:disabled) {
+  background: var(--pui-surface-hover);
+  transform: translateY(-50%) scale(1.06);
+  opacity: 1;
+}
+
+.pui-carousel__arrow:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.pui-carousel__arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pui-carousel__arrow--prev {
+  left: 0.75rem;
+}
+
+.pui-carousel__arrow--next {
+  right: 0.75rem;
+}
+
+.pui-carousel__dots {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  z-index: 2;
+}
+
+.pui-carousel__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--pui-fg-subtle);
+  opacity: 0.4;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms ease, opacity 200ms ease;
+}
+
+.pui-carousel__dot:hover {
+  opacity: 0.75;
+}
+
+.pui-carousel__dot--active {
+  width: 1.5rem;
+  background: var(--pui-primary);
+  opacity: 1;
+}
+

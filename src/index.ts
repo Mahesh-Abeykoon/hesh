@@ -25,6 +25,9 @@ export type { ComboboxProps, ComboboxOption } from './components/Combobox';
 export { Card, CardHeader, CardBody, CardFooter } from './components/Card';
 export type { CardProps, CardHeaderProps } from './components/Card';
 
+export { Carousel } from './components/Carousel';
+export type { CarouselProps } from './components/Carousel';
+
 export { Badge } from './components/Badge';
 export type { BadgeProps, BadgeTone } from './components/Badge';
 

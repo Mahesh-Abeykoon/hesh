@@ -241,6 +241,21 @@
   font-size: var(--pui-text-xs);
   color: var(--pui-fg-subtle);
   flex: none;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .pui-command-overlay {
+    padding: 1.5rem 0.5rem 0.5rem;
+    align-items: flex-start;
+  }
+  .pui-command {
+    max-height: 85dvh;
+    border-radius: var(--pui-radius-xl);
+  }
+  .pui-command__footer {
+    display: none;
+  }
 }
 
 /* ==========================================================================
@@ -315,7 +330,12 @@
 /* ==========================================================================
    CALENDAR / DATE PICKER
    ========================================================================== */
-.pui-calendar { width: 17.5rem; user-select: none; }
+.pui-calendar {
+  width: 100%;
+  max-width: 17.5rem;
+  user-select: none;
+  box-sizing: border-box;
+}
 .pui-calendar__header {
   display: flex;
   align-items: center;

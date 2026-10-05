@@ -161,19 +161,43 @@ export function EmptyState({
 
 /* ------------------------------------------------------------------ Progress */
 
+export interface ProgressSegment {
+  value: number;
+  tone?: 'primary' | 'success' | 'warning' | 'danger' | 'info';
+  label?: string;
+}
+
 export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
   value?: number;
   max?: number;
-  tone?: 'primary' | 'success' | 'warning' | 'danger';
+  tone?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'gradient';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  striped?: boolean;
+  animated?: boolean;
+  showValue?: boolean;
+  segments?: ProgressSegment[];
   /** Unknown duration — animates a sweeping bar instead of a fixed width. */
   indeterminate?: boolean;
   label?: string;
 }
 
-export function Progress({ value = 0, max = 100, tone = 'primary', indeterminate = false, label, className, ...props }: ProgressProps) {
+export function Progress({
+  value = 0,
+  max = 100,
+  tone = 'primary',
+  size = 'md',
+  striped = false,
+  animated = false,
+  showValue = false,
+  segments,
+  indeterminate = false,
+  label,
+  className,
+  ...props
+}: ProgressProps) {
   const pct = max <= 0 ? 0 : Math.min(100, Math.max(0, (value / max) * 100));
 
-  return (
+  const progressNode = (
     <div
       role="progressbar"
       aria-valuemin={0}
@@ -182,18 +206,58 @@ export function Progress({ value = 0, max = 100, tone = 'primary', indeterminate
       aria-label={label}
       className={cn(
         'pui-progress',
+        `pui-progress--${size}`,
         tone !== 'primary' && `pui-progress--${tone}`,
+        striped && 'pui-progress--striped',
+        animated && 'pui-progress--animated',
         indeterminate && 'pui-progress--indeterminate',
         className
       )}
       {...props}
     >
-      <div
-        className="pui-progress__bar"
-        style={indeterminate ? undefined : { width: `${pct}%` }}
-      />
+      {segments && segments.length > 0 ? (
+        segments.map((seg, i) => {
+          const segPct = max <= 0 ? 0 : Math.min(100, (seg.value / max) * 100);
+          return (
+            <div
+              key={i}
+              className={cn(
+                'pui-progress__segment',
+                `pui-progress__segment--${seg.tone ?? 'primary'}`
+              )}
+              style={{ width: `${segPct}%` }}
+              title={seg.label ? `${seg.label}: ${seg.value}` : undefined}
+            />
+          );
+        })
+      ) : (
+        <div
+          className="pui-progress__bar"
+          style={indeterminate ? undefined : { width: `${pct}%` }}
+        />
+      )}
     </div>
   );
+
+  if (showValue || label) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', width: '100%' }}>
+        {(label || showValue) && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8125rem' }}>
+            {label && <span style={{ fontWeight: 500, color: 'var(--pui-fg)' }}>{label}</span>}
+            {showValue && !indeterminate && (
+              <span style={{ fontWeight: 600, color: 'var(--pui-fg-subtle)', marginInlineStart: 'auto' }}>
+                {Math.round(pct)}%
+              </span>
+            )}
+          </div>
+        )}
+        {progressNode}
+      </div>
+    );
+  }
+
+  return progressNode;
 }
 
 /* ------------------------------------------------------------------ Stat */

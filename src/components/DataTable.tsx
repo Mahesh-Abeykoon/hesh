@@ -269,61 +269,147 @@ export function DataTable<T>({
 
 export interface PaginationProps {
   page: number;
-  pageCount: number;
+  pageCount?: number;
+  total?: number;
+  pageSize?: number;
   onPageChange: (page: number) => void;
-  /** How many page buttons to show either side of the current page. */
   siblings?: number;
+  size?: 'sm' | 'md' | 'lg';
+  simple?: boolean;
+  showTotal?: boolean | ((total: number, range: [number, number]) => ReactNode);
+  showSizeChanger?: boolean;
+  pageSizeOptions?: number[];
+  onPageSizeChange?: (pageSize: number) => void;
   className?: string;
 }
 
 /**
- * Compact pagination with ellipsis. Always renders first and last page so the
- * extremes are one keystroke away.
+ * Responsive pagination with ellipsis, total summary, size changer, and simple mode.
  */
-export function Pagination({ page, pageCount, onPageChange, siblings = 1, className }: PaginationProps) {
-  const pages = buildPageRange(page, pageCount, siblings);
+export function Pagination({
+  page,
+  pageCount,
+  total,
+  pageSize = 10,
+  onPageChange,
+  siblings = 1,
+  size = 'md',
+  simple = false,
+  showTotal = false,
+  showSizeChanger = false,
+  pageSizeOptions = [10, 20, 50, 100],
+  onPageSizeChange,
+  className,
+}: PaginationProps) {
+  const effectivePageCount = Math.max(1, pageCount ?? (total ? Math.ceil(total / pageSize) : 1));
+  const safePage = Math.min(Math.max(1, page), effectivePageCount);
+  const startItem = total ? Math.min((safePage - 1) * pageSize + 1, total) : (safePage - 1) * pageSize + 1;
+  const endItem = total ? Math.min(safePage * pageSize, total) : safePage * pageSize;
 
-  return (
-    <nav className={cn('pui-pagination', className)} aria-label="Pagination">
-      <button
-        type="button"
-        className="pui-page-btn"
-        disabled={page <= 1}
-        onClick={() => onPageChange(page - 1)}
-        aria-label="Previous page"
-      >
-        ‹
-      </button>
+  const totalContent = showTotal ? (
+    typeof showTotal === 'function' ? (
+      showTotal(total ?? 0, [startItem, endItem])
+    ) : (
+      <span className="pui-pagination__total">
+        {total ? `Showing ${startItem}–${endItem} of ${total}` : `Page ${safePage} of ${effectivePageCount}`}
+      </span>
+    )
+  ) : null;
 
-      {pages.map((item, index) =>
-        item === 'ellipsis' ? (
-          <span key={`gap-${index}`} className="pui-page-ellipsis" aria-hidden="true">
-            …
-          </span>
-        ) : (
+  const sizeChanger = showSizeChanger ? (
+    <select
+      className="pui-pagination__size-changer"
+      value={pageSize}
+      aria-label="Items per page"
+      onChange={(e) => onPageSizeChange?.(Number(e.target.value))}
+    >
+      {pageSizeOptions.map((opt) => (
+        <option key={opt} value={opt}>
+          {opt} / page
+        </option>
+      ))}
+    </select>
+  ) : null;
+
+  if (simple) {
+    return (
+      <div className={cn('pui-pagination-container', className)}>
+        {totalContent}
+        <nav className={cn('pui-pagination', `pui-pagination--${size}`)} aria-label="Pagination">
           <button
-            key={item}
             type="button"
             className="pui-page-btn"
-            aria-current={item === page ? 'page' : undefined}
-            aria-label={`Page ${item}`}
-            onClick={() => onPageChange(item)}
+            disabled={safePage <= 1}
+            onClick={() => onPageChange(safePage - 1)}
+            aria-label="Previous page"
           >
-            {item}
+            ‹
           </button>
-        )
-      )}
+          <span className="pui-pagination__simple-text">
+            {safePage} / {effectivePageCount}
+          </span>
+          <button
+            type="button"
+            className="pui-page-btn"
+            disabled={safePage >= effectivePageCount}
+            onClick={() => onPageChange(safePage + 1)}
+            aria-label="Next page"
+          >
+            ›
+          </button>
+        </nav>
+        {sizeChanger}
+      </div>
+    );
+  }
 
-      <button
-        type="button"
-        className="pui-page-btn"
-        disabled={page >= pageCount}
-        onClick={() => onPageChange(page + 1)}
-        aria-label="Next page"
-      >
-        ›
-      </button>
-    </nav>
+  const pages = buildPageRange(safePage, effectivePageCount, siblings);
+
+  return (
+    <div className={cn('pui-pagination-container', className)}>
+      {totalContent}
+      <nav className={cn('pui-pagination', `pui-pagination--${size}`)} aria-label="Pagination">
+        <button
+          type="button"
+          className="pui-page-btn"
+          disabled={safePage <= 1}
+          onClick={() => onPageChange(safePage - 1)}
+          aria-label="Previous page"
+        >
+          ‹
+        </button>
+
+        {pages.map((item, index) =>
+          item === 'ellipsis' ? (
+            <span key={`gap-${index}`} className="pui-page-ellipsis" aria-hidden="true">
+              …
+            </span>
+          ) : (
+            <button
+              key={item}
+              type="button"
+              className="pui-page-btn"
+              aria-current={item === safePage ? 'page' : undefined}
+              aria-label={`Page ${item}`}
+              onClick={() => onPageChange(item)}
+            >
+              {item}
+            </button>
+          )
+        )}
+
+        <button
+          type="button"
+          className="pui-page-btn"
+          disabled={safePage >= effectivePageCount}
+          onClick={() => onPageChange(safePage + 1)}
+          aria-label="Next page"
+        >
+          ›
+        </button>
+      </nav>
+      {sizeChanger}
+    </div>
   );
 }
 

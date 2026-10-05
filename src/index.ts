@@ -15,8 +15,8 @@ export type { ButtonProps, ButtonVariant, ButtonSize, ButtonShape, IconButtonPro
 export { Input, Textarea, Select, FieldShell } from './components/Field';
 export type { InputProps, TextareaProps, SelectProps, SelectOption, FieldBaseProps } from './components/Field';
 
-export { Checkbox, Radio, RadioGroup, Switch } from './components/Choice';
-export type { CheckboxProps, RadioProps, RadioGroupProps, SwitchProps } from './components/Choice';
+export { Checkbox, Radio, RadioGroup, Switch, ChoiceCard } from './components/Choice';
+export type { CheckboxProps, RadioProps, RadioGroupProps, SwitchProps, ChoiceCardProps } from './components/Choice';
 
 export { Combobox } from './components/Combobox';
 export type { ComboboxProps, ComboboxOption } from './components/Combobox';
@@ -67,7 +67,7 @@ export type { DataTableProps, Column, SortState, SortDirection, PaginationProps 
 
 /* ---------------------------------------------------------------- feedback */
 export { Spinner, LoadingRow, Alert, EmptyState, Progress, Stat, Kbd } from './components/Feedback';
-export type { SpinnerProps, AlertProps, AlertTone, AlertVariant, EmptyStateProps, ProgressProps, StatProps } from './components/Feedback';
+export type { SpinnerProps, AlertProps, AlertTone, AlertVariant, EmptyStateProps, ProgressProps, ProgressSegment, StatProps } from './components/Feedback';
 
 export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastTone, ToastProviderProps, ToastPlacement } from './components/Toast';

@@ -120,6 +120,42 @@ export function TabsPage() {
         </Showcase>
       </Section>
 
+      <Section title="Visual Variants" description="Choose between classic underline (line), modern capsule tabs (pills), and enclosed tab cards (boxed).">
+        <Showcase code={`<Tabs variant="pills" items={items} />\n<Tabs variant="boxed" items={items} />`} defaultOpen>
+          <div className="stack" style={{ gap: '2rem' }}>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--pui-fg-subtle)', marginBottom: '0.5rem' }}>PILLS VARIANT (variant="pills")</div>
+              <Tabs variant="pills" items={items.slice(0, 3)} defaultValue="overview" />
+            </div>
+
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--pui-fg-subtle)', marginBottom: '0.5rem' }}>BOXED / ENCLOSED VARIANT (variant="boxed")</div>
+              <Tabs variant="boxed" items={items.slice(0, 3)} defaultValue="overview" />
+            </div>
+
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--pui-fg-subtle)', marginBottom: '0.5rem' }}>FULL WIDTH EQUAL DISTRIBUTION (fullWidth)</div>
+              <Tabs variant="pills" fullWidth items={items.slice(0, 3)} defaultValue="overview" />
+            </div>
+          </div>
+        </Showcase>
+      </Section>
+
+      <Section title="Sizes" description="Compact sm tabs for dense tables and inspector sidebars, md for standard pages, and lg for hero sections.">
+        <Showcase code={`<Tabs size="sm" ... />\n<Tabs size="lg" ... />`}>
+          <div className="stack" style={{ gap: '1.5rem' }}>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--pui-fg-subtle)', marginBottom: '0.375rem' }}>SMALL (sm)</div>
+              <Tabs size="sm" variant="pills" items={items.slice(0, 3)} defaultValue="overview" />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--pui-fg-subtle)', marginBottom: '0.375rem' }}>LARGE (lg)</div>
+              <Tabs size="lg" variant="pills" items={items.slice(0, 3)} defaultValue="overview" />
+            </div>
+          </div>
+        </Showcase>
+      </Section>
+
       <Section title="Lazy panels" description="By default inactive panels stay mounted (hidden) so their state survives. Set lazy to mount only the active one.">
         <Showcase
           code={`<Tabs lazy items={items} />`}
@@ -144,6 +180,9 @@ export function TabsPage() {
             { name: 'items', type: 'TabItem[]', required: true, description: '{ value, label, content, icon, count, disabled }.' },
             { name: 'value / defaultValue', type: 'string', description: 'Controlled and uncontrolled selection.' },
             { name: 'onValueChange', type: '(value: string) => void', description: 'Fires when the user changes tab.' },
+            { name: 'variant', type: "'line' | 'pills' | 'boxed'", default: "'line'", description: 'Visual display style.' },
+            { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button target scale.' },
+            { name: 'fullWidth', type: 'boolean', default: 'false', description: 'Evenly stretches tabs across the container width.' },
             { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Arrow keys follow the orientation.' },
             { name: 'lazy', type: 'boolean', default: 'false', description: 'Mount only the active panel.' },
           ]}

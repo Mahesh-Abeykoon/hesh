@@ -13,7 +13,7 @@ import { useDismiss } from '../hooks/useDismiss';
 import { Button, IconButton } from './Button';
 import { XIcon } from './icons';
 
-type Size = 'sm' | 'md' | 'lg' | 'xl';
+type Size = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 export interface DialogProps {
   open: boolean;
@@ -131,12 +131,19 @@ export function Dialog({
 }
 
 export interface DrawerProps extends Omit<DialogProps, 'size' | 'overlayClassName'> {
-  side?: 'left' | 'right';
-  size?: 'sm' | 'md' | 'lg';
+  side?: 'left' | 'right' | 'top' | 'bottom';
+  size?: 'sm' | 'md' | 'lg' | 'full';
+  handle?: boolean;
 }
 
 /** Edge-anchored panel. Same a11y guarantees as Dialog, different motion. */
-export function Drawer({ side = 'right', size = 'md', className, ...props }: DrawerProps) {
+export function Drawer({
+  side = 'right',
+  size = 'md',
+  handle = side === 'bottom',
+  className,
+  ...props
+}: DrawerProps) {
   const [panel, setPanel] = useState<HTMLDivElement | null>(null);
   useScrollLock(props.open);
   useFocusTrap(panel, props.open);
@@ -163,9 +170,14 @@ export function Drawer({ side = 'right', size = 'md', className, ...props }: Dra
           role="dialog"
           aria-modal="true"
           aria-labelledby={props.title ? 'pui-drawer-title' : undefined}
-          className={cn('pui-dialog', 'pui-drawer', `pui-drawer--${size}`, className)}
+          className={cn('pui-dialog', 'pui-drawer', `pui-drawer--${side}`, `pui-drawer--${size}`, className)}
           onMouseDown={(event) => event.stopPropagation()}
         >
+          {handle && side === 'bottom' && (
+            <div className="pui-drawer__handle-bar" aria-hidden="true">
+              <div className="pui-drawer__handle" />
+            </div>
+          )}
           {(props.title || !props.hideCloseButton) && (
             <div className="pui-dialog__header">
               <div className="pui-dialog__heading">

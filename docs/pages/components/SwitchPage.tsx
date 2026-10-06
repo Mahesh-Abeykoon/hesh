@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Switch, Badge, Separator } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { SwitchWorkbench } from '../../components/PropsWorkbench';
 
 const BASIC_DEMO = `const [enabled, setEnabled] = useState(true);
 
@@ -40,6 +41,14 @@ export function SwitchPage() {
       lede="A toggle control that switches instantly between on and off states. Implements WAI-ARIA role='switch' with keyboard space and enter triggers."
       importStatement="import { Switch } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Toggle live state, size tokens, description subtext, and disabled states with real-time code generation."
+      >
+        <SwitchWorkbench />
+      </Section>
+
       <Section
         title="Interactive Toggle Switches"
         description="Instantaneous binary setting with smooth animated thumb gliding."

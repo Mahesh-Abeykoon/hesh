@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState, type ComponentType } from 'react';
-import { ThemeProvider, useTheme } from '../src/index';
-import { PresetSwitch, ThemeSwitch } from '../src/index';
+import { ThemeProvider, useTheme, ThemeSwitch } from '../src/index';
 import {
   Badge,
   Button,
@@ -259,33 +258,7 @@ function useRoute() {
   return { route, navigate };
 }
 
-/* ------------------------------------------------------------------ Density */
 
-type Density = 'compact' | 'default' | 'comfortable';
-
-/** Density is a single token; changing it reflows every control at once. */
-function useDensity() {
-  const [density, setDensity] = useState<Density>(() => {
-    try {
-      return (localStorage.getItem('pui-docs-density') as Density) || 'default';
-    } catch {
-      return 'default';
-    }
-  });
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (density === 'default') root.removeAttribute('data-pui-density');
-    else root.setAttribute('data-pui-density', density);
-    try {
-      localStorage.setItem('pui-docs-density', density);
-    } catch {
-      /* ignore */
-    }
-  }, [density]);
-
-  return { density, setDensity };
-}
 
 /* ------------------------------------------------------------------ Shell */
 
@@ -301,7 +274,6 @@ export default function App() {
 
 function Shell() {
   const { route, navigate } = useRoute();
-  const { density, setDensity } = useDensity();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [customizerOpen, setCustomizerOpen] = useState(false);
@@ -369,23 +341,6 @@ function Shell() {
         <div className="topbar__spacer" />
 
         <div className="topbar__actions">
-          <PresetSwitch variant="select" />
-
-          <div className="density-switch" role="group" aria-label="Interface density">
-            {(['compact', 'default', 'comfortable'] as Density[]).map((value) => (
-              <button
-                key={value}
-                type="button"
-                className="density-switch__opt"
-                aria-pressed={density === value}
-                onClick={() => setDensity(value)}
-                title={`${value} density`}
-              >
-                {value[0]!.toUpperCase()}
-              </button>
-            ))}
-          </div>
-
           <ThemeCustomizerTrigger onClick={() => setCustomizerOpen(true)} />
 
           <Tooltip content="Toggle colour theme">

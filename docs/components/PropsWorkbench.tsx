@@ -2,10 +2,13 @@ import { useState, type ReactNode } from 'react';
 import {
   Badge,
   Button,
+  Checkbox,
   Input,
+  Select,
+  Slider,
   Switch,
   TagInput,
-  Slider,
+  Textarea,
   type ButtonVariant,
   type ButtonSize,
   type BadgeTone,
@@ -482,4 +485,401 @@ export function SliderWorkbench() {
     />
   );
 }
+
+/* ------------------------------------------------------------------ Select Workbench */
+
+export function SelectWorkbench() {
+  const [val, setVal] = useState('us-east');
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [hasPlaceholder, setHasPlaceholder] = useState(false);
+  const [hasHint, setHasHint] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [isGrouped, setIsGrouped] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [required, setRequired] = useState(false);
+
+  const flatOptions = [
+    { value: 'us-east', label: 'US East (N. Virginia)' },
+    { value: 'us-west', label: 'US West (Oregon)' },
+    { value: 'eu-west', label: 'Europe (Frankfurt)' },
+    { value: 'ap-east', label: 'Asia Pacific (Tokyo)' },
+  ];
+
+  const groupedOptions = [
+    { value: 'us-east', label: 'US East (N. Virginia)', group: 'Americas' },
+    { value: 'us-west', label: 'US West (Oregon)', group: 'Americas' },
+    { value: 'eu-west', label: 'Europe (Frankfurt)', group: 'Europe' },
+    { value: 'eu-central', label: 'Europe (Zurich)', group: 'Europe' },
+    { value: 'ap-east', label: 'Asia Pacific (Tokyo)', group: 'Asia-Pacific' },
+  ];
+
+  const activeOptions = isGrouped ? groupedOptions : flatOptions;
+
+  const propList: string[] = [
+    'label="Deployment Region"',
+    'value={region}',
+    'onChange={(e) => setRegion(e.target.value)}',
+  ];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (hasPlaceholder) propList.push('placeholder="Select a deployment region…"');
+  if (hasHint) propList.push('hint="Traffic will route to this nearest region."');
+  if (hasError) propList.push('error="Selected region is temporarily at capacity."');
+  if (required) propList.push('required');
+  if (disabled) propList.push('disabled');
+  propList.push('options={options}');
+
+  const jsx = `const [region, setRegion] = useState('${val}');\n\n<Select\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="Select Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <Select
+            label="Deployment Region"
+            value={val}
+            onChange={(e) => setVal(e.target.value)}
+            size={size}
+            placeholder={hasPlaceholder ? 'Select a deployment region…' : undefined}
+            hint={hasHint ? 'Traffic will route to this nearest region.' : undefined}
+            error={hasError ? 'Selected region is temporarily at capacity.' : undefined}
+            required={required}
+            disabled={disabled}
+            options={activeOptions}
+          />
+          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Selected value: <code>"{val}"</code>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Grouped options (optgroup)"
+              checked={isGrouped}
+              onCheckedChange={setIsGrouped}
+            />
+            <Switch
+              label="Placeholder prompt"
+              checked={hasPlaceholder}
+              onCheckedChange={setHasPlaceholder}
+            />
+            <Switch
+              label="Hint text"
+              checked={hasHint}
+              onCheckedChange={setHasHint}
+            />
+            <Switch
+              label="Validation error"
+              checked={hasError}
+              onCheckedChange={setHasError}
+            />
+            <Switch
+              label="Required indicator"
+              checked={required}
+              onCheckedChange={setRequired}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Textarea Workbench */
+
+export function TextareaWorkbench() {
+  const [val, setVal] = useState('Production incidents must follow the standard post-mortem template.');
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [rows, setRows] = useState(4);
+  const [showCount, setShowCount] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [required, setRequired] = useState(false);
+
+  const propList: string[] = [
+    'label="Incident Summary"',
+    'value={summary}',
+    'onChange={(e) => setSummary(e.target.value)}',
+  ];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (rows !== 4) propList.push(`rows={${rows}}`);
+  if (showCount) {
+    propList.push('showCount');
+    propList.push('maxLength={200}');
+  }
+  if (hasError) propList.push('error="Summary must include impact assessment."');
+  if (required) propList.push('required');
+  if (disabled) propList.push('disabled');
+
+  const jsx = `const [summary, setSummary] = useState('${val}');\n\n<Textarea\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="Textarea Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <Textarea
+            label="Incident Summary"
+            value={val}
+            onChange={(e) => setVal(e.target.value)}
+            size={size}
+            rows={rows}
+            showCount={showCount}
+            maxLength={showCount ? 200 : undefined}
+            error={hasError ? 'Summary must include impact assessment.' : undefined}
+            required={required}
+            disabled={disabled}
+            placeholder="Describe the incident details…"
+          />
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Rows</span>
+            <div className="workbench__pills">
+              {[2, 4, 6].map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  className={`workbench__pill${rows === r ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setRows(r)}
+                >
+                  {r} ROWS
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Live character counter"
+              checked={showCount}
+              onCheckedChange={setShowCount}
+            />
+            <Switch
+              label="Validation error"
+              checked={hasError}
+              onCheckedChange={setHasError}
+            />
+            <Switch
+              label="Required indicator"
+              checked={required}
+              onCheckedChange={setRequired}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Switch Workbench */
+
+export function SwitchWorkbench() {
+  const [checked, setChecked] = useState(true);
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [hasDesc, setHasDesc] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+
+  const propList: string[] = [
+    'checked={enabled}',
+    'onCheckedChange={setEnabled}',
+    'label="Automated Deployments"',
+  ];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (hasDesc) propList.push('description="Automatically trigger canary builds on merge to main."');
+  if (disabled) propList.push('disabled');
+
+  const jsx = `const [enabled, setEnabled] = useState(${checked});\n\n<Switch\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="Switch Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <Switch
+            checked={checked}
+            onCheckedChange={setChecked}
+            size={size}
+            label="Automated Deployments"
+            description={hasDesc ? 'Automatically trigger canary builds on merge to main.' : undefined}
+            disabled={disabled}
+          />
+          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Switch state: <strong>{checked ? 'Enabled' : 'Disabled'}</strong>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Helpful description"
+              checked={hasDesc}
+              onCheckedChange={setHasDesc}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Checkbox Workbench */
+
+export function CheckboxWorkbench() {
+  const [checked, setChecked] = useState(true);
+  const [indeterminate, setIndeterminate] = useState(false);
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [hasDesc, setHasDesc] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+
+  const propList: string[] = [
+    'checked={checked}',
+    'onChange={(e) => setChecked(e.target.checked)}',
+    'label="Email notification alerts"',
+  ];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (indeterminate) propList.push('indeterminate');
+  if (hasDesc) propList.push('description="Receive digest emails when team members mention your handle."');
+  if (disabled) propList.push('disabled');
+
+  const jsx = `const [checked, setChecked] = useState(${checked});\n\n<Checkbox\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="Checkbox Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <Checkbox
+            checked={checked}
+            indeterminate={indeterminate}
+            onChange={(e) => {
+              if (indeterminate) setIndeterminate(false);
+              setChecked(e.target.checked);
+            }}
+            size={size}
+            label="Email notification alerts"
+            description={hasDesc ? 'Receive digest emails when team members mention your handle.' : undefined}
+            disabled={disabled}
+          />
+          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Status:{' '}
+            <strong>
+              {indeterminate ? 'Indeterminate (mixed)' : checked ? 'Checked' : 'Unchecked'}
+            </strong>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Indeterminate (mixed state)"
+              checked={indeterminate}
+              onCheckedChange={setIndeterminate}
+            />
+            <Switch
+              label="Helpful description"
+              checked={hasDesc}
+              onCheckedChange={setHasDesc}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
 

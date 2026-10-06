@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Textarea } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { TextareaWorkbench } from '../../components/PropsWorkbench';
 
 const TEXTAREA_DEMO = `const [notes, setNotes] = useState('');
 
@@ -61,6 +62,14 @@ export function TextareaPage() {
       lede="Multi-line plain text field with label association, live character counter, size variants, and validation feedback."
       importStatement="import { Textarea } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure rows, character counters, validation states, and sizes with real-time code generation."
+      >
+        <TextareaWorkbench />
+      </Section>
+
       {/* ── Basic ── */}
       <Section
         title="Basic Textarea"

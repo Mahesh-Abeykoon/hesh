@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Checkbox, ChoiceCard, Badge } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { CheckboxWorkbench } from '../../components/PropsWorkbench';
 
 const BASIC_DEMO = `const [agreed, setAgreed] = useState(false);
 
@@ -61,6 +62,14 @@ export function CheckboxPage() {
       lede="Control that allows users to select one or multiple items, supporting indeterminate states, hierarchical trees, sizing scales, and selectable cards."
       importStatement="import { Checkbox, ChoiceCard } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure checked and indeterminate states, size tokens, description subtext, and disabled states with real-time code generation."
+      >
+        <CheckboxWorkbench />
+      </Section>
+
       <Section
         title="Interactive Checkboxes"
         description="Standard single or multi-select inputs with label and secondary description text."

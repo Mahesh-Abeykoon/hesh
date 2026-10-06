@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Select, Badge } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { SelectWorkbench } from '../../components/PropsWorkbench';
 
 const BASIC_DEMO = `const [region, setRegion] = useState('us-east');
 
@@ -57,6 +58,14 @@ export function SelectPage() {
       lede="Restyled native dropdown menu delivering 100% native operating system behavior on iOS, Android, macOS, and Windows with optgroups, sizes, and validation states."
       importStatement="import { Select } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure option groups, validation error states, placeholders, and sizes with real-time code generation."
+      >
+        <SelectWorkbench />
+      </Section>
+
       <Section
         title="Interactive Select Menu"
         description="Renders a restyled native select element guaranteeing zero mobile zoom bugs and flawless system sheet controls."

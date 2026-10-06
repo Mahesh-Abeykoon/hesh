@@ -4,6 +4,10 @@ import {
   Button,
   Checkbox,
   Input,
+  NumberInput,
+  OtpInput,
+  PasswordInput,
+  SegmentedControl,
   Select,
   Slider,
   Switch,
@@ -13,6 +17,7 @@ import {
   type ButtonSize,
   type BadgeTone,
   type SliderMark,
+  type SegmentedControlOption,
 } from '../../src/index';
 import { ArrowRightIcon, PlusIcon, SparklesIcon, TrashIcon } from '../../src/index';
 import { CodeBlock } from './CodeBlock';
@@ -881,5 +886,387 @@ export function CheckboxWorkbench() {
     />
   );
 }
+
+/* ------------------------------------------------------------------ OtpInput Workbench */
+
+export function OtpInputWorkbench() {
+  const [val, setVal] = useState('4829');
+  const [length, setLength] = useState<number>(6);
+  const [type, setType] = useState<'numeric' | 'alphanumeric'>('numeric');
+  const [mask, setMask] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  const propList: string[] = ['value={code}', 'onChange={setCode}'];
+  if (length !== 6) propList.push(`length={${length}}`);
+  if (type !== 'numeric') propList.push(`type="${type}"`);
+  if (mask) propList.push('mask');
+  if (invalid) propList.push('invalid');
+  if (disabled) propList.push('disabled');
+  propList.push('onComplete={(code) => console.log("Submitted:", code)}');
+
+  const jsx = `const [code, setCode] = useState('${val}');\n\n<OtpInput\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="OtpInput Workbench"
+      preview={
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+          <OtpInput
+            length={length}
+            type={type}
+            mask={mask}
+            invalid={invalid}
+            disabled={disabled}
+            value={val}
+            onChange={setVal}
+            onComplete={(code) => console.log('Completed code:', code)}
+          />
+          <div style={{ fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Entered code: <code>{val ? `"${val}"` : '(empty)'}</code>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Length</span>
+            <div className="workbench__pills">
+              {[4, 6, 8].map((l) => (
+                <button
+                  key={l}
+                  type="button"
+                  className={`workbench__pill${length === l ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setLength(l)}
+                >
+                  {l} DIGITS
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Type</span>
+            <div className="workbench__pills">
+              {(['numeric', 'alphanumeric'] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${type === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setType(t)}
+                >
+                  {t.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Mask characters (PIN dots)"
+              checked={mask}
+              onCheckedChange={setMask}
+            />
+            <Switch
+              label="Validation error state"
+              checked={invalid}
+              onCheckedChange={setInvalid}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ PasswordInput Workbench */
+
+export function PasswordInputWorkbench() {
+  const [val, setVal] = useState('Passw0rd!');
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [showToggle, setShowToggle] = useState(true);
+  const [strengthMeter, setStrengthMeter] = useState(true);
+  const [showRequirements, setShowRequirements] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  const propList: string[] = [
+    'value={password}',
+    'onChange={(e) => setPassword(e.target.value)}',
+    'placeholder="Enter strong password…"',
+  ];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (!showToggle) propList.push('showToggle={false}');
+  if (strengthMeter) propList.push('strengthMeter');
+  if (showRequirements) propList.push('showRequirements');
+  if (invalid) propList.push('invalid');
+  if (disabled) propList.push('disabled');
+
+  const jsx = `const [password, setPassword] = useState('${val}');\n\n<PasswordInput\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="PasswordInput Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <PasswordInput
+            value={val}
+            onChange={(e) => setVal(e.target.value)}
+            size={size}
+            showToggle={showToggle}
+            strengthMeter={strengthMeter}
+            showRequirements={showRequirements}
+            invalid={invalid}
+            disabled={disabled}
+            placeholder="Enter strong password…"
+          />
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Show strength meter"
+              checked={strengthMeter}
+              onCheckedChange={setStrengthMeter}
+            />
+            <Switch
+              label="Show live requirements checklist"
+              checked={showRequirements}
+              onCheckedChange={setShowRequirements}
+            />
+            <Switch
+              label="Reveal toggle button"
+              checked={showToggle}
+              onCheckedChange={setShowToggle}
+            />
+            <Switch
+              label="Invalid / error state"
+              checked={invalid}
+              onCheckedChange={setInvalid}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ NumberInput Workbench */
+
+export function NumberInputWorkbench() {
+  const [val, setVal] = useState<number | undefined>(25);
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [stepperPosition, setStepperPosition] = useState<'right' | 'split'>('right');
+  const [hasPrefix, setHasPrefix] = useState(true);
+  const [hasSuffix, setHasSuffix] = useState(false);
+  const [hasLimits, setHasLimits] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+
+  const propList: string[] = ['value={value}', 'onChange={setValue}'];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (stepperPosition !== 'right') propList.push('stepperPosition="split"');
+  if (hasLimits) {
+    propList.push('min={0}');
+    propList.push('max={100}');
+    propList.push('step={5}');
+  }
+  if (hasPrefix) propList.push('prefix="$"');
+  if (hasSuffix) propList.push('suffix="/mo"');
+  if (disabled) propList.push('disabled');
+
+  const jsx = `const [value, setValue] = useState(${val});\n\n<NumberInput\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="NumberInput Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '20rem' }}>
+          <NumberInput
+            value={val}
+            onChange={setVal}
+            size={size}
+            stepperPosition={stepperPosition}
+            min={hasLimits ? 0 : undefined}
+            max={hasLimits ? 100 : undefined}
+            step={hasLimits ? 5 : 1}
+            prefix={hasPrefix ? '$' : undefined}
+            suffix={hasSuffix ? '/mo' : undefined}
+            disabled={disabled}
+          />
+          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Numerical value: <code>{val !== undefined ? val : 'undefined'}</code>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Stepper Layout</span>
+            <div className="workbench__pills">
+              {(['right', 'split'] as const).map((pos) => (
+                <button
+                  key={pos}
+                  type="button"
+                  className={`workbench__pill${stepperPosition === pos ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setStepperPosition(pos)}
+                >
+                  {pos.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Currency prefix ($)"
+              checked={hasPrefix}
+              onCheckedChange={setHasPrefix}
+            />
+            <Switch
+              label="Duration suffix (/mo)"
+              checked={hasSuffix}
+              onCheckedChange={setHasSuffix}
+            />
+            <Switch
+              label="Min=0, Max=100, Step=5"
+              checked={hasLimits}
+              onCheckedChange={setHasLimits}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ SegmentedControl Workbench */
+
+export function SegmentedControlWorkbench() {
+  const [val, setVal] = useState('daily');
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [fullWidth, setFullWidth] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  const options: SegmentedControlOption[] = [
+    { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' },
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'annual', label: 'Annual' },
+  ];
+
+  const propList: string[] = ['value={frequency}', 'onChange={setFrequency}'];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (fullWidth) propList.push('fullWidth');
+  if (disabled) propList.push('disabled');
+  propList.push('options={options}');
+
+  const jsx = `const [frequency, setFrequency] = useState('${val}');\n\n<SegmentedControl\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="SegmentedControl Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: fullWidth ? '100%' : '24rem' }}>
+          <SegmentedControl
+            options={options}
+            value={val}
+            onChange={setVal}
+            size={size}
+            fullWidth={fullWidth}
+            disabled={disabled}
+          />
+          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Active segment: <code>"{val}"</code>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Full container width (100%)"
+              checked={fullWidth}
+              onCheckedChange={setFullWidth}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
 
 

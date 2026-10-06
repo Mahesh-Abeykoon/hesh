@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NumberInput } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { NumberInputWorkbench } from '../../components/PropsWorkbench';
 
 const NUMBER_INPUT_DEMO = `const [count, setCount] = useState<number | undefined>(10);
 
@@ -27,6 +28,14 @@ export function NumberInputPage() {
       lede="Precision numeric input with increment/decrement steppers, keyboard arrow acceleration, prefix/suffix units, and clamping."
       importStatement="import { NumberInput } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure stepper button layouts, numeric ranges, prefixes, suffixes, and sizes with real-time code generation."
+      >
+        <NumberInputWorkbench />
+      </Section>
+
       <Section
         title="Interactive Number Stepper"
         description="Try clicking steppers or pressing Arrow Up / Down. Hold Shift while pressing arrow keys for 10x step multiplier."

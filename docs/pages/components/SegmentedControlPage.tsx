@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { SegmentedControl, Card } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { SegmentedControlWorkbench } from '../../components/PropsWorkbench';
 
 const BASIC_DEMO = `const [view, setView] = useState('month');
 
@@ -73,6 +74,14 @@ export function SegmentedControlPage() {
       lede="A linear switcher for mutually exclusive options featuring a smooth animated sliding background pill, full keyboard roving focus, and auto-scrolling mobile viewport clamping."
       importStatement="import { SegmentedControl } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Switch options, change sizing scales, toggle full-width stretch, and test disabled states with real-time code generation."
+      >
+        <SegmentedControlWorkbench />
+      </Section>
+
       <Section
         title="Sliding Segmented Switcher"
         description="Click or use keyboard arrow keys. The background indicator animates with GPU transforms to highlight the active choice."

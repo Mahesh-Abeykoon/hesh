@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { OtpInput, Button } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { OtpInputWorkbench } from '../../components/PropsWorkbench';
 
 const DEMO_6 = `const [code, setCode] = useState('');
 const [verified, setVerified] = useState(false);
@@ -49,6 +50,14 @@ export function OtpInputPage() {
       lede="Multi-digit slot input for 2FA codes, SMS verification, masked PINs, and alphanumeric tokens — with paste support and automatic focus progression."
       importStatement="import { OtpInput } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure slot count, numeric vs alphanumeric, PIN masking, and validation error states with real-time code generation."
+      >
+        <OtpInputWorkbench />
+      </Section>
+
       {/* ── 6-digit 2FA ── */}
       <Section
         title="6-Digit Verification Code (2FA)"

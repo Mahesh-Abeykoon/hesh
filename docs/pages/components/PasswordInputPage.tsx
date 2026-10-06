@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PasswordInput } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { PasswordInputWorkbench } from '../../components/PropsWorkbench';
 
 const PASSWORD_DEMO = `const [pwd, setPwd] = useState('');
 
@@ -24,6 +25,14 @@ export function PasswordInputPage() {
       lede="Password input with reveal/hide toggle, multi-tier strength calculation meter, and live interactive requirement checklist."
       importStatement="import { PasswordInput } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure strength meter, requirements checklist, reveal toggle, validation state, and sizes with real-time code generation."
+      >
+        <PasswordInputWorkbench />
+      </Section>
+
       <Section
         title="Interactive Password Field with Strength Meter"
         description="Type in the field to see real-time password strength grading (Weak, Fair, Good, Strong) and dynamic requirement validation."

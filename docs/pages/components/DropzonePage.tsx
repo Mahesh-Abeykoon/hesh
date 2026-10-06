@@ -33,6 +33,7 @@ export function DropzonePage() {
             maxFiles={5}
             maxSize={5 * 1024 * 1024}
             hint="PNG, JPG or PDF — up to 5MB each"
+            simulateProgress
             onFilesChange={(newFiles) => setFiles(newFiles)}
           />
         </Showcase>
@@ -47,12 +48,17 @@ export function DropzonePage() {
       <Section title="API Reference">
         <PropsTable
           rows={[
-            { name: 'onFiles', type: '(files: DropzoneFile[]) => void', required: true, description: 'Callback with the accepted file objects.' },
+            { name: 'onFilesChange', type: '(files: DropzoneFile[]) => void', description: 'Callback fired when the list of DropzoneFile objects (with status & progress) changes.' },
+            { name: 'onFiles', type: '(files: File[]) => void', description: 'Callback with the raw accepted browser File objects.' },
+            { name: 'files', type: 'DropzoneFile[]', description: 'Controlled list of file objects.' },
             { name: 'accept', type: 'string', description: 'MIME types or extensions (e.g. "image/*,.pdf").' },
-            { name: 'maxFiles', type: 'number', default: '5', description: 'Maximum allowed files in a single batch.' },
-            { name: 'maxSize', type: 'number', description: 'Maximum file size in bytes.' },
+            { name: 'multiple', type: 'boolean', default: 'true', description: 'Whether multiple files can be selected or dropped at once.' },
+            { name: 'maxFiles', type: 'number', default: '10', description: 'Maximum allowed files in a batch.' },
+            { name: 'maxSize', type: 'number', description: 'Maximum file size per file in bytes.' },
             { name: 'hint', type: 'string', description: 'Helper text displayed beneath the drop target.' },
             { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables drag and file picker triggers.' },
+            { name: 'simulateProgress', type: 'boolean', default: 'false', description: 'Simulates upload progress for interactive demos and prototyping.' },
+            { name: 'className', type: 'string', description: 'Additional CSS class names.' },
           ]}
         />
       </Section>

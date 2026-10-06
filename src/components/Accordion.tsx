@@ -1,4 +1,4 @@
-import { useId, type ReactNode } from 'react';
+import React, { useId, type ReactNode } from 'react';
 import { cn } from '../utils/cn';
 import { useControllableState } from '../hooks/useControllableState';
 import { ChevronDownIcon } from './icons';
@@ -7,24 +7,34 @@ export interface AccordionItem {
   id: string;
   title: ReactNode;
   content: ReactNode;
+  /** Sub-caption displayed beneath title. */
+  subtitle?: ReactNode;
+  /** Leading icon indicator. */
+  icon?: ReactNode;
+  /** Trailing tag or status badge. */
+  badge?: ReactNode;
   disabled?: boolean;
 }
 
 export interface AccordionProps {
   items: AccordionItem[];
-  /** Controlled or uncontrolled list of open ids. */
+  /** Controlled or uncontrolled list of open item ids. */
   open?: string[];
   defaultOpen?: string[];
   onOpenChange?: (open: string[]) => void;
-  /** Allow more than one panel open at a time. */
+  /** Allow more than one panel open simultaneously. @default false */
   multiple?: boolean;
+  /** Visual presentation style. @default 'default' */
+  variant?: 'default' | 'bordered' | 'separated' | 'pills';
+  /** Size scale of trigger padding and typography. @default 'md' */
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
 
 /**
  * Buttons carry `aria-expanded` and `aria-controls`; panels carry
- * `role="region"` + `aria-labelledby`. That pairing is what lets a screen
- * reader announce "collapsed / expanded" as the user toggles.
+ * `role="region"` + `aria-labelledby`. That pairing lets screen readers
+ * announce "collapsed / expanded" as the user toggles.
  */
 export function Accordion({
   items,
@@ -32,6 +42,8 @@ export function Accordion({
   defaultOpen = [],
   onOpenChange,
   multiple = false,
+  variant = 'default',
+  size = 'md',
   className,
 }: AccordionProps) {
   const [state, setState] = useControllableState<string[]>({
@@ -51,12 +63,22 @@ export function Accordion({
   const baseId = useId();
 
   return (
-    <div className={cn('pui-accordion', className)}>
+    <div
+      className={cn(
+        'pui-accordion',
+        `pui-accordion--${variant}`,
+        `pui-accordion--${size}`,
+        className
+      )}
+    >
       {items.map((item) => {
         const isOpen = state.includes(item.id);
         return (
-          <div key={item.id} className="pui-accordion__item">
-            <h3>
+          <div
+            key={item.id}
+            className={cn('pui-accordion__item', isOpen && 'pui-accordion__item--open')}
+          >
+            <h3 style={{ margin: 0 }}>
               <button
                 type="button"
                 className="pui-accordion__trigger"
@@ -66,7 +88,14 @@ export function Accordion({
                 disabled={item.disabled}
                 onClick={() => toggle(item.id)}
               >
-                {item.title}
+                {item.icon && <span className="pui-accordion__icon">{item.icon}</span>}
+                <div className="pui-accordion__text-wrap">
+                  <span className="pui-accordion__title">{item.title}</span>
+                  {item.subtitle && (
+                    <span className="pui-accordion__subtitle">{item.subtitle}</span>
+                  )}
+                </div>
+                {item.badge && <span className="pui-accordion__badge">{item.badge}</span>}
                 <span className="pui-accordion__trigger-icon" aria-hidden="true">
                   <ChevronDownIcon />
                 </span>

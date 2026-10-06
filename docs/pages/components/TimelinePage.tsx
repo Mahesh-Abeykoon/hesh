@@ -38,10 +38,15 @@ export function TimelinePage() {
       <Section title="API Reference">
         <PropsTable
           rows={[
+            { name: 'Timeline.children', type: 'ReactNode', required: true, description: 'TimelineItem elements rendered in sequence.' },
+            { name: 'Timeline.className', type: 'string', description: 'Additional CSS class names.' },
             { name: 'TimelineItem.title', type: 'ReactNode', required: true, description: 'Event heading text.' },
-            { name: 'TimelineItem.timestamp', type: 'ReactNode', description: 'Date or relative time string.' },
-            { name: 'TimelineItem.tone', type: "'primary' | 'success' | 'warning' | 'danger' | 'neutral'", default: "'neutral'", description: 'Node bullet color.' },
+            { name: 'TimelineItem.timestamp', type: 'string', description: 'Date or relative time string.' },
+            { name: 'TimelineItem.description', type: 'ReactNode', description: 'Secondary descriptive text.' },
+            { name: 'TimelineItem.dot', type: 'ReactNode', description: 'Custom icon or element to replace the default bullet.' },
+            { name: 'TimelineItem.tone', type: "'neutral' | 'primary' | 'success' | 'warning' | 'danger'", default: "'neutral'", description: 'Node bullet color.' },
             { name: 'TimelineItem.active', type: 'boolean', default: 'false', description: 'Pulsing active status dot on the latest event.' },
+            { name: 'TimelineItem.children', type: 'ReactNode', description: 'Additional rich content or actions rendered inside the item card.' },
           ]}
         />
       </Section>

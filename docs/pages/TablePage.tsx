@@ -148,6 +148,9 @@ export function TablePage() {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [density, setDensity] = useState<'compact' | 'comfortable' | 'spacious'>('comfortable');
+  const [striped, setStriped] = useState(false);
+  const [bordered, setBorderd] = useState(false);
 
   const columns = useMemo(buildColumns, []);
 
@@ -184,14 +187,46 @@ export function TablePage() {
     <DocPage
       eyebrow="Layout & display"
       title="Data table"
-      lede="Sorting, row selection, loading skeletons and an empty state — with the accessibility semantics that are usually the first thing cut from an internal table."
+      lede="Sorting, row selection, expandable details, density scales, loading skeletons and empty states — with full WAI-ARIA grid accessibility semantics."
     >
       <Section title="Columns" description="Give each column an accessor and the table can sort it for you; give it a cell and you control the rendering.">
         <Showcase code={COLUMNS} defaultOpen />
       </Section>
 
-      <Section title="Full example" description="Search, sort, select, paginate. Try selecting rows and sorting by MRR.">
+      <Section
+        title="Full Interactive Table"
+        description="Search, sort, multi-row selection, density switcher, and pagination. Try selecting rows and clicking column headers."
+      >
         <Showcase code={USAGE} bleed defaultOpen>
+          <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--pui-border)', display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--pui-fg-muted)' }}>Density:</span>
+            {(['compact', 'comfortable', 'spacious'] as const).map((d) => (
+              <Button
+                key={d}
+                size="sm"
+                variant={density === d ? 'primary' : 'ghost'}
+                onClick={() => setDensity(d)}
+              >
+                {d.charAt(0).toUpperCase() + d.slice(1)}
+              </Button>
+            ))}
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem' }}>
+              <Button
+                size="sm"
+                variant={striped ? 'secondary' : 'ghost'}
+                onClick={() => setStriped(!striped)}
+              >
+                {striped ? 'Striped: On' : 'Striped: Off'}
+              </Button>
+              <Button
+                size="sm"
+                variant={bordered ? 'secondary' : 'ghost'}
+                onClick={() => setBorderd(!bordered)}
+              >
+                {bordered ? 'Bordered: On' : 'Bordered: Off'}
+              </Button>
+            </div>
+          </div>
           <DataTable
             columns={columns}
             data={pageRows}
@@ -201,7 +236,28 @@ export function TablePage() {
             selectable
             selectedKeys={selected}
             onSelectionChange={setSelected}
+            density={density}
+            striped={striped}
+            bordered={bordered}
             loading={loading}
+            expandedRowRender={(row) => (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', fontSize: '0.8125rem' }}>
+                <div>
+                  <div style={{ color: 'var(--pui-fg-muted)', fontSize: '0.75rem', marginBottom: '0.25rem' }}>Customer Details</div>
+                  <div><strong>ID:</strong> cust_{row.id}9824</div>
+                  <div><strong>Email:</strong> {row.email}</div>
+                </div>
+                <div>
+                  <div style={{ color: 'var(--pui-fg-muted)', fontSize: '0.75rem', marginBottom: '0.25rem' }}>Billing Plan</div>
+                  <div><strong>Tier:</strong> {row.plan} Enterprise</div>
+                  <div><strong>Annual ARR:</strong> ${((row.mrr * 12) || 0).toLocaleString()}</div>
+                </div>
+                <div>
+                  <div style={{ color: 'var(--pui-fg-muted)', fontSize: '0.75rem', marginBottom: '0.25rem' }}>Account Status</div>
+                  <div><Badge tone={STATUS_TONE[row.status]}>{STATUS_LABEL[row.status]}</Badge></div>
+                </div>
+              </div>
+            )}
             emptyState={
               <EmptyState
                 title="No customers match"
@@ -231,7 +287,7 @@ export function TablePage() {
                   size="sm"
                   onClick={() => {
                     setLoading(true);
-                    window.setTimeout(() => setLoading(false), 1200);
+                    window.setTimeout(() => setLoading(false), 1000);
                   }}
                 >
                   {loading ? 'Loading…' : 'Refetch'}
@@ -288,27 +344,26 @@ export function TablePage() {
         </Callout>
       </Section>
 
-      <Section title="Pagination">
-        <Showcase>
-          <div className="row-between">
-            <span className="prose">Compact range with ellipsis; first and last page always reachable.</span>
-            <Pagination page={4} pageCount={12} onPageChange={() => {}} />
-          </div>
-        </Showcase>
-      </Section>
-
-      <Section title="API">
+      <Section title="API Reference">
         <PropsTable
           rows={[
-            { name: 'columns', type: 'Column<T>[]', required: true, description: 'id, header, accessor, cell, sortable, numeric, align, width.' },
+            { name: 'columns', type: 'readonly Column<T>[]', required: true, description: 'id, header, accessor, cell, sortable, numeric, align, width, hideBelow.' },
             { name: 'data', type: 'readonly T[]', required: true, description: 'Row objects for the current page.' },
             { name: 'rowKey', type: '(row: T, index: number) => string', required: true, description: 'Stable identity for selection and reconciliation.' },
-            { name: 'sort / onSortChange', type: 'SortState | null', description: 'Controlled sorting. Clicking cycles asc → desc → none.' },
-            { name: 'selectable', type: 'boolean', default: 'false', description: 'Adds a checkbox column with tri-state header.' },
-            { name: 'selectedKeys / onSelectionChange', type: 'string[]', description: 'Controlled selection.' },
-            { name: 'loading / loadingRows', type: 'boolean / number', default: 'false / 5', description: 'Skeleton rows and a screen-reader-only status.' },
-            { name: 'emptyState', type: 'ReactNode', description: 'Rendered across the full width when data is empty.' },
-            { name: 'toolbar / footer', type: 'ReactNode', description: 'Search row above, pagination row below.' },
+            { name: 'sort', type: 'SortState | null', description: 'Controlled sorting state.' },
+            { name: 'onSortChange', type: '(sort: SortState | null) => void', description: 'Clicking header cycles asc → desc → null.' },
+            { name: 'selectable', type: 'boolean', default: 'false', description: 'Adds checkbox selection column with tri-state header.' },
+            { name: 'selectedKeys', type: 'readonly string[]', description: 'Controlled array of selected row keys.' },
+            { name: 'onSelectionChange', type: '(keys: string[]) => void', description: 'Callback fired on row selection.' },
+            { name: 'density', type: "'compact' | 'comfortable' | 'spacious'", default: "'comfortable'", description: 'Vertical padding density scale.' },
+            { name: 'striped', type: 'boolean', default: 'false', description: 'Alternating zebra background striping.' },
+            { name: 'bordered', type: 'boolean', default: 'false', description: 'Full grid cell borders.' },
+            { name: 'expandedRowRender', type: '(row: T, index: number) => ReactNode', description: 'Renderer for expandable sub-row panels with toggle chevrons.' },
+            { name: 'loading', type: 'boolean', default: 'false', description: 'Shows skeleton rows and screen-reader status.' },
+            { name: 'loadingRows', type: 'number', default: '5', description: 'Number of skeleton placeholder rows.' },
+            { name: 'emptyState', type: 'ReactNode', description: 'Rendered across full width when data is empty.' },
+            { name: 'toolbar', type: 'ReactNode', description: 'Toolbar container rendered above header.' },
+            { name: 'footer', type: 'ReactNode', description: 'Footer container rendered below table body.' },
           ]}
         />
       </Section>
@@ -332,8 +387,7 @@ export function TablePage() {
                 they are distinguishable when navigated out of context.
               </li>
               <li>
-                While loading, a visually hidden <code>role="status"</code> announces
-                the change without spamming the live region.
+                Expandable row toggles report <code>aria-expanded</code> and accessible labels.
               </li>
             </ul>
           </CardBody>

@@ -133,7 +133,7 @@ export function TagInputPage() {
           <div style={{ width: '100%', maxWidth: 480 }}>
             <TagInput
               value={['Locked', 'Read-only', 'Cannot Edit']}
-              onChange={() => {}}
+              onChange={() => { }}
               disabled
             />
           </div>
@@ -149,13 +149,13 @@ export function TagInputPage() {
       <Section title="API Reference">
         <PropsTable
           rows={[
-            { name: 'value',           type: 'string[]',                       description: 'Controlled array of tag strings.' },
-            { name: 'onChange',        type: '(tags: string[]) => void',       description: 'Fires when tags are added or removed.' },
-            { name: 'maxTags',         type: 'number',                         description: 'Maximum number of allowed tags.' },
-            { name: 'allowDuplicates', type: 'boolean',    default: 'false',   description: 'Whether identical tags can be added.' },
-            { name: 'addOnBlur',       type: 'boolean',    default: 'false',   description: 'Commits pending input as a tag on blur.' },
-            { name: 'placeholder',     type: 'string',     default: '"Add tag…"', description: 'Input placeholder text.' },
-            { name: 'disabled',        type: 'boolean',    default: 'false',   description: 'Disables adding or removing tags.' },
+            { name: 'value', type: 'string[]', description: 'Controlled array of tag strings.' },
+            { name: 'onChange', type: '(tags: string[]) => void', description: 'Fires when tags are added or removed.' },
+            { name: 'maxTags', type: 'number', description: 'Maximum number of allowed tags.' },
+            { name: 'allowDuplicates', type: 'boolean', default: 'false', description: 'Whether identical tags can be added.' },
+            { name: 'addOnBlur', type: 'boolean', default: 'false', description: 'Commits pending input as a tag on blur.' },
+            { name: 'placeholder', type: 'string', default: '"Add tag…"', description: 'Input placeholder text.' },
+            { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables adding or removing tags.' },
           ]}
         />
       </Section>

@@ -142,9 +142,9 @@ export function SliderPage() {
       >
         <Showcase>
           <div style={{ width: '100%', maxWidth: 480, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <Slider label="Small"  size="sm" defaultValue={40} />
+            <Slider label="Small" size="sm" defaultValue={40} />
             <Slider label="Medium" size="md" defaultValue={60} />
-            <Slider label="Large"  size="lg" defaultValue={80} />
+            <Slider label="Large" size="lg" defaultValue={80} />
           </div>
         </Showcase>
       </Section>
@@ -171,17 +171,17 @@ export function SliderPage() {
       <Section title="Slider API Reference">
         <PropsTable
           rows={[
-            { name: 'label',         type: 'ReactNode',              description: 'Visible label above the slider.' },
-            { name: 'value',         type: 'number',                 description: 'Controlled value.' },
-            { name: 'defaultValue',  type: 'number',                 description: 'Initial value for uncontrolled usage.' },
-            { name: 'onValueChange', type: '(val: number) => void',  description: 'Callback fired on value changes.' },
-            { name: 'min',           type: 'number',    default: '0',     description: 'Minimum allowed value.' },
-            { name: 'max',           type: 'number',    default: '100',   description: 'Maximum allowed value.' },
-            { name: 'step',          type: 'number',    default: '1',     description: 'Granularity of value steps.' },
-            { name: 'size',          type: '"sm" | "md" | "lg"', default: '"md"', description: 'Track height scale.' },
-            { name: 'showTooltip',   type: 'boolean',   default: 'false', description: 'Shows live value tooltip above the thumb.' },
-            { name: 'marks',         type: 'SliderMark[]',              description: 'Array of { value, label? } objects for tick marks.' },
-            { name: 'disabled',      type: 'boolean',   default: 'false', description: 'Disables slider interaction.' },
+            { name: 'label', type: 'ReactNode', description: 'Visible label above the slider.' },
+            { name: 'value', type: 'number', description: 'Controlled value.' },
+            { name: 'defaultValue', type: 'number', description: 'Initial value for uncontrolled usage.' },
+            { name: 'onValueChange', type: '(val: number) => void', description: 'Callback fired on value changes.' },
+            { name: 'min', type: 'number', default: '0', description: 'Minimum allowed value.' },
+            { name: 'max', type: 'number', default: '100', description: 'Maximum allowed value.' },
+            { name: 'step', type: 'number', default: '1', description: 'Granularity of value steps.' },
+            { name: 'size', type: '"sm" | "md" | "lg"', default: '"md"', description: 'Track height scale.' },
+            { name: 'showTooltip', type: 'boolean', default: 'false', description: 'Shows live value tooltip above the thumb.' },
+            { name: 'marks', type: 'SliderMark[]', description: 'Array of { value, label? } objects for tick marks.' },
+            { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables slider interaction.' },
           ]}
         />
       </Section>
@@ -189,14 +189,14 @@ export function SliderPage() {
       <Section title="RangeSlider API Reference">
         <PropsTable
           rows={[
-            { name: 'value',         type: '[number, number]',                      description: 'Controlled [min, max] tuple.' },
-            { name: 'defaultValue',  type: '[number, number]',                      description: 'Initial [min, max] for uncontrolled usage.' },
-            { name: 'onValueChange', type: '(val: [number, number]) => void',       description: 'Callback fired when either thumb moves.' },
-            { name: 'min',           type: 'number', default: '0',                  description: 'Minimum bound.' },
-            { name: 'max',           type: 'number', default: '100',                description: 'Maximum bound.' },
-            { name: 'step',          type: 'number', default: '1',                  description: 'Granularity.' },
-            { name: 'showTooltip',   type: 'boolean', default: 'false',             description: 'Shows value tooltips above both thumbs.' },
-            { name: 'disabled',      type: 'boolean', default: 'false',             description: 'Disables both thumbs.' },
+            { name: 'value', type: '[number, number]', description: 'Controlled [min, max] tuple.' },
+            { name: 'defaultValue', type: '[number, number]', description: 'Initial [min, max] for uncontrolled usage.' },
+            { name: 'onValueChange', type: '(val: [number, number]) => void', description: 'Callback fired when either thumb moves.' },
+            { name: 'min', type: 'number', default: '0', description: 'Minimum bound.' },
+            { name: 'max', type: 'number', default: '100', description: 'Maximum bound.' },
+            { name: 'step', type: 'number', default: '1', description: 'Granularity.' },
+            { name: 'showTooltip', type: 'boolean', default: 'false', description: 'Shows value tooltips above both thumbs.' },
+            { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables both thumbs.' },
           ]}
 
         />

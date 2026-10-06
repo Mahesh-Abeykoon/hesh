@@ -7,13 +7,22 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import {
+  type CustomThemeConfig,
+  generateThemeCss,
+  applyThemeStyle,
+  removeThemeStyle,
+} from '../utils/theme';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
 export type ThemePreset = 'indigo' | 'forest' | 'sunset' | 'mono' | 'midnight';
+export type UiDensity = 'compact' | 'default' | 'comfortable';
 
 export const THEME_STORAGE_KEY = 'pui-theme';
 export const PRESET_STORAGE_KEY = 'pui-preset';
+export const CUSTOM_THEME_STORAGE_KEY = 'pui-custom-theme';
+export const DENSITY_STORAGE_KEY = 'pui-density';
 
 export interface ThemePresetMeta {
   id: ThemePreset;
@@ -82,6 +91,16 @@ export interface ThemeContextValue {
   /** Active theme preset ('indigo' | 'forest' | 'sunset' | 'mono' | 'midnight'). */
   preset: ThemePreset;
   setPreset: (preset: ThemePreset) => void;
+  /** Active custom theme overrides (if any). */
+  customTheme: CustomThemeConfig | null;
+  /** Updates or sets the custom theme tokens. */
+  setCustomTheme: (theme: CustomThemeConfig | null) => void;
+  /** Resets custom theme back to default presets. */
+  resetCustomTheme: () => void;
+  /** Current UI density scale ('compact' | 'default' | 'comfortable'). */
+  density: UiDensity;
+  /** Sets UI density scale. */
+  setDensity: (density: UiDensity) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
@@ -110,6 +129,30 @@ function readStoredPreset(): ThemePreset {
   return 'indigo';
 }
 
+function readStoredCustomTheme(): CustomThemeConfig | null {
+  if (typeof document === 'undefined') return null;
+  try {
+    const stored = localStorage.getItem(CUSTOM_THEME_STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch {
+    /* private mode / SSR — fall through */
+  }
+  return null;
+}
+
+function readStoredDensity(): UiDensity {
+  if (typeof document === 'undefined') return 'default';
+  try {
+    const stored = localStorage.getItem(DENSITY_STORAGE_KEY) as UiDensity;
+    if (stored && ['compact', 'default', 'comfortable'].includes(stored)) {
+      return stored;
+    }
+  } catch {
+    /* private mode / SSR — fall through */
+  }
+  return 'default';
+}
+
 function safeMatchMedia(query: string): MediaQueryList | null {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return null;
   try {
@@ -129,20 +172,24 @@ export interface ThemeProviderProps {
   defaultMode?: ThemeMode;
   /** Initial theme preset, used when nothing is stored yet. */
   defaultPreset?: ThemePreset;
-  /** Element that receives `data-pui-theme` and `data-pui-preset`. Defaults to <html>. */
+  /** Initial custom theme overrides, used when nothing is stored yet. */
+  defaultCustomTheme?: CustomThemeConfig | null;
+  /** Initial density scale. */
+  defaultDensity?: UiDensity;
+  /** Element that receives `data-pui-theme`, `data-pui-preset`, `data-pui-density`. Defaults to <html>. */
   target?: HTMLElement | null;
 }
 
 /**
- * Writes `data-pui-theme="light|dark"` and `data-pui-preset="forest|sunset|mono|midnight"` on the target element.
- *
- * No class-name injection, no CSS-in-JS runtime: the stylesheet already ships
- * themes and presets, so switching is a fast attribute write.
+ * Writes `data-pui-theme="light|dark"`, `data-pui-preset="forest|sunset|mono|midnight"`,
+ * and dynamic custom theme CSS variables on the target element.
  */
 export function ThemeProvider({
   children,
   defaultMode = 'system',
   defaultPreset = 'indigo',
+  defaultCustomTheme = null,
+  defaultDensity = 'default',
   target,
 }: ThemeProviderProps) {
   const [mode, setModeState] = useState<ThemeMode>(() =>
@@ -150,6 +197,12 @@ export function ThemeProvider({
   );
   const [preset, setPresetState] = useState<ThemePreset>(() =>
     typeof document === 'undefined' ? defaultPreset : (readStoredPreset() ?? defaultPreset)
+  );
+  const [customTheme, setCustomThemeState] = useState<CustomThemeConfig | null>(() =>
+    typeof document === 'undefined' ? defaultCustomTheme : (readStoredCustomTheme() ?? defaultCustomTheme)
+  );
+  const [density, setDensityState] = useState<UiDensity>(() =>
+    typeof document === 'undefined' ? defaultDensity : (readStoredDensity() ?? defaultDensity)
   );
   const [systemPreference, setSystemPreference] = useState<ResolvedTheme>(systemTheme);
 
@@ -159,7 +212,6 @@ export function ThemeProvider({
     if (!query) return;
     const onChange = (event: MediaQueryListEvent) =>
       setSystemPreference(event.matches ? 'dark' : 'light');
-    // Safari < 14 only has the deprecated listener API.
     if (query.addEventListener) {
       query.addEventListener('change', onChange);
       return () => query.removeEventListener('change', onChange);
@@ -170,23 +222,47 @@ export function ThemeProvider({
 
   const theme: ResolvedTheme = mode === 'system' ? systemPreference : mode;
 
+  // Apply light/dark mode attribute and color-scheme
   useEffect(() => {
     const el = target ?? document.documentElement;
     if (!el) return;
     el.setAttribute('data-pui-theme', theme);
-    // Keeps native form controls and scrollbars in sync with the theme.
     el.style.colorScheme = theme;
   }, [theme, target]);
 
+  // Apply preset attribute (unless customTheme is actively overriding)
   useEffect(() => {
     const el = target ?? document.documentElement;
     if (!el) return;
-    if (preset === 'indigo') {
+    if (customTheme) {
+      el.removeAttribute('data-pui-preset');
+    } else if (preset === 'indigo') {
       el.removeAttribute('data-pui-preset');
     } else {
       el.setAttribute('data-pui-preset', preset);
     }
-  }, [preset, target]);
+  }, [preset, customTheme, target]);
+
+  // Apply UI density attribute
+  useEffect(() => {
+    const el = target ?? document.documentElement;
+    if (!el) return;
+    if (density === 'default') {
+      el.removeAttribute('data-pui-density');
+    } else {
+      el.setAttribute('data-pui-density', density);
+    }
+  }, [density, target]);
+
+  // Inject or clear dynamic custom theme CSS tokens
+  useEffect(() => {
+    if (customTheme) {
+      const css = generateThemeCss(customTheme);
+      applyThemeStyle(css);
+    } else {
+      removeThemeStyle();
+    }
+  }, [customTheme]);
 
   const setMode = useCallback((next: ThemeMode) => {
     setModeState(next);
@@ -199,8 +275,46 @@ export function ThemeProvider({
 
   const setPreset = useCallback((next: ThemePreset) => {
     setPresetState(next);
+    // When selecting a built-in preset, clear customTheme override
+    setCustomThemeState(null);
     try {
       localStorage.setItem(PRESET_STORAGE_KEY, next);
+      localStorage.removeItem(CUSTOM_THEME_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const setCustomTheme = useCallback((next: CustomThemeConfig | null) => {
+    setCustomThemeState(next);
+    try {
+      if (next) {
+        localStorage.setItem(CUSTOM_THEME_STORAGE_KEY, JSON.stringify(next));
+      } else {
+        localStorage.removeItem(CUSTOM_THEME_STORAGE_KEY);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const resetCustomTheme = useCallback(() => {
+    setCustomThemeState(null);
+    setPresetState('indigo');
+    setDensityState('default');
+    try {
+      localStorage.removeItem(CUSTOM_THEME_STORAGE_KEY);
+      localStorage.setItem(PRESET_STORAGE_KEY, 'indigo');
+      localStorage.removeItem(DENSITY_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const setDensity = useCallback((next: UiDensity) => {
+    setDensityState(next);
+    try {
+      localStorage.setItem(DENSITY_STORAGE_KEY, next);
     } catch {
       /* ignore */
     }
@@ -211,8 +325,32 @@ export function ThemeProvider({
   }, [setMode, theme]);
 
   const value = useMemo<ThemeContextValue>(
-    () => ({ mode, theme, setMode, toggle, preset, setPreset }),
-    [mode, theme, setMode, toggle, preset, setPreset]
+    () => ({
+      mode,
+      theme,
+      setMode,
+      toggle,
+      preset,
+      setPreset,
+      customTheme,
+      setCustomTheme,
+      resetCustomTheme,
+      density,
+      setDensity,
+    }),
+    [
+      mode,
+      theme,
+      setMode,
+      toggle,
+      preset,
+      setPreset,
+      customTheme,
+      setCustomTheme,
+      resetCustomTheme,
+      density,
+      setDensity,
+    ]
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
@@ -229,7 +367,5 @@ export function useTheme(): ThemeContextValue {
 /**
  * Inline this in <head> to apply the stored theme before first paint,
  * eliminating the flash of light theme on a dark-mode page.
- *
- *   <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
  */
-export const themeInitScript = `(function(){try{var m=localStorage.getItem('${THEME_STORAGE_KEY}')||'system';var d=m==='dark'||(m==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);var t=d?'dark':'light';var e=document.documentElement;e.setAttribute('data-pui-theme',t);e.style.colorScheme=t;var p=localStorage.getItem('${PRESET_STORAGE_KEY}');if(p&&p!=='indigo')e.setAttribute('data-pui-preset',p);}catch(e){}})();`;
+export const themeInitScript = `(function(){try{var m=localStorage.getItem('${THEME_STORAGE_KEY}')||'system';var d=m==='dark'||(m==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);var t=d?'dark':'light';var e=document.documentElement;e.setAttribute('data-pui-theme',t);e.style.colorScheme=t;var p=localStorage.getItem('${PRESET_STORAGE_KEY}');if(p&&p!=='indigo')e.setAttribute('data-pui-preset',p);var den=localStorage.getItem('${DENSITY_STORAGE_KEY}');if(den&&den!=='default')e.setAttribute('data-pui-density',den);}catch(e){}})();`;

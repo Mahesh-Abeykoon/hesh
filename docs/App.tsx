@@ -94,6 +94,7 @@ import { TooltipPage } from './pages/components/TooltipPage';
 import { TreePage } from './pages/components/TreePage';
 import { DocNavigationContext } from './components/DocPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { ThemeCustomizer } from './components/ThemeCustomizer';
 
 interface DocPage {
   id: string;
@@ -492,6 +493,8 @@ function Shell() {
         onOpenChange={setCommandOpen}
         placeholder="Jump to a page…"
       />
+
+      <ThemeCustomizer />
     </div>
   );
 }

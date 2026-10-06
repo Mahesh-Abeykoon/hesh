@@ -81,8 +81,34 @@ export { ToastProvider, useToast } from './components/Toast';
 export type { ToastOptions, ToastTone, ToastProviderProps, ToastPlacement } from './components/Toast';
 
 /* ---------------------------------------------------------------- theming */
-export { ThemeProvider, useTheme, themeInitScript, THEME_STORAGE_KEY, PRESET_STORAGE_KEY, THEME_PRESETS } from './hooks/useTheme';
-export type { ThemeProviderProps, ThemeMode, ResolvedTheme, ThemePreset } from './hooks/useTheme';
+export {
+  ThemeProvider,
+  useTheme,
+  themeInitScript,
+  THEME_STORAGE_KEY,
+  PRESET_STORAGE_KEY,
+  CUSTOM_THEME_STORAGE_KEY,
+  DENSITY_STORAGE_KEY,
+  THEME_PRESETS,
+} from './hooks/useTheme';
+export type {
+  ThemeProviderProps,
+  ThemeMode,
+  ResolvedTheme,
+  ThemePreset,
+  ThemePresetMeta,
+  UiDensity,
+} from './hooks/useTheme';
+export {
+  hexToHsl,
+  hslToHex,
+  buildBrandRamp,
+  generateThemeVariables,
+  generateThemeCss,
+  applyThemeStyle,
+  removeThemeStyle,
+} from './utils/theme';
+export type { CustomThemeConfig, BrandRampStep } from './utils/theme';
 export { ThemeSwitch } from './components/ThemeSwitch';
 export type { ThemeSwitchProps } from './components/ThemeSwitch';
 export { PresetSwitch } from './components/PresetSwitch';

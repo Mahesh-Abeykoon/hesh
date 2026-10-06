@@ -45,13 +45,21 @@ export { Dialog, Drawer, ConfirmDialog, DialogBody } from './components/Dialog';
 export type { DialogProps, DrawerProps, ConfirmDialogProps } from './components/Dialog';
 
 export { DropdownMenu } from './components/Menu';
-export type { DropdownMenuProps, MenuEntry, MenuItemSpec, MenuCheckboxSpec, TriggerRenderProps } from './components/Menu';
+export type {
+  DropdownMenuProps,
+  MenuEntry,
+  MenuItemSpec,
+  MenuCheckboxSpec,
+  MenuRadioSpec,
+  MenuSubmenuSpec,
+  TriggerRenderProps,
+} from './components/Menu';
 
 export { Tooltip } from './components/Tooltip';
-export type { TooltipProps } from './components/Tooltip';
+export type { TooltipProps, TooltipTone } from './components/Tooltip';
 
 export { Popover } from './components/Popover';
-export type { PopoverProps } from './components/Popover';
+export type { PopoverProps, PopoverTriggerRenderProps } from './components/Popover';
 
 export { Portal } from './components/Portal';
 

@@ -16,6 +16,7 @@ import { HomePage } from './pages/Home';
 import { GettingStartedPage } from './pages/GettingStarted';
 import { ThemingPage } from './pages/Theming';
 import { ThemeStudioPage } from './pages/ThemeStudio';
+import { PlaygroundPage } from './pages/PlaygroundPage';
 import { DashboardPage } from './pages/Dashboard';
 import { ButtonPage } from './pages/ButtonPage';
 import { ComboboxPage } from './pages/ComboboxPage';
@@ -115,6 +116,7 @@ export const DOC_GROUPS: DocGroup[] = [
     label: 'Foundations',
     pages: [
       { id: 'getting-started', title: 'Getting started', Component: GettingStartedPage },
+      { id: 'playground', title: 'Live Playground', Component: PlaygroundPage },
       { id: 'theme-studio', title: 'Theme studio', Component: ThemeStudioPage },
       { id: 'theming', title: 'Theming & tokens', Component: ThemingPage },
     ],

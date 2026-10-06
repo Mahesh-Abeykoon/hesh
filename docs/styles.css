@@ -2042,6 +2042,212 @@ body { margin: 0; min-height: 100vh; background: var(--pui-bg); }
   border-top: 1px solid var(--pui-border-subtle);
 }
 
+/* ------------------------------------------------------------------ Workbench Mode Switcher */
+.workbench__mode-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: var(--pui-bg-muted);
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius-full);
+  padding: 0.1875rem;
+  gap: 0.125rem;
+}
+
+.workbench__mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--pui-radius-full);
+  border: 0;
+  background: transparent;
+  color: var(--pui-fg-muted);
+  cursor: pointer;
+  transition: all 120ms ease;
+  user-select: none;
+}
+
+.workbench__mode-btn:hover {
+  color: var(--pui-fg);
+}
+
+.workbench__mode-btn--active {
+  background: var(--pui-surface);
+  color: var(--pui-primary);
+  box-shadow: var(--pui-shadow-xs);
+}
+
+/* ------------------------------------------------------------------ Live Code Editor */
+.live-editor {
+  display: flex;
+  flex-direction: column;
+  background: var(--pui-surface-sunken);
+  border-top: 1px solid var(--pui-border-subtle);
+  overflow: hidden;
+}
+
+.live-editor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.875rem;
+  background: var(--pui-surface-sunken);
+  border-bottom: 1px solid var(--pui-border-subtle);
+}
+
+.live-editor__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--pui-fg-muted);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+}
+
+.live-editor__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+.live-editor__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.live-editor__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--pui-fg-muted);
+  background: var(--pui-surface);
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius-sm);
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.live-editor__btn:hover {
+  color: var(--pui-fg);
+  border-color: var(--pui-border-strong);
+}
+
+.live-editor__viewports {
+  display: inline-flex;
+  align-items: center;
+  background: var(--pui-bg-muted);
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius-md);
+  padding: 0.125rem;
+  gap: 0.125rem;
+}
+
+.live-editor__viewport-opt {
+  padding: 0.1875rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border-radius: var(--pui-radius-sm);
+  border: 0;
+  background: transparent;
+  color: var(--pui-fg-muted);
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.live-editor__viewport-opt:hover {
+  color: var(--pui-fg);
+}
+
+.live-editor__viewport-opt--active {
+  background: var(--pui-surface);
+  color: var(--pui-fg);
+  box-shadow: var(--pui-shadow-xs);
+}
+
+.live-editor__container {
+  display: flex;
+  overflow: auto;
+  background: var(--pui-surface-sunken);
+  position: relative;
+}
+
+.live-editor__gutter {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0.625rem 0.75rem 0.875rem;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--pui-fg-subtle);
+  user-select: none;
+  text-align: right;
+  border-right: 1px solid var(--pui-border-subtle);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.live-editor__line-no {
+  display: block;
+}
+
+.live-editor__textarea {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--pui-fg);
+  background: transparent;
+  border: 0;
+  outline: none;
+  resize: none;
+  white-space: pre;
+  tab-size: 2;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/* ------------------------------------------------------------------ Live Error Banner */
+.live-error {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border-radius: var(--pui-radius-md);
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  margin: 0.5rem;
+}
+
+.live-error__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.live-error__message {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 /* ==========================================================================
    Mobile & Small Screen Optimizations (< 640px)
    ========================================================================== */

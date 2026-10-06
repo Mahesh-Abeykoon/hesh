@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
   Badge,
   Button,
@@ -21,6 +21,7 @@ import {
 } from '../../src/index';
 import { ArrowRightIcon, PlusIcon, SparklesIcon, TrashIcon } from '../../src/index';
 import { CodeBlock } from './CodeBlock';
+import { LiveCodeEditor, LiveErrorBoundary, useLiveCompiler } from './LivePlayground';
 
 /* ------------------------------------------------------------------ Generic Wrapper */
 
@@ -39,6 +40,17 @@ export function PropsWorkbench({
   controls,
   code,
 }: PropsWorkbenchProps) {
+  const [mode, setMode] = useState<'controls' | 'live'>('controls');
+  const [liveCode, setLiveCode] = useState(code);
+
+  useEffect(() => {
+    if (mode === 'controls') {
+      setLiveCode(code);
+    }
+  }, [code, mode]);
+
+  const { element: liveElement, error: liveError } = useLiveCompiler(liveCode);
+
   return (
     <div className="workbench">
       <div className="workbench__header">
@@ -48,16 +60,69 @@ export function PropsWorkbench({
             {badge}
           </Badge>
         </div>
+
+        <div className="workbench__mode-switcher">
+          <button
+            type="button"
+            className={`workbench__mode-btn${mode === 'controls' ? ' workbench__mode-btn--active' : ''}`}
+            onClick={() => setMode('controls')}
+          >
+            ⚙️ Visual Controls
+          </button>
+          <button
+            type="button"
+            className={`workbench__mode-btn${mode === 'live' ? ' workbench__mode-btn--active' : ''}`}
+            onClick={() => setMode('live')}
+          >
+            💻 Live Code Editor
+          </button>
+        </div>
       </div>
 
       <div className="workbench__body">
-        <div className="workbench__preview">{preview}</div>
-        <div className="workbench__controls">{controls}</div>
+        <div className="workbench__preview">
+          {mode === 'controls' ? (
+            preview
+          ) : liveError ? (
+            <div className="live-error">
+              <div className="live-error__title">Transform / Syntax Notice</div>
+              <div className="live-error__message">{liveError.message}</div>
+            </div>
+          ) : (
+            <LiveErrorBoundary
+              fallback={(runtimeErr) => (
+                <div className="live-error">
+                  <div className="live-error__title">Runtime Notice</div>
+                  <div className="live-error__message">{runtimeErr.message}</div>
+                </div>
+              )}
+              resetKey={liveCode}
+            >
+              {liveElement}
+            </LiveErrorBoundary>
+          )}
+        </div>
+
+        {mode === 'controls' ? (
+          <div className="workbench__controls">{controls}</div>
+        ) : (
+          <div className="workbench__controls" style={{ padding: 0 }}>
+            <LiveCodeEditor
+              code={liveCode}
+              onChange={setLiveCode}
+              onReset={() => setLiveCode(code)}
+              minHeight="220px"
+              maxHeight="380px"
+            />
+          </div>
+        )}
       </div>
 
-      <div className="workbench__code-footer">
-        <CodeBlock code={code} language="tsx" />
-      </div>
+      {mode === 'controls' && (
+        <div className="workbench__code-footer">
+          <CodeBlock code={code} language="tsx" />
+        </div>
+      )}
     </div>
   );
 }

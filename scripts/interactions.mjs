@@ -72,7 +72,7 @@ export const INTERACTIONS = [
     route: 'tabs',
     name: 'tabs use roving tabindex and arrow keys move selection',
     run: async ({ document, wait, press, assert }) => {
-      const list = document.querySelector('[role="tablist"]');
+      const list = document.querySelector('.pui-tabs [role="tablist"]') ?? document.querySelector('[role="tablist"]');
       assert(list, 'tablist rendered');
 
       const tabs = [...list.querySelectorAll('[role="tab"]')];

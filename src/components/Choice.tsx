@@ -80,7 +80,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 
 /* ------------------------------------------------------------------ Radio */
 
-export interface RadioGroupProps {
+export interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -131,7 +131,7 @@ interface RadioGroupContextValue {
 const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);
 
 export interface RadioProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'name' | 'checked' | 'value' | 'onChange' | 'size'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'name' | 'value' | 'size'> {
   value: string;
   label?: ReactNode;
   description?: ReactNode;
@@ -139,7 +139,18 @@ export interface RadioProps
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
-  { value, label, description, size = 'md', disabled, className, id: providedId, ...props },
+  {
+    value,
+    label,
+    description,
+    size = 'md',
+    disabled,
+    checked: providedChecked,
+    onChange,
+    className,
+    id: providedId,
+    ...props
+  },
   ref
 ) {
   const context = useContext(RadioGroupContext);
@@ -147,7 +158,14 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   const id = providedId ?? generated;
   const descriptionId = description ? `${id}-description` : undefined;
 
-  const checked = context ? context.selected === value : false;
+  const checked = context ? context.selected === value : Boolean(providedChecked);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (context) {
+      context.setSelected(value);
+    }
+    onChange?.(e);
+  };
 
   return (
     <label
@@ -167,7 +185,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         checked={checked}
         disabled={disabled}
         aria-describedby={descriptionId}
-        onChange={() => context?.setSelected(value)}
+        onChange={handleChange}
         {...props}
       />
       <span className="pui-choice__box pui-choice__box--radio">

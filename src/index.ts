@@ -100,14 +100,14 @@ export type { CommandProps, CommandItem } from './components/Command';
 export { Accordion } from './components/Accordion';
 export type { AccordionProps, AccordionItem } from './components/Accordion';
 
-export { Slider } from './components/Slider';
-export type { SliderProps } from './components/Slider';
+export { Slider, RangeSlider } from './components/Slider';
+export type { SliderProps, RangeSliderProps, SliderMark } from './components/Slider';
 
 export { Calendar } from './components/Calendar';
 export type { CalendarProps } from './components/Calendar';
 
 export { DatePicker } from './components/DatePicker';
-export type { DatePickerProps } from './components/DatePicker';
+export type { DatePickerProps, DatePickerPreset } from './components/DatePicker';
 
 export { AreaChart, BarChart, DonutChart, ChartLegend, Sparkline } from './components/Charts';
 export type { AreaChartProps, BarChartProps, DonutChartProps, DonutSlice, SparklineProps, SeriesPoint } from './components/Charts';

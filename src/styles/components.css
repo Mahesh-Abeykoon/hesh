@@ -318,6 +318,28 @@
   color: var(--pui-fg);
 }
 
+.pui-textarea-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.pui-textarea-count {
+  align-self: flex-end;
+  font-size: var(--pui-text-xs);
+  color: var(--pui-fg-subtle);
+  margin-top: 0.25rem;
+  font-variant-numeric: tabular-nums;
+}
+.pui-textarea-count[data-limit="warning"] {
+  color: var(--pui-warning);
+  font-weight: 500;
+}
+.pui-textarea-count[data-limit="exceeded"] {
+  color: var(--pui-danger);
+  font-weight: 600;
+}
+
 /* Input wrapper for affixes */
 .pui-input-wrap { position: relative; display: flex; align-items: center; }
 .pui-input-wrap > .pui-control { flex: 1; }
@@ -1834,7 +1856,74 @@ input:focus-visible + .pui-choice__box {
 .pui-combobox__option[data-selected="true"] { background: var(--pui-primary-subtle); color: var(--pui-primary-fg); font-weight: var(--pui-weight-medium); }
 .pui-combobox__option__check { margin-inline-start: auto; color: var(--pui-primary-fg); }
 .pui-combobox__option__check svg { width: 0.875rem; height: 0.875rem; }
-.pui-combobox__empty { padding: var(--pui-space-6) var(--pui-space-3); text-align: center; color: var(--pui-fg-subtle); font-size: var(--pui-text-base); }
+.pui-combobox__group-header {
+  padding: var(--pui-space-2) var(--pui-space-2_5, 0.625rem) var(--pui-space-1);
+  font-size: var(--pui-text-xs, 0.75rem);
+  font-weight: var(--pui-weight-semibold, 600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--pui-fg-subtle);
+  user-select: none;
+}
+.pui-combobox__option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  flex: 1;
+}
+.pui-combobox__option-label {
+  font-size: inherit;
+  color: inherit;
+}
+.pui-combobox__option-desc {
+  font-size: var(--pui-text-xs, 0.75rem);
+  color: var(--pui-fg-subtle);
+}
+.pui-combobox__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.25rem 0;
+}
+.pui-combobox__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  background: var(--pui-surface-subtle);
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius-sm);
+  font-size: var(--pui-text-xs, 0.75rem);
+  color: var(--pui-fg);
+  line-height: 1.3;
+}
+.pui-combobox__tag button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--pui-fg-subtle);
+  cursor: pointer;
+  padding: 0;
+  border-radius: 9999px;
+}
+.pui-combobox__tag button:hover {
+  color: var(--pui-fg);
+}
+.pui-combobox__input-inline {
+  border: none;
+  background: transparent;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  min-width: 4.5rem;
+  flex: 1;
+  padding: 0.125rem 0;
+}
 
 /* ==========================================================================
    THEME SWITCH

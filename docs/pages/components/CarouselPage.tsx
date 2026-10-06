@@ -36,7 +36,7 @@ export function CarouselPage() {
       >
         <Showcase code={CAROUSEL_DEMO} defaultOpen width="md">
           <div style={{ maxWidth: '40rem', margin: '0 auto' }}>
-            <Carousel autoPlay interval={4000}>
+            <Carousel autoPlay={false} interval={4000}>
               <div
                 style={{
                   height: 220,

@@ -125,7 +125,7 @@ export function SurfacesPage() {
       <Section title="Carousel" description="Touch-ready, accessible image and content slider with autoplay, loop, and keyboard arrows.">
         <Showcase code={CAROUSEL} defaultOpen>
           <div style={{ maxWidth: '42rem', width: '100%', margin: '0 auto' }}>
-            <Carousel autoPlay interval={4000}>
+            <Carousel autoPlay={false} interval={4000}>
               <div
                 style={{
                   height: 220,

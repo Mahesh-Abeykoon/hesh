@@ -257,11 +257,13 @@ export function Section({
   description,
   children,
   id,
+  code,
 }: {
   title: string;
   description?: ReactNode;
   children: ReactNode;
   id?: string;
+  code?: string;
 }) {
   const generatedId = title
     .toLowerCase()

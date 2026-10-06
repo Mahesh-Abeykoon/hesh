@@ -133,34 +133,37 @@ export function ButtonPage() {
               </Button>
               <DropdownMenu
                 items={[
-                  { type: 'item', label: 'Deploy to Preview', onSelect: () => alert('Preview') },
-                  { type: 'item', label: 'Deploy to Staging', onSelect: () => alert('Staging') },
-                  { type: 'separator' },
-                  { type: 'item', label: 'Production Release', onSelect: () => alert('Production') },
+                  { kind: 'item', label: 'Deploy to Preview', onSelect: () => alert('Preview') },
+                  { kind: 'item', label: 'Deploy to Staging', onSelect: () => alert('Staging') },
+                  { kind: 'separator' },
+                  { kind: 'item', label: 'Production Release', onSelect: () => alert('Production') },
                 ]}
-              >
-                <IconButton
-                  aria-label="More deploy options"
-                  variant="primary"
-                  style={{ borderLeft: '1px solid rgba(255,255,255,0.25)' }}
-                >
-                  <ChevronDownIcon size={16} />
-                </IconButton>
-              </DropdownMenu>
+                trigger={(triggerProps) => (
+                  <IconButton
+                    {...triggerProps}
+                    aria-label="More deploy options"
+                    variant="primary"
+                    style={{ borderLeft: '1px solid rgba(255,255,255,0.25)' }}
+                  >
+                    <ChevronDownIcon size={16} />
+                  </IconButton>
+                )}
+              />
             </ButtonGroup>
 
             <ButtonGroup attached>
               <Button variant="secondary">Save Draft</Button>
               <DropdownMenu
                 items={[
-                  { type: 'item', label: 'Save as Template', onSelect: () => {} },
-                  { type: 'item', label: 'Discard Draft', onSelect: () => {} },
+                  { kind: 'item', label: 'Save as Template', onSelect: () => {} },
+                  { kind: 'item', label: 'Discard Draft', onSelect: () => {} },
                 ]}
-              >
-                <IconButton aria-label="More draft options" variant="secondary">
-                  <ChevronDownIcon size={16} />
-                </IconButton>
-              </DropdownMenu>
+                trigger={(triggerProps) => (
+                  <IconButton {...triggerProps} aria-label="More draft options" variant="secondary">
+                    <ChevronDownIcon size={16} />
+                  </IconButton>
+                )}
+              />
             </ButtonGroup>
           </div>
         </Showcase>

@@ -23,6 +23,12 @@ import { ComboboxPage } from './pages/ComboboxPage';
 import { TabsPage } from './pages/TabsPage';
 import { TablePage as DataTablePage } from './pages/TablePage';
 import { MenuPage as DropdownMenuPage } from './pages/MenuPage';
+import { OverlaysPage } from './pages/Overlays';
+import { AdvancedPage } from './pages/Advanced';
+import { SurfacesPage } from './pages/Surfaces';
+import { SelectionPage } from './pages/Selection';
+import { InputsPage } from './pages/Inputs';
+import { FeedbackPage } from './pages/FeedbackPage';
 
 import { AccordionPage } from './pages/components/AccordionPage';
 import { AlertPage } from './pages/components/AlertPage';
@@ -193,13 +199,16 @@ export const DOC_GROUPS: DocGroup[] = [
 
 const ALL_PAGES = DOC_GROUPS.flatMap((group) => group.pages);
 
+export const LEGACY_PAGES: Record<string, { id: string; title: string; Component: ComponentType }> = {
+  overlays: { id: 'overlays', title: 'Overlays', Component: OverlaysPage },
+  advanced: { id: 'advanced', title: 'Advanced Components', Component: AdvancedPage },
+  surfaces: { id: 'surfaces', title: 'Surfaces', Component: SurfacesPage },
+  selection: { id: 'selection', title: 'Selection Controls', Component: SelectionPage },
+  inputs: { id: 'inputs', title: 'Inputs', Component: InputsPage },
+  feedback: { id: 'feedback', title: 'Feedback', Component: FeedbackPage },
+};
+
 export const ROUTE_ALIASES: Record<string, string> = {
-  feedback: 'alert',
-  surfaces: 'card',
-  selection: 'checkbox',
-  inputs: 'input',
-  overlays: 'dialog',
-  advanced: 'command',
   premium: 'dropzone',
   navigation: 'page-header',
   table: 'data-table',
@@ -209,10 +218,14 @@ export const ROUTE_ALIASES: Record<string, string> = {
 
 function resolveRoute(rawHash: string): string {
   const clean = rawHash.replace(/^#\/?/, '').split('?')[0] || 'home';
+  const lower = clean.toLowerCase();
   if (ALL_PAGES.some((page) => page.id === clean)) {
     return clean;
   }
-  const alias = ROUTE_ALIASES[clean.toLowerCase()];
+  if (LEGACY_PAGES[lower]) {
+    return lower;
+  }
+  const alias = ROUTE_ALIASES[lower];
   if (alias) {
     return alias;
   }
@@ -311,7 +324,7 @@ function Shell() {
   useCommandShortcut(() => setCommandOpen((prev) => !prev));
 
   const activeIndex = useMemo(() => ALL_PAGES.findIndex((page) => page.id === route), [route]);
-  const active = activeIndex >= 0 ? ALL_PAGES[activeIndex] : undefined;
+  const active = activeIndex >= 0 ? ALL_PAGES[activeIndex] : LEGACY_PAGES[route];
   const prevPage = activeIndex > 0 ? ALL_PAGES[activeIndex - 1] : undefined;
   const nextPage = activeIndex >= 0 && activeIndex < ALL_PAGES.length - 1 ? ALL_PAGES[activeIndex + 1] : undefined;
 

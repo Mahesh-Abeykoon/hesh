@@ -553,15 +553,19 @@ export function PropsTable({ rows, items }: PropsTableProps) {
 /** Small "do / don't" callout used throughout the guides. */
 export function Callout({
   tone = 'info',
+  type,
   title,
   children,
 }: {
-  tone?: 'info' | 'success' | 'warning' | 'danger';
+  tone?: 'info' | 'success' | 'warning' | 'danger' | 'tip';
+  type?: 'info' | 'success' | 'warning' | 'danger' | 'tip';
   title?: string;
   children: ReactNode;
 }) {
+  const rawTone = type ?? tone;
+  const effectiveTone = rawTone === 'tip' ? 'info' : rawTone;
   return (
-    <aside className={`callout callout--${tone}`}>
+    <aside className={`callout callout--${effectiveTone}`}>
       <div className="callout__indicator" />
       <div className="callout__content">
         {title && <strong className="callout__title">{title}</strong>}

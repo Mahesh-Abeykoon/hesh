@@ -13,13 +13,34 @@ export interface ComboboxOption {
   keywords?: string[];
   disabled?: boolean;
   icon?: ReactNode;
+  /** Category or group name. */
+  group?: string;
+  /** Secondary description text shown below label. */
+  description?: string;
 }
 
 export interface ComboboxProps {
   options: readonly ComboboxOption[];
+  /** Single selection value (controlled). */
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
+
+  /** Multi-select mode with removable tags. */
+  multiple?: boolean;
+  values?: string[];
+  defaultValues?: string[];
+  onValuesChange?: (values: string[]) => void;
+
+  /** Size variant. */
+  size?: 'sm' | 'md' | 'lg';
+
+  /** Custom option renderer. */
+  renderOption?: (
+    option: ComboboxOption,
+    state: { selected: boolean; active: boolean }
+  ) => ReactNode;
+
   label?: ReactNode;
   hint?: ReactNode;
   error?: ReactNode;
@@ -40,7 +61,8 @@ export interface ComboboxProps {
  *
  * - The input keeps DOM focus; the highlighted option is tracked with
  *   `aria-activedescendant`, so screen readers announce it without moving focus.
- * - `aria-autocomplete="list"` + `aria-expanded` + `aria-controls` on the input.
+ * - Supports grouped option categories, multi-select with removable tags,
+ *   custom item rendering, and size variants (`sm`, `md`, `lg`).
  * - Home/End, PageUp/PageDown and arrow keys behave like a native select.
  */
 export function Combobox({
@@ -48,6 +70,12 @@ export function Combobox({
   value,
   defaultValue = '',
   onValueChange,
+  multiple = false,
+  values,
+  defaultValues = [],
+  onValuesChange,
+  size = 'md',
+  renderOption,
   label,
   hint,
   error,
@@ -65,6 +93,9 @@ export function Combobox({
   const listboxId = `${id}-listbox`;
 
   const [selected, setSelected] = useControlled(value, defaultValue, onValueChange);
+  const [internalValues, setInternalValues] = useState<string[]>(defaultValues);
+  const selectedValues = values !== undefined ? values : internalValues;
+
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -77,10 +108,46 @@ export function Combobox({
     const term = query.trim().toLowerCase();
     if (!term) return options;
     return options.filter((option) => {
-      const haystack = [option.label, ...(option.keywords ?? [])].join(' ').toLowerCase();
+      const haystack = [option.label, option.description, ...(option.keywords ?? [])]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
       return haystack.includes(term);
     });
   }, [options, query]);
+
+  // Grouped structure preserving flat index for keyboard accessibility
+  const groupedItems = useMemo(() => {
+    const hasGroups = filtered.some((o) => o.group);
+    if (!hasGroups) {
+      return filtered.map((option, index) => ({ type: 'option' as const, option, index }));
+    }
+    const groups: { name: string; items: { option: ComboboxOption; index: number }[] }[] = [];
+    const map = new Map<string, { option: ComboboxOption; index: number }[]>();
+
+    filtered.forEach((option, index) => {
+      const grp = option.group || 'Other';
+      if (!map.has(grp)) {
+        map.set(grp, []);
+        groups.push({ name: grp, items: map.get(grp)! });
+      }
+      map.get(grp)!.push({ option, index });
+    });
+
+    const result: (
+      | { type: 'header'; name: string }
+      | { type: 'option'; option: ComboboxOption; index: number }
+    )[] = [];
+
+    groups.forEach((g) => {
+      result.push({ type: 'header', name: g.name });
+      g.items.forEach((item) => {
+        result.push({ type: 'option', option: item.option, index: item.index });
+      });
+    });
+
+    return result;
+  }, [filtered]);
 
   const { setFloating, floatingRef } = useFloating<HTMLDivElement>(wrapRef, open, {
     placement: 'bottom',
@@ -99,17 +166,39 @@ export function Combobox({
 
   const commit = useCallback(
     (optionValue: string) => {
-      setSelected(optionValue);
-      close();
-      inputRef.current?.focus();
+      if (multiple) {
+        const next = selectedValues.includes(optionValue)
+          ? selectedValues.filter((v) => v !== optionValue)
+          : [...selectedValues, optionValue];
+        if (values === undefined) setInternalValues(next);
+        onValuesChange?.(next);
+        setQuery('');
+        setDirty(false);
+        inputRef.current?.focus();
+      } else {
+        setSelected(optionValue);
+        close();
+        inputRef.current?.focus();
+      }
     },
-    [setSelected, close]
+    [multiple, selectedValues, values, onValuesChange, setSelected, close]
   );
+
+  const removeValue = (valToRemove: string) => {
+    const next = selectedValues.filter((v) => v !== valToRemove);
+    if (values === undefined) setInternalValues(next);
+    onValuesChange?.(next);
+  };
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (disabled) return;
 
     switch (event.key) {
+      case 'Backspace':
+        if (multiple && query === '' && selectedValues.length > 0) {
+          removeValue(selectedValues[selectedValues.length - 1]!);
+        }
+        return;
       case 'ArrowDown':
         event.preventDefault();
         if (!open) {
@@ -155,7 +244,13 @@ export function Combobox({
   };
 
   const selectedOption = options.find((option) => option.value === selected);
-  const displayValue = open && dirty ? query : (selectedOption?.label ?? '');
+  const displayValue = multiple
+    ? query
+    : open && dirty
+      ? query
+      : (selectedOption?.label ?? '');
+
+  const hasSelection = multiple ? selectedValues.length > 0 : Boolean(selectedOption);
 
   return (
     <FieldShell
@@ -166,105 +261,177 @@ export function Combobox({
       className={cn('pui-combobox', className)}
     >
       {(describedBy) => (
-      <div ref={wrapRef} style={{ position: 'relative' }}>
-        <div className={cn('pui-input-wrap', 'pui-input-wrap--start', 'pui-input-wrap--end')}>
-          <span className="pui-affix pui-affix--start">
-            {loading ? <Spinner size="sm" /> : <SearchIcon />}
-          </span>
-
-          <input
-            ref={inputRef}
-            id={id}
-            className="pui-control"
-            role="combobox"
-            aria-expanded={open}
-            aria-controls={listboxId}
-            aria-autocomplete={searchable ? 'list' : 'none'}
-            aria-activedescendant={
-              open && activeIndex >= 0 ? `${id}-opt-${activeIndex}` : undefined
-            }
-            aria-invalid={error ? true : undefined}
-            aria-describedby={describedBy}
-            autoComplete="off"
-            disabled={disabled}
-            placeholder={placeholder}
-            value={displayValue}
-            readOnly={!searchable}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              setDirty(true);
-              setOpen(true);
-              setActiveIndex(filtered.findIndex((option) => !option.disabled));
-            }}
-            onFocus={() => !disabled && setOpen(true)}
-            onClick={() => !disabled && setOpen((prev) => !prev)}
-            onKeyDown={onKeyDown}
-            style={{ cursor: searchable || disabled ? undefined : 'pointer' }}
-          />
-
-          <span className="pui-affix pui-affix--end" style={{ gap: '0.25rem', pointerEvents: 'auto' }}>
-            {clearable && selectedOption && !disabled && (
-              <button
-                type="button"
-                aria-label="Clear selection"
-                onClick={() => {
-                  setSelected('');
-                  setQuery('');
-                  inputRef.current?.focus();
-                }}
-                style={{ display: 'inline-flex', color: 'inherit' }}
-              >
-                <XIcon size="0.875rem" />
-              </button>
-            )}
-            <span aria-hidden="true" style={{ color: 'var(--pui-fg-subtle)' }}>
-              <ChevronDownIcon size="1rem" />
-            </span>
-          </span>
-        </div>
-
-        {open && (
+        <div ref={wrapRef} style={{ position: 'relative' }}>
           <div
-            ref={setFloating}
-            id={listboxId}
-            role="listbox"
-            aria-label={typeof label === 'string' ? label : 'Options'}
-            className="pui-combobox__listbox"
-            style={{ position: 'absolute' }}
-          >
-            {filtered.length === 0 ? (
-              <div className="pui-combobox__empty">{emptyMessage}</div>
-            ) : (
-              filtered.map((option, index) => (
-                <div
-                  key={option.value}
-                  id={`${id}-opt-${index}`}
-                  role="option"
-                  aria-selected={option.value === selected}
-                  aria-disabled={option.disabled || undefined}
-                  data-active={index === activeIndex ? 'true' : undefined}
-                  data-selected={option.value === selected ? 'true' : undefined}
-                  className="pui-combobox__option"
-                  onMouseEnter={() => !option.disabled && setActiveIndex(index)}
-                  onMouseDown={(event) => {
-                    // Keep focus on the input; mousedown would otherwise blur it.
-                    event.preventDefault();
-                    if (!option.disabled) commit(option.value);
-                  }}
-                >
-                  {option.icon}
-                  <span>{option.label}</span>
-                  {option.value === selected && (
-                    <span className="pui-combobox__option__check">
-                      <CheckIcon />
-                    </span>
-                  )}
-                </div>
-              ))
+            className={cn(
+              'pui-input-wrap',
+              'pui-input-wrap--start',
+              'pui-input-wrap--end',
+              size !== 'md' && `pui-control--${size}`
             )}
+            onClick={() => {
+              if (!disabled) {
+                inputRef.current?.focus();
+                setOpen(true);
+              }
+            }}
+          >
+            <span className="pui-affix pui-affix--start">
+              {loading ? <Spinner size="sm" /> : <SearchIcon />}
+            </span>
+
+            {multiple && selectedValues.length > 0 && (
+              <div className="pui-combobox__tags">
+                {selectedValues.map((val) => {
+                  const opt = options.find((o) => o.value === val);
+                  return (
+                    <span key={val} className="pui-combobox__tag">
+                      {opt?.icon}
+                      <span>{opt?.label ?? val}</span>
+                      {!disabled && (
+                        <button
+                          type="button"
+                          aria-label={`Remove ${opt?.label ?? val}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeValue(val);
+                          }}
+                        >
+                          <XIcon size="0.75rem" />
+                        </button>
+                      )}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+
+            <input
+              ref={inputRef}
+              id={id}
+              className={cn('pui-control', multiple && 'pui-combobox__input-inline')}
+              role="combobox"
+              aria-expanded={open}
+              aria-controls={listboxId}
+              aria-autocomplete={searchable ? 'list' : 'none'}
+              aria-activedescendant={
+                open && activeIndex >= 0 ? `${id}-opt-${activeIndex}` : undefined
+              }
+              aria-invalid={error ? true : undefined}
+              aria-describedby={describedBy}
+              autoComplete="off"
+              disabled={disabled}
+              placeholder={multiple && selectedValues.length > 0 ? '' : placeholder}
+              value={displayValue}
+              readOnly={!searchable}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setDirty(true);
+                setOpen(true);
+                setActiveIndex(filtered.findIndex((option) => !option.disabled));
+              }}
+              onFocus={() => !disabled && setOpen(true)}
+              onKeyDown={onKeyDown}
+              style={{ cursor: searchable || disabled ? undefined : 'pointer' }}
+            />
+
+            <span className="pui-affix pui-affix--end" style={{ gap: '0.25rem', pointerEvents: 'auto' }}>
+              {clearable && hasSelection && !disabled && (
+                <button
+                  type="button"
+                  aria-label="Clear selection"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (multiple) {
+                      if (values === undefined) setInternalValues([]);
+                      onValuesChange?.([]);
+                    } else {
+                      setSelected('');
+                    }
+                    setQuery('');
+                    inputRef.current?.focus();
+                  }}
+                  style={{ display: 'inline-flex', color: 'inherit', background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  <XIcon size="0.875rem" />
+                </button>
+              )}
+              <span aria-hidden="true" style={{ color: 'var(--pui-fg-subtle)' }}>
+                <ChevronDownIcon size="1rem" />
+              </span>
+            </span>
           </div>
-        )}
-      </div>
+
+          {open && (
+            <div
+              ref={setFloating}
+              id={listboxId}
+              role="listbox"
+              aria-label={typeof label === 'string' ? label : 'Options'}
+              aria-multiselectable={multiple ? 'true' : undefined}
+              className="pui-combobox__listbox"
+              style={{ position: 'absolute' }}
+            >
+              {filtered.length === 0 ? (
+                <div className="pui-combobox__empty">{emptyMessage}</div>
+              ) : (
+                groupedItems.map((item) => {
+                  if (item.type === 'header') {
+                    return (
+                      <div key={`group-${item.name}`} className="pui-combobox__group-header">
+                        {item.name}
+                      </div>
+                    );
+                  }
+
+                  const { option, index } = item;
+                  const isOptSelected = multiple
+                    ? selectedValues.includes(option.value)
+                    : option.value === selected;
+                  const isOptActive = index === activeIndex;
+
+                  return (
+                    <div
+                      key={option.value}
+                      id={`${id}-opt-${index}`}
+                      role="option"
+                      aria-selected={isOptSelected}
+                      aria-disabled={option.disabled || undefined}
+                      data-active={isOptActive ? 'true' : undefined}
+                      data-selected={isOptSelected ? 'true' : undefined}
+                      className="pui-combobox__option"
+                      onMouseEnter={() => !option.disabled && setActiveIndex(index)}
+                      onMouseDown={(event) => {
+                        // Keep focus on the input; mousedown would otherwise blur it.
+                        event.preventDefault();
+                        if (!option.disabled) commit(option.value);
+                      }}
+                    >
+                      {renderOption ? (
+                        renderOption(option, { selected: isOptSelected, active: isOptActive })
+                      ) : (
+                        <>
+                          {option.icon}
+                          <div className="pui-combobox__option-content">
+                            <span className="pui-combobox__option-label">{option.label}</span>
+                            {option.description && (
+                              <span className="pui-combobox__option-desc">{option.description}</span>
+                            )}
+                          </div>
+                          {isOptSelected && (
+                            <span className="pui-combobox__option__check">
+                              <CheckIcon />
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
+        </div>
       )}
     </FieldShell>
   );

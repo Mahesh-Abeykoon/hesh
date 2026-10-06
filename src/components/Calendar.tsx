@@ -9,10 +9,18 @@ const MONTHS = [
 ];
 const DOW = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
+export type CalendarSelectionMode = 'single' | 'range';
+
 export interface CalendarProps {
+  mode?: CalendarSelectionMode;
+  /** Single date selection (when mode='single'). */
   value?: Date | null;
   defaultValue?: Date | null;
   onChange?: (date: Date) => void;
+  /** Range date selection (when mode='range'). */
+  rangeValue?: [Date | null, Date | null];
+  defaultRangeValue?: [Date | null, Date | null];
+  onRangeChange?: (range: [Date | null, Date | null]) => void;
   /** Earliest selectable date. */
   min?: Date;
   max?: Date;
@@ -28,11 +36,16 @@ const sameDay = (a: Date | null, b: Date | null) =>
  * Month grid with full keyboard support (WAI-ARIA Date Picker pattern):
  * arrows move by day, PageUp/PageDown by month, Home/End to week bounds,
  * Shift+PageUp/Down by year. Uses `role="grid"` with `aria-selected` cells.
+ * Supports both single-date selection and date-range selection with hover preview.
  */
 export function Calendar({
+  mode = 'single',
   value,
   defaultValue = null,
   onChange,
+  rangeValue,
+  defaultRangeValue = [null, null],
+  onRangeChange,
   min,
   max,
   className,
@@ -43,8 +56,14 @@ export function Calendar({
     onChange: onChange as ((next: Date | null) => void) | undefined,
   });
 
-  const [cursor, setCursor] = useState<Date>(() => selected ?? new Date());
-  const [focused, setFocused] = useState<Date>(() => selected ?? new Date());
+  const [internalRange, setInternalRange] = useState<[Date | null, Date | null]>(() => defaultRangeValue ?? [null, null]);
+  const currentRange = rangeValue !== undefined ? rangeValue : internalRange;
+  const [rangeStart, rangeEnd] = currentRange;
+  const [hoverDate, setHoverDate] = useState<Date | null>(null);
+
+  const initialCursor = mode === 'range' ? (rangeStart ?? new Date()) : (selected ?? new Date());
+  const [cursor, setCursor] = useState<Date>(() => initialCursor);
+  const [focused, setFocused] = useState<Date>(() => initialCursor);
   const gridRef = useRef<HTMLDivElement>(null);
 
   const year = cursor.getFullYear();
@@ -75,8 +94,29 @@ export function Calendar({
 
   const commit = (date: Date) => {
     if (isDisabled(date)) return;
-    setSelected(date);
-    setFocused(date);
+    if (mode === 'range') {
+      if (!rangeStart || (rangeStart && rangeEnd)) {
+        // Start fresh range selection
+        const nextRange: [Date | null, Date | null] = [date, null];
+        if (rangeValue === undefined) setInternalRange(nextRange);
+        onRangeChange?.(nextRange);
+      } else {
+        // Start exists, end was pending
+        if (startOfDay(date) < startOfDay(rangeStart)) {
+          const nextRange: [Date | null, Date | null] = [date, null];
+          if (rangeValue === undefined) setInternalRange(nextRange);
+          onRangeChange?.(nextRange);
+        } else {
+          const nextRange: [Date | null, Date | null] = [rangeStart, date];
+          if (rangeValue === undefined) setInternalRange(nextRange);
+          onRangeChange?.(nextRange);
+        }
+      }
+      setFocused(date);
+    } else {
+      setSelected(date);
+      setFocused(date);
+    }
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
@@ -137,17 +177,37 @@ export function Calendar({
         </button>
       </div>
 
-      <div className="pui-calendar__grid" role="grid" ref={gridRef} onKeyDown={onKeyDown}>
+      <div
+        className="pui-calendar__grid"
+        role="grid"
+        ref={gridRef}
+        onKeyDown={onKeyDown}
+        onMouseLeave={() => setHoverDate(null)}
+      >
         {DOW.map((day) => (
           <div key={day} className="pui-calendar__dow" role="columnheader" aria-label={day}>
             {day}
           </div>
         ))}
         {days.map(({ date, outside }) => {
-          const isSelected = sameDay(date, selected);
+          const isSelected = mode === 'range'
+            ? sameDay(date, rangeStart) || sameDay(date, rangeEnd)
+            : sameDay(date, selected);
           const isToday = sameDay(date, today);
           const disabled = isDisabled(date);
           const isFocused = sameDay(date, focused);
+
+          const isRangeStart = mode === 'range' && sameDay(date, rangeStart);
+          const isRangeEnd = mode === 'range' && sameDay(date, rangeEnd);
+          const effectiveRangeEnd = rangeEnd ?? (rangeStart && hoverDate && startOfDay(hoverDate) >= startOfDay(rangeStart) ? hoverDate : null);
+          const inRange = Boolean(
+            mode === 'range' &&
+            rangeStart &&
+            effectiveRangeEnd &&
+            startOfDay(date) >= startOfDay(rangeStart) &&
+            startOfDay(date) <= startOfDay(effectiveRangeEnd)
+          );
+
           return (
             <button
               key={date.toISOString()}
@@ -160,9 +220,17 @@ export function Calendar({
               data-outside={outside || undefined}
               data-today={isToday || undefined}
               data-selected={isSelected || undefined}
+              data-range-start={isRangeStart || undefined}
+              data-range-end={isRangeEnd || undefined}
+              data-in-range={inRange || undefined}
               data-disabled={disabled || undefined}
               disabled={disabled}
               onClick={() => commit(date)}
+              onMouseEnter={() => {
+                if (mode === 'range' && rangeStart && !rangeEnd) {
+                  setHoverDate(date);
+                }
+              }}
               onFocus={() => setFocused(date)}
             >
               {date.getDate()}

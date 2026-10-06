@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Slider, RangeSlider } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { SliderWorkbench } from '../../components/PropsWorkbench';
 
 const SLIDER_DEMO = `const [volume, setVolume] = useState(65);
 
@@ -60,6 +61,14 @@ export function SliderPage() {
       lede="Single and dual-thumb range controls for selecting numeric values along a horizontal track — with optional ticks, marks, and live tooltips."
       importStatement={`import { Slider, RangeSlider } from 'hesh';`}
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Inspect and adjust slider sizes, live tooltips, tick marks, and disabled states with real-time code generation."
+      >
+        <SliderWorkbench />
+      </Section>
+
       {/* ── Basic Slider ── */}
       <Section
         title="Single Slider"

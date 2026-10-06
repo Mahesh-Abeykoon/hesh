@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TagInput } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { TagInputWorkbench } from '../../components/PropsWorkbench';
 
 const DEMO_BASIC = `const [tags, setTags] = useState(['React', 'TypeScript', 'Design Systems']);
 
@@ -40,6 +41,14 @@ export function TagInputPage() {
       lede="Chip-based input for tags, keyword filters, and multi-recipient lists. Press Enter or comma to add; Backspace on an empty input removes the last chip."
       importStatement="import { TagInput } from 'hesh';"
     >
+      {/* ── Interactive Props Workbench ── */}
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure tag limits, blur behavior, placeholders, and disabled states with real-time code generation."
+      >
+        <TagInputWorkbench />
+      </Section>
+
       {/* ── Basic ── */}
       <Section
         title="Technology Stack Tags"

@@ -951,10 +951,10 @@ input:focus-visible + .pui-choice__box {
   animation: pui-fade-in var(--pui-duration-base) var(--pui-ease-out);
   overflow-y: auto;
 }
-.pui-overlay--drawer-right  { justify-content: flex-end; padding: 0; }
-.pui-overlay--drawer-left   { justify-content: flex-start; padding: 0; }
-.pui-overlay--drawer-top    { align-items: flex-start; justify-content: center; padding: 0; }
-.pui-overlay--drawer-bottom { align-items: flex-end; justify-content: center; padding: 0; }
+.pui-overlay--drawer-right  { justify-content: flex-end; padding: 0; overflow: hidden; }
+.pui-overlay--drawer-left   { justify-content: flex-start; padding: 0; overflow: hidden; }
+.pui-overlay--drawer-top    { align-items: flex-start; justify-content: center; padding: 0; overflow: hidden; }
+.pui-overlay--drawer-bottom { align-items: flex-end; justify-content: center; padding: 0; overflow: hidden; }
 
 .pui-dialog {
   position: relative;
@@ -1017,7 +1017,7 @@ input:focus-visible + .pui-choice__box {
 }
 
 @media (max-width: 640px) {
-  .pui-dialog {
+  .pui-dialog:not(.pui-drawer) {
     max-width: calc(100vw - 1rem);
     border-radius: var(--pui-radius-lg);
   }
@@ -1044,7 +1044,7 @@ input:focus-visible + .pui-choice__box {
   display: flex;
   flex-direction: column;
   height: 100dvh;
-  max-height: none;
+  max-height: 100dvh;
   border-radius: 0;
   background: var(--pui-surface);
   border: 1px solid var(--pui-border);
@@ -1052,12 +1052,33 @@ input:focus-visible + .pui-choice__box {
   max-width: 100vw;
   box-sizing: border-box;
   outline: none;
+  animation: none;
 }
 .pui-drawer--right {
-  animation: pui-slide-in-right var(--pui-duration-slow) var(--pui-ease-out);
+  height: 100dvh;
+  border-radius: 0 !important;
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
+  margin: 0;
+  animation: pui-drawer-slide-in-right var(--pui-duration-base) cubic-bezier(0.16, 1, 0.3, 1);
 }
 .pui-drawer--left {
-  animation: pui-slide-in-left var(--pui-duration-slow) var(--pui-ease-out);
+  height: 100dvh;
+  border-radius: 0 !important;
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
+  margin: 0;
+  animation: pui-drawer-slide-in-left var(--pui-duration-base) cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes pui-drawer-slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes pui-drawer-slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
 }
 .pui-drawer--bottom {
   height: auto;

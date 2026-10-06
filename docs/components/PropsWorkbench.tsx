@@ -4,9 +4,12 @@ import {
   Button,
   Input,
   Switch,
+  TagInput,
+  Slider,
   type ButtonVariant,
   type ButtonSize,
   type BadgeTone,
+  type SliderMark,
 } from '../../src/index';
 import { ArrowRightIcon, PlusIcon, SparklesIcon, TrashIcon } from '../../src/index';
 import { CodeBlock } from './CodeBlock';
@@ -308,3 +311,175 @@ export function InputWorkbench() {
     />
   );
 }
+
+/* ------------------------------------------------------------------ TagInput Workbench */
+
+export function TagInputWorkbench() {
+  const [tags, setTags] = useState<string[]>(['React', 'TypeScript', 'Tailwind']);
+  const [placeholder, setPlaceholder] = useState('Add framework…');
+  const [maxTags, setMaxTags] = useState<number | undefined>(6);
+  const [allowDuplicates, setAllowDuplicates] = useState(false);
+  const [addOnBlur, setAddOnBlur] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+
+  const propList: string[] = ['value={tags}', 'onChange={setTags}'];
+  if (placeholder && placeholder !== 'Add tag...') propList.push(`placeholder="${placeholder}"`);
+  if (maxTags !== undefined) propList.push(`maxTags={${maxTags}}`);
+  if (allowDuplicates) propList.push('allowDuplicates');
+  if (addOnBlur) propList.push('addOnBlur');
+  if (disabled) propList.push('disabled');
+
+  const jsx = `const [tags, setTags] = useState<string[]>(${JSON.stringify(tags)});\n\n<TagInput\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="TagInput Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '28rem' }}>
+          <TagInput
+            value={tags}
+            onChange={setTags}
+            placeholder={placeholder}
+            maxTags={maxTags}
+            allowDuplicates={allowDuplicates}
+            addOnBlur={addOnBlur}
+            disabled={disabled}
+          />
+          <div style={{ marginTop: '0.625rem', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Active tag count: <strong>{tags.length}</strong> {maxTags ? `of ${maxTags} max` : ''}
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Placeholder</span>
+            <Input value={placeholder} onChange={(e) => setPlaceholder(e.target.value)} />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Max Tags Limit</span>
+            <div className="workbench__pills">
+              {([undefined, 3, 5, 8] as const).map((limit) => (
+                <button
+                  key={String(limit)}
+                  type="button"
+                  className={`workbench__pill${maxTags === limit ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setMaxTags(limit)}
+                >
+                  {limit === undefined ? 'None' : limit}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Commit on blur (addOnBlur)"
+              checked={addOnBlur}
+              onCheckedChange={setAddOnBlur}
+            />
+            <Switch
+              label="Allow duplicate tags"
+              checked={allowDuplicates}
+              onCheckedChange={setAllowDuplicates}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Slider Workbench */
+
+export function SliderWorkbench() {
+  const [val, setVal] = useState(60);
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [showTooltip, setShowTooltip] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+  const [hasMarks, setHasMarks] = useState(false);
+
+  const marks: SliderMark[] = [
+    { value: 0, label: '0%' },
+    { value: 25, label: '25%' },
+    { value: 50, label: '50%' },
+    { value: 75, label: '75%' },
+    { value: 100, label: '100%' },
+  ];
+
+  const propList: string[] = ['value={value}', 'onValueChange={setValue}'];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (showTooltip) propList.push('showTooltip');
+  if (disabled) propList.push('disabled');
+  if (hasMarks) propList.push('marks={marks}');
+
+  const jsx = `const [value, setValue] = useState(${val});\n\n<Slider\n  label="Volume Control"\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="Slider Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem', paddingBottom: hasMarks ? '1rem' : 0 }}>
+          <Slider
+            label="Volume Control"
+            value={val}
+            onValueChange={setVal}
+            size={size}
+            showTooltip={showTooltip}
+            disabled={disabled}
+            marks={hasMarks ? marks : undefined}
+          />
+          <div style={{ marginTop: '0.75rem', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+            Current value: <strong>{val}%</strong>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch
+              label="Live tooltip on thumb"
+              checked={showTooltip}
+              onCheckedChange={setShowTooltip}
+            />
+            <Switch
+              label="Step marks & ticks"
+              checked={hasMarks}
+              onCheckedChange={setHasMarks}
+            />
+            <Switch
+              label="Disabled"
+              checked={disabled}
+              onCheckedChange={setDisabled}
+            />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+

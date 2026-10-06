@@ -94,7 +94,7 @@ import { TooltipPage } from './pages/components/TooltipPage';
 import { TreePage } from './pages/components/TreePage';
 import { DocNavigationContext } from './components/DocPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { ThemeCustomizer } from './components/ThemeCustomizer';
+import { ThemeCustomizer, ThemeCustomizerTrigger } from './components/ThemeCustomizer';
 
 interface DocPage {
   id: string;
@@ -304,6 +304,7 @@ function Shell() {
   const { density, setDensity } = useDensity();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
+  const [customizerOpen, setCustomizerOpen] = useState(false);
   const { theme } = useTheme();
 
   const commandItems: CommandItem[] = useMemo(
@@ -384,6 +385,8 @@ function Shell() {
               </button>
             ))}
           </div>
+
+          <ThemeCustomizerTrigger onClick={() => setCustomizerOpen(true)} />
 
           <Tooltip content="Toggle colour theme">
             <span style={{ display: 'inline-flex' }}>
@@ -494,7 +497,7 @@ function Shell() {
         placeholder="Jump to a page…"
       />
 
-      <ThemeCustomizer />
+      <ThemeCustomizer open={customizerOpen} onClose={() => setCustomizerOpen(false)} />
     </div>
   );
 }

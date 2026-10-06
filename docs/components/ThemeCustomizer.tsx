@@ -17,7 +17,8 @@ import {
   hslToHex,
   buildBrandRamp,
 } from '../../src/index';
-import { SparklesIcon, CopyIcon, CheckIcon, XIcon } from '../../src/components/icons';
+import { SparklesIcon, CopyIcon } from '../../src/components/icons';
+import { cn } from '../../src/utils/cn';
 
 const EXTRA_PRESETS = [
   { name: 'Violet', hex: '#8b5cf6', hue: 258, sat: 90 },
@@ -42,7 +43,40 @@ const FONT_PRESETS = [
   { label: 'Editorial Serif', value: "Georgia, Cambria, 'Times New Roman', serif" },
 ];
 
-export function ThemeCustomizer() {
+export interface ThemeCustomizerProps {
+  open?: boolean;
+  onClose?: () => void;
+  showFab?: boolean;
+}
+
+export function ThemeCustomizerTrigger({
+  onClick,
+  className,
+}: {
+  onClick: () => void;
+  className?: string;
+}) {
+  const { customTheme } = useTheme();
+  return (
+    <button
+      type="button"
+      className={cn('topbar__customizer-btn', className)}
+      onClick={onClick}
+      aria-label="Open theme customizer"
+      title="Customize theme (colors, radius, density)"
+    >
+      <SparklesIcon size={14} />
+      <span className="topbar__customizer-btn__text">Theme</span>
+      {customTheme && <span className="topbar__customizer-btn__dot" aria-hidden="true" />}
+    </button>
+  );
+}
+
+export function ThemeCustomizer({
+  open: controlledOpen,
+  onClose: controlledOnClose,
+  showFab = false,
+}: ThemeCustomizerProps) {
   const {
     preset,
     setPreset,
@@ -54,7 +88,13 @@ export function ThemeCustomizer() {
   } = useTheme();
 
   const { toast: showToast } = useToast();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const handleClose = () => {
+    if (controlledOnClose) controlledOnClose();
+    else setInternalOpen(false);
+  };
+
   const [copied, setCopied] = useState(false);
 
   // Active color values
@@ -199,47 +239,79 @@ export function ThemeCustomizer() {
 
   return (
     <>
-      {/* Floating Action Trigger Button */}
-      <aside aria-label="Theme Customizer" className="pui-customizer-fab-wrap">
-        <button
-          type="button"
-          className="pui-customizer-fab"
-          onClick={() => setOpen(true)}
-          aria-label="Open global theme customizer"
-          title="Open Theme Customizer"
-        >
-          <span className="pui-customizer-fab__icon">
-            <SparklesIcon size={18} />
-          </span>
-          <span className="pui-customizer-fab__label">Customizer</span>
-          {customTheme && <span className="pui-customizer-fab__badge" title="Custom theme active" />}
-        </button>
-      </aside>
+      {/* Optional Floating Trigger (if enabled) */}
+      {showFab && (
+        <aside aria-label="Theme Customizer" className="pui-customizer-fab-wrap">
+          <button
+            type="button"
+            className="pui-customizer-fab"
+            onClick={() => setInternalOpen(true)}
+            aria-label="Open global theme customizer"
+            title="Open Theme Customizer"
+          >
+            <span className="pui-customizer-fab__icon">
+              <SparklesIcon size={18} />
+            </span>
+            <span className="pui-customizer-fab__label">Customizer</span>
+            {customTheme && <span className="pui-customizer-fab__badge" title="Custom theme active" />}
+          </button>
+        </aside>
+      )}
 
       {/* Slide-over Theme Customizer Drawer */}
       <Drawer
-        open={open}
-        onClose={() => setOpen(false)}
+        open={isOpen}
+        onClose={handleClose}
         title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.625rem' }}>
             <span
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '1.875rem',
-                height: '1.875rem',
+                width: '1.75rem',
+                height: '1.75rem',
                 borderRadius: 'var(--pui-radius-md)',
                 background: 'var(--pui-primary-subtle)',
                 color: 'var(--pui-primary)',
               }}
             >
-              <SparklesIcon size={18} />
+              <SparklesIcon size={16} />
             </span>
             <span>Theme Customizer</span>
+          </span>
+        }
+        description="Tune brand colors, radii, density, and typography. Updates every component across the entire library in real time."
+        footer={
+          <div className="pui-customizer-actions" style={{ width: '100%' }}>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={handleCopyCss}
+              style={{ flex: 1 }}
+            >
+              <CopyIcon size={14} />
+              <span>{copied ? 'Copied CSS!' : 'Copy CSS (:root)'}</span>
+            </Button>
+
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleExportJson}
+            >
+              Export JSON
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleReset}
+              title="Reset all settings to default"
+            >
+              Reset
+            </Button>
           </div>
         }
-        description="Tune brand colors, radii, density, and typography. Every component across all 72 routes updates in real time."
       >
         <div className="pui-customizer-content">
           {/* 1. Quick Presets */}
@@ -430,7 +502,7 @@ export function ThemeCustomizer() {
           {/* 6. Live Interactive Preview Widget */}
           <section className="pui-customizer-sec">
             <div className="pui-customizer-sec__head">
-              <span className="pui-customizer-sec__title">Live Preview Preview</span>
+              <span className="pui-customizer-sec__title">Live Preview Controls</span>
             </div>
             <div className="pui-customizer-preview-box">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -439,7 +511,7 @@ export function ThemeCustomizer() {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <Button variant="primary" size="sm">Primary Action</Button>
+                <Button variant="primary" size="sm">Primary</Button>
                 <Button variant="secondary" size="sm">Secondary</Button>
                 <Switch defaultChecked aria-label="Demo switch" />
               </div>
@@ -449,33 +521,6 @@ export function ThemeCustomizer() {
               </div>
             </div>
           </section>
-
-          {/* 7. Action Buttons */}
-          <div className="pui-customizer-actions">
-            <Button
-              variant="primary"
-              onClick={handleCopyCss}
-              style={{ flex: 1 }}
-            >
-              <CopyIcon size={16} />
-              <span>{copied ? 'Copied CSS!' : 'Copy CSS (:root)'}</span>
-            </Button>
-
-            <Button
-              variant="secondary"
-              onClick={handleExportJson}
-            >
-              Export JSON
-            </Button>
-
-            <Button
-              variant="ghost"
-              onClick={handleReset}
-              title="Reset all settings to default"
-            >
-              Reset
-            </Button>
-          </div>
         </div>
       </Drawer>
     </>

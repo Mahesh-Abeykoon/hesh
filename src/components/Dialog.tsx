@@ -163,7 +163,6 @@ export function Drawer({
             props.onClose();
           }
         }}
-        aria-hidden="true"
       >
         <div
           ref={setPanel}

@@ -948,3 +948,34 @@
   margin-top: 0.5rem;
 }
 
+.topbar__customizer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 0.625rem;
+  height: 2rem;
+  background: var(--pui-surface);
+  color: var(--pui-fg);
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius-md);
+  font-size: var(--pui-text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--pui-duration-fast) ease;
+}
+.topbar__customizer-btn:hover {
+  background: var(--pui-surface-hover);
+  border-color: var(--pui-primary);
+  color: var(--pui-primary-fg);
+}
+.topbar__customizer-btn svg {
+  color: var(--pui-primary);
+}
+.topbar__customizer-btn__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--pui-primary);
+  box-shadow: 0 0 6px var(--pui-primary);
+}
+

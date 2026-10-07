@@ -106,7 +106,9 @@ export function ComboboxPage() {
   const [selectedTech, setSelectedTech] = useState(['react', 'nextjs']);
   const [assignee, setAssignee] = useState('ada');
   const [groupedCountry, setGroupedCountry] = useState('jp');
-  const [sizeVal, setSizeVal] = useState('us');
+  const [sizeSmVal, setSizeSmVal] = useState('us');
+  const [sizeMdVal, setSizeMdVal] = useState('us');
+  const [sizeLgVal, setSizeLgVal] = useState('us');
   const [asyncAssignee, setAsyncAssignee] = useState('');
   const [loading, setLoading] = useState(false);
   const [asyncOptions, setAsyncOptions] = useState<{ value: string; label: string }[]>([
@@ -255,27 +257,30 @@ export function ComboboxPage() {
 
       <Section title="Sizes" description="Combobox comes in sm, md, and lg sizes matching standard input heights.">
         <Showcase width="lg">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1rem', width: '100%' }}>
             <Combobox
               label="Small (sm)"
               size="sm"
               options={COUNTRIES.slice(0, 6)}
-              value={sizeVal}
-              onValueChange={setSizeVal}
+              value={sizeSmVal}
+              onValueChange={setSizeSmVal}
+              clearable
             />
             <Combobox
               label="Medium (md - default)"
               size="md"
               options={COUNTRIES.slice(0, 6)}
-              value={sizeVal}
-              onValueChange={setSizeVal}
+              value={sizeMdVal}
+              onValueChange={setSizeMdVal}
+              clearable
             />
             <Combobox
               label="Large (lg)"
               size="lg"
               options={COUNTRIES.slice(0, 6)}
-              value={sizeVal}
-              onValueChange={setSizeVal}
+              value={sizeLgVal}
+              onValueChange={setSizeLgVal}
+              clearable
             />
           </div>
         </Showcase>

@@ -6,8 +6,9 @@ import { DocPage, Section } from '../../components/DocPage';
 const PROFILE_DEMO = `<HoverCard
   placement="top"
   arrow
+  align="center"
   content={
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '18rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', width: '100%', maxWidth: '18rem', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <Avatar name="Sarah Connor" size="md" status="online" />
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -26,9 +27,9 @@ const PROFILE_DEMO = `<HoverCard
     </div>
   }
 >
-  <a href="#/hover-card" style={{ fontWeight: 700, color: 'var(--pui-primary)' }}>
+  <span role="button" tabIndex={0} style={{ fontWeight: 700, color: 'var(--pui-primary)', cursor: 'pointer', textDecoration: 'underline' }}>
     @sconnor
-  </a>
+  </span>
 </HoverCard>`;
 
 const REPO_DEMO = `<HoverCard
@@ -176,6 +177,9 @@ export function HoverCardPage() {
               Component crafted with care by{' '}
               <HoverCard content={profileContent} placement="top" arrow align="center">
                 <span
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Sarah Connor Profile Preview"
                   style={{
                     fontWeight: 700,
                     color: 'var(--pui-primary)',

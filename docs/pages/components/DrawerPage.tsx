@@ -39,7 +39,7 @@ const BOTTOM_SHEET_DEMO = `const [sheetOpen, setSheetOpen] = useState(false);
   footer={<Button variant="secondary" fullWidth onClick={() => setSheetOpen(false)}>Cancel</Button>}
 >
   <div className="stack" style={{ gap: '0.75rem', marginTop: '0.5rem' }}>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', textAlign: 'center' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(75px, 1fr))', gap: '0.75rem', textAlign: 'center' }}>
       {['Copy Link', 'Email', 'Slack', 'Export PDF'].map((action, i) => (
         <button
           key={i}

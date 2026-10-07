@@ -141,10 +141,15 @@ export function HoverCard({
       (children.props as { onBlur?: (e: React.FocusEvent) => void }).onBlur?.(e);
     },
     onClick: (e: React.MouseEvent) => {
-      if (
+      const isTouch =
+        (e.nativeEvent as PointerEvent)?.pointerType === 'touch' ||
         'ontouchstart' in window ||
-        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0)
-      ) {
+        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0);
+      if (isTouch) {
+        if (!isOpen) {
+          // Prevent link navigation if tapped to open on mobile
+          e.preventDefault();
+        }
         setOpenState(!isOpen);
       }
       (children.props as { onClick?: (e: React.MouseEvent) => void }).onClick?.(e);
@@ -168,6 +173,7 @@ export function HoverCard({
             className={cn(
               'pui-hover-card',
               `pui-hover-card--${placement}`,
+              `pui-hover-card--align-${align}`,
               cardClassName
             )}
             style={{
@@ -175,7 +181,12 @@ export function HoverCard({
               left: `${coords.x}px`,
               top: `${coords.y}px`,
               visibility: ready ? 'visible' : 'hidden',
-              width: width ?? undefined,
+              width: width
+                ? typeof width === 'number'
+                  ? `min(${width}px, calc(100vw - 24px))`
+                  : width
+                : undefined,
+              maxWidth: 'calc(100vw - 24px)',
             }}
             onMouseEnter={clearTimers}
             onMouseLeave={() => scheduleClose()}

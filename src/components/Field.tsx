@@ -144,7 +144,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         className={cn(
           'pui-input-wrap',
           leftAddon && 'pui-input-wrap--start',
-          (rightAddon || showClear) && 'pui-input-wrap--end'
+          (rightAddon || showClear) && 'pui-input-wrap--end',
+          size !== 'md' && `pui-input-wrap--${size}`
         )}
       >
         {leftAddon && <span className="pui-affix pui-affix--start">{leftAddon}</span>}

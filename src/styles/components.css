@@ -358,6 +358,19 @@
 .pui-affix--start { inset-inline-start: var(--pui-space-3); }
 .pui-affix--end   { inset-inline-end: var(--pui-space-3); }
 
+/* Size variants for input wraps with affixes */
+.pui-input-wrap--sm { min-height: 2rem; }
+.pui-input-wrap--sm > .pui-affix--start { inset-inline-start: 0.625rem; font-size: 0.8125rem; }
+.pui-input-wrap--sm > .pui-affix--end   { inset-inline-end: 0.625rem; font-size: 0.8125rem; }
+.pui-input-wrap--sm.pui-input-wrap--start > .pui-control { padding-inline-start: 2rem; }
+.pui-input-wrap--sm.pui-input-wrap--end   > .pui-control { padding-inline-end: 2rem; }
+
+.pui-input-wrap--lg { min-height: 2.875rem; }
+.pui-input-wrap--lg > .pui-affix--start { inset-inline-start: 0.875rem; font-size: 1.125rem; }
+.pui-input-wrap--lg > .pui-affix--end   { inset-inline-end: 0.875rem; font-size: 1.125rem; }
+.pui-input-wrap--lg.pui-input-wrap--start > .pui-control { padding-inline-start: 2.75rem; }
+.pui-input-wrap--lg.pui-input-wrap--end   > .pui-control { padding-inline-end: 2.75rem; }
+
 textarea.pui-control {
   min-height: calc(5.5rem * var(--pui-density));
   resize: vertical;
@@ -1530,6 +1543,47 @@ input:focus-visible + .pui-choice__box {
   border-right: 1px solid var(--pui-border);
   border-bottom: 1px solid var(--pui-border);
 }
+.pui-hover-card--align-center .pui-hover-card__arrow {
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+.pui-hover-card--align-end .pui-hover-card__arrow {
+  left: auto;
+  right: 1.25rem;
+}
+.pui-hover-card--left .pui-hover-card__arrow {
+  right: -0.32rem;
+  left: auto;
+  top: 1.25rem;
+  border-left: none;
+  border-bottom: none;
+  border-right: 1px solid var(--pui-border);
+  border-top: 1px solid var(--pui-border);
+}
+.pui-hover-card--left.pui-hover-card--align-center .pui-hover-card__arrow {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.pui-hover-card--left.pui-hover-card--align-end .pui-hover-card__arrow {
+  top: auto;
+  bottom: 1.25rem;
+}
+.pui-hover-card--right .pui-hover-card__arrow {
+  left: -0.32rem;
+  top: 1.25rem;
+  border-right: none;
+  border-top: none;
+  border-left: 1px solid var(--pui-border);
+  border-bottom: 1px solid var(--pui-border);
+}
+.pui-hover-card--right.pui-hover-card--align-center .pui-hover-card__arrow {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+.pui-hover-card--right.pui-hover-card--align-end .pui-hover-card__arrow {
+  top: auto;
+  bottom: 1.25rem;
+}
 
 /* ==========================================================================
    TABLE
@@ -2189,10 +2243,8 @@ input:focus-visible + .pui-choice__box {
    ========================================================================== */
 .pui-combobox { position: relative; }
 .pui-combobox__listbox {
-  position: absolute;
-  z-index: var(--pui-z-popover);
-  inset-inline: 0;
-  inset-block-start: calc(100% + var(--pui-space-1));
+  position: fixed;
+  z-index: var(--pui-z-popover, 1300);
   max-height: 16rem;
   overflow-y: auto;
   padding: var(--pui-space-1);
@@ -2200,6 +2252,7 @@ input:focus-visible + .pui-choice__box {
   border: 1px solid var(--pui-border);
   border-radius: var(--pui-radius-lg);
   box-shadow: var(--pui-shadow-xl);
+  box-sizing: border-box;
   animation: pui-slide-down var(--pui-duration-fast) var(--pui-ease-out);
 }
 .pui-combobox__option {
@@ -2688,6 +2741,7 @@ input:focus-visible + .pui-choice__box {
   overflow-wrap: break-word;
   animation: pui-fade-scale 140ms ease-out;
   color: var(--pui-fg);
+  z-index: var(--pui-z-popover, 1300);
 }
 
 /* ==========================================================================

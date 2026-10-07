@@ -19,7 +19,7 @@ const NAV_MENU_DEMO = `<NavigationMenu>
     <NavigationMenuItem value="products">
       <NavigationMenuTrigger value="products">Products</NavigationMenuTrigger>
       <NavigationMenuContent value="products">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.5rem', width: '420px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.5rem', width: 'min(100%, 420px)' }}>
           <NavigationMenuLink
             title="Analytics"
             description="Real-time conversion & funnel metrics."
@@ -58,7 +58,7 @@ export function NavigationMenuPage() {
                 <NavigationMenuItem value="features">
                   <NavigationMenuTrigger value="features">Features</NavigationMenuTrigger>
                   <NavigationMenuContent value="features">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem', width: '440px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem', width: 'min(100%, 440px)' }}>
                       <NavigationMenuLink
                         title="Realtime Analytics"
                         description="Monitor stream metrics live with sub-second latencies."

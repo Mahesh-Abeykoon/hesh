@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <!-- Background Squircle Gradient -->
+    <linearGradient id="squircleBg512" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#2a2d35"/>
+      <stop offset="45%" stop-color="#1f2228"/>
+      <stop offset="100%" stop-color="#14161a"/>
+    </linearGradient>
+
+    <!-- Squircle Border Highlight -->
+    <linearGradient id="squircleBorder512" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.18)"/>
+      <stop offset="50%" stop-color="rgba(255, 255, 255, 0.05)"/>
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.01)"/>
+    </linearGradient>
+
+    <!-- Neon Backlight Glow Filter -->
+    <filter id="neonBacklight512" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="14" result="blur1"/>
+      <feGaussianBlur stdDeviation="6" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Neon Backlight Color Gradient -->
+    <linearGradient id="neonGlowGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+
+    <!-- Silver Top Bevel Gradient (Light) -->
+    <linearGradient id="silverTop512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+
+    <!-- Silver Bottom Bevel Gradient (Shadow) -->
+    <linearGradient id="silverBottom512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Metallic Face Stroke -->
+    <linearGradient id="metalStroke512" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+
+    <!-- H Inner Shadow -->
+    <linearGradient id="hDepth512" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e222a"/>
+      <stop offset="100%" stop-color="#121418"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle App Icon Container -->
+  <rect x="24" y="24" width="464" height="464" rx="104" fill="url(#squircleBg512)"/>
+  <rect x="25" y="25" width="462" height="462" rx="103" stroke="url(#squircleBorder512)" stroke-width="2"/>
+
+  <!-- Scaled & Centered Emblem -->
+  <!-- Scale factor = 464 / 652 ≈ 0.7115, offset to center at 256,256 -->
+  <g transform="translate(256, 256) scale(0.68) translate(-512, -511)">
+    <!-- 1. Neon Indigo Glow Underlay -->
+    <g filter="url(#neonBacklight512)" opacity="0.88">
+      <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z" fill="url(#neonGlowGrad512)"/>
+      <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="url(#neonGlowGrad512)"/>
+      <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z" fill="url(#neonGlowGrad512)"/>
+    </g>
+
+    <!-- 2. Central H Monogram Base -->
+    <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z"
+          fill="url(#hDepth512)"
+          stroke="#4f46e5"
+          stroke-width="3"
+          stroke-linejoin="miter"/>
+
+    <!-- 3. Left Bracket Chevron < -->
+    <polygon points="260,511 483,358 483,419 336,511" fill="url(#silverTop512)"/>
+    <polygon points="260,511 336,511 483,603 483,664" fill="url(#silverBottom512)"/>
+    <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z"
+          stroke="url(#metalStroke512)"
+          stroke-width="3.5"
+          stroke-linejoin="round"/>
+
+    <!-- 4. Right Bracket Chevron > -->
+    <polygon points="763,511 687,511 540,419 540,358" fill="url(#silverTop512)"/>
+    <polygon points="763,511 540,664 540,603 687,511" fill="url(#silverBottom512)"/>
+    <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z"
+          stroke="url(#metalStroke512)"
+          stroke-width="3.5"
+          stroke-linejoin="round"/>
+
+    <!-- 5. Central H Front Frame -->
+    <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z"
+          fill="none"
+          stroke="url(#metalStroke512)"
+          stroke-width="3.5"
+          stroke-linejoin="miter"/>
+
+    <!-- Specular Highlight Sheen -->
+    <line x1="260" y1="511" x2="483" y2="358" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="763" y1="511" x2="540" y2="358" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="422" y1="358" x2="470" y2="358" stroke="#ffffff" stroke-width="3" stroke-linecap="square"/>
+    <line x1="553" y1="358" x2="601" y2="358" stroke="#ffffff" stroke-width="3" stroke-linecap="square"/>
+  </g>
+</svg>

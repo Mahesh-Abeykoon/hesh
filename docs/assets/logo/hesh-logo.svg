@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none">
+  <defs>
+    <!-- Background Squircle Gradient -->
+    <linearGradient id="squircleBg" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#2a2d35"/>
+      <stop offset="45%" stop-color="#1f2228"/>
+      <stop offset="100%" stop-color="#14161a"/>
+    </linearGradient>
+
+    <!-- Squircle Border Highlight -->
+    <linearGradient id="squircleBorder" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.16)"/>
+      <stop offset="50%" stop-color="rgba(255, 255, 255, 0.04)"/>
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.01)"/>
+    </linearGradient>
+
+    <!-- Neon Backlight Glow Filter -->
+    <filter id="neonBacklight" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="22" result="blur1"/>
+      <feGaussianBlur stdDeviation="10" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Drop Shadow for App Icon -->
+    <filter id="iconShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="36" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <!-- Neon Backlight Color Gradient -->
+    <linearGradient id="neonGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+
+    <!-- Silver Top Bevel Gradient (Light) -->
+    <linearGradient id="silverTopBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+
+    <!-- Silver Bottom Bevel Gradient (Shadow) -->
+    <linearGradient id="silverBottomBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Metallic Face Stroke -->
+    <linearGradient id="metalStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+
+    <!-- H Inner Shadow / Depth -->
+    <linearGradient id="hDepthGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e222a"/>
+      <stop offset="100%" stop-color="#121418"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ambient Outer Canvas Backing -->
+  <rect width="1024" height="1024" fill="#0c0e12"/>
+
+  <!-- Squircle App Icon Container -->
+  <g filter="url(#iconShadow)">
+    <rect x="186" y="186" width="652" height="652" rx="148" fill="url(#squircleBg)"/>
+    <rect x="187" y="187" width="650" height="650" rx="147" stroke="url(#squircleBorder)" stroke-width="2"/>
+  </g>
+
+  <!-- Center Emblem Group -->
+  <g id="hesh-emblem">
+    <!-- 1. Neon Indigo Glow Underlay -->
+    <g filter="url(#neonBacklight)" opacity="0.85">
+      <!-- Glow for Left Bracket -->
+      <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z" fill="url(#neonGlowGrad)"/>
+      <!-- Glow for Central H -->
+      <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="url(#neonGlowGrad)"/>
+      <!-- Glow for Right Bracket -->
+      <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z" fill="url(#neonGlowGrad)"/>
+    </g>
+
+    <!-- 2. Central H Monogram Base / Core Body -->
+    <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z"
+          fill="url(#hDepthGrad)"
+          stroke="#4f46e5"
+          stroke-width="3"
+          stroke-linejoin="miter"/>
+
+    <!-- 3. Left Bracket Chevron < -->
+    <!-- Top Slanted Arm (Light Bevel) -->
+    <polygon points="260,511 483,358 483,419 336,511" fill="url(#silverTopBevel)"/>
+    <!-- Bottom Slanted Arm (Shadow Bevel) -->
+    <polygon points="260,511 336,511 483,603 483,664" fill="url(#silverBottomBevel)"/>
+    <!-- Outer Contour Stroke -->
+    <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z"
+          stroke="url(#metalStroke)"
+          stroke-width="3.5"
+          stroke-linejoin="round"/>
+
+    <!-- 4. Right Bracket Chevron > -->
+    <!-- Top Slanted Arm (Light Bevel) -->
+    <polygon points="763,511 687,511 540,419 540,358" fill="url(#silverTopBevel)"/>
+    <!-- Bottom Slanted Arm (Shadow Bevel) -->
+    <polygon points="763,511 540,664 540,603 687,511" fill="url(#silverBottomBevel)"/>
+    <!-- Outer Contour Stroke -->
+    <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z"
+          stroke="url(#metalStroke)"
+          stroke-width="3.5"
+          stroke-linejoin="round"/>
+
+    <!-- 5. Central H Front Frame / Accent Highlights -->
+    <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z"
+          fill="none"
+          stroke="url(#metalStroke)"
+          stroke-width="3.5"
+          stroke-linejoin="miter"/>
+
+    <!-- Specular Highlight Sheen on Leading Edges -->
+    <line x1="260" y1="511" x2="483" y2="358" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="763" y1="511" x2="540" y2="358" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="422" y1="358" x2="470" y2="358" stroke="#ffffff" stroke-width="3" stroke-linecap="square"/>
+    <line x1="553" y1="358" x2="601" y2="358" stroke="#ffffff" stroke-width="3" stroke-linecap="square"/>
+  </g>
+</svg>

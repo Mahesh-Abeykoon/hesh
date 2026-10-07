@@ -513,20 +513,8 @@ export function LivePlayground({
           </div>
         )}
 
-        {/* Right Tools: Grid, Format, Reset, Share, Copy */}
+        {/* Right Tools: Format, Reset, Share, Copy */}
         <div className="playground-studio__right-tools">
-          <button
-            type="button"
-            className={`playground-studio__action-btn${
-              canvasGrid ? ' playground-studio__action-btn--active' : ''
-            }`}
-            onClick={() => setCanvasGrid((prev) => !prev)}
-            title="Toggle canvas background grid"
-          >
-            <GridIcon size={13} />
-            <span>Grid</span>
-          </button>
-
           <button
             type="button"
             className="playground-studio__action-btn"
@@ -633,15 +621,11 @@ export function LivePlayground({
               <span>Real-Time Component Preview</span>
             </div>
             <div className="playground-studio__preview-meta">
-              <span>100% FLUID CANVAS</span>
+              <span>LIVE PREVIEW</span>
             </div>
           </div>
 
-          <div
-            className={`playground-studio__canvas${
-              canvasGrid ? ' playground-studio__canvas--grid' : ''
-            }`}
-          >
+          <div className="playground-studio__canvas">
             <div className="playground-studio__viewport-frame">
               {error ? (
                 <div className="live-error">

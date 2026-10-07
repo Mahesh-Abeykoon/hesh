@@ -73,7 +73,7 @@ export function Showcase({
   defaultMode,
   bleed = false,
   width = 'full',
-  defaultCanvas = 'dots',
+  defaultCanvas = 'solid',
   onReset,
 }: ShowcaseProps) {
   // Determine initial mode
@@ -85,7 +85,7 @@ export function Showcase({
 
   const hasCode = Boolean(code || (files && files.length > 0));
   const [mode, setMode] = useState<ShowcaseMode>(hasCode ? initialMode : 'preview');
-  const [canvas, setCanvas] = useState<ShowcaseCanvas>(defaultCanvas);
+  const [canvas] = useState<ShowcaseCanvas>(defaultCanvas);
   const [remountKey, setRemountKey] = useState(0);
   const [activeFileIdx, setActiveFileIdx] = useState(0);
   const [copiedToolbar, setCopiedToolbar] = useState(false);
@@ -144,10 +144,6 @@ export function Showcase({
 
     window.setTimeout(() => setIsResetting(false), 280);
   }, [onReset]);
-
-  const cycleCanvas = useCallback(() => {
-    setCanvas((prev) => (prev === 'dots' ? 'grid' : prev === 'grid' ? 'solid' : 'dots'));
-  }, []);
 
   // Drag-to-resize handle on right border of device frame
   const handleDragStart = useCallback((e: React.MouseEvent) => {
@@ -330,40 +326,6 @@ export function Showcase({
               </div>
             )}
 
-            {/* Canvas Texture Switcher */}
-            {(mode === 'preview' || mode === 'split') && (
-              <button
-                type="button"
-                className="showcase__icon-btn"
-                onClick={cycleCanvas}
-                title={`Canvas mode: ${canvas}`}
-                aria-label="Cycle canvas pattern"
-              >
-                {canvas === 'dots' ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="5" cy="5" r="1.5" fill="currentColor" />
-                    <circle cx="12" cy="5" r="1.5" fill="currentColor" />
-                    <circle cx="19" cy="5" r="1.5" fill="currentColor" />
-                    <circle cx="5" cy="12" r="1.5" fill="currentColor" />
-                    <circle cx="12" cy="12" r="1.5" fill="currentColor" />
-                    <circle cx="19" cy="12" r="1.5" fill="currentColor" />
-                    <circle cx="5" cy="19" r="1.5" fill="currentColor" />
-                    <circle cx="12" cy="19" r="1.5" fill="currentColor" />
-                    <circle cx="19" cy="19" r="1.5" fill="currentColor" />
-                  </svg>
-                ) : canvas === 'grid' ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="18" height="18" x="3" y="3" rx="2" />
-                    <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
-                  </svg>
-                ) : (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="18" height="18" x="3" y="3" rx="2" />
-                  </svg>
-                )}
-              </button>
-            )}
-
             {/* Optional Reset Button: only shown if an onReset prop is explicitly provided */}
             {onReset && (mode === 'preview' || mode === 'split') && (
               <button
@@ -436,12 +398,12 @@ export function Showcase({
 
         {/* Stage Canvas Area (Visible in 'preview' or 'split' mode) */}
         {(mode === 'preview' || mode === 'split') && (
-          <div className={`showcase__canvas showcase__canvas--${canvas}`}>
+          <div className="showcase__canvas">
             <div
               ref={viewportRef}
               className={`showcase__viewport-wrapper ${viewportWidth !== '100%' ? 'showcase__viewport-wrapper--constrained' : ''} ${isDragging ? 'showcase__viewport-wrapper--dragging' : ''}`}
               style={{
-                maxWidth: viewportWidth === '100%' ? undefined : `${viewportWidth}px`,
+                maxWidth: viewportWidth === '100%' ? undefined : `min(100%, ${viewportWidth}px)`,
               }}
             >
               {viewportWidth !== '100%' && (

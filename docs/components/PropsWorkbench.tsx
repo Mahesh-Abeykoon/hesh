@@ -1,7 +1,11 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import {
   Alert,
+  AreaChart,
   Avatar,
+  BarChart,
+  Carousel,
+  DonutChart,
   Badge,
   Button,
   Card,
@@ -2826,3 +2830,358 @@ export function DataTableWorkbench() {
   );
 }
 
+
+/* ------------------------------------------------------------------ Carousel Workbench */
+
+export function CarouselWorkbench() {
+  const [indicatorVariant, setIndicatorVariant] = useState<'bars' | 'dots' | 'numbers'>('bars');
+  const [arrowVariant, setArrowVariant] = useState<'floating' | 'solid' | 'outline'>('floating');
+  const [autoPlay, setAutoPlay] = useState(false);
+  const [interval, setInterval] = useState(4000);
+  const [loop, setLoop] = useState(true);
+
+  const propList: string[] = [];
+  if (indicatorVariant !== 'bars') propList.push(`indicatorVariant="${indicatorVariant}"`);
+  if (arrowVariant !== 'floating') propList.push(`arrowVariant="${arrowVariant}"`);
+  if (autoPlay) propList.push('autoPlay');
+  if (interval !== 4000) propList.push(`interval={${interval}}`);
+  if (!loop) propList.push('loop={false}');
+
+  const jsx = `<Carousel
+  ${propList.length ? propList.join('\n  ') + '\n' : ''}>
+  <div style={{ height: 240, padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(37,99,235,0.1), var(--pui-surface))' }}>
+    <Badge tone="primary" dot>Autonomous Edge</Badge>
+    <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem' }}>AI Agents Orchestrator</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem' }}>Deploy autonomous reasoning agents across 300+ edge nodes.</p>
+  </div>
+
+  <div style={{ height: 240, padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(5,150,105,0.1), var(--pui-surface))' }}>
+    <Badge tone="success" dot>Real-time Telemetry</Badge>
+    <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem' }}>Sub-Millisecond Radar</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem' }}>Global mesh routing with instant dynamic failover.</p>
+  </div>
+
+  <div style={{ height: 240, padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(124,58,237,0.1), var(--pui-surface))' }}>
+    <Badge tone="info" dot>Enterprise Vault</Badge>
+    <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem' }}>Hardware Enclave Keys</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem' }}>SOC-2 Type II compliant with zero-knowledge rotation.</p>
+  </div>
+</Carousel>`;
+
+  return (
+    <PropsWorkbench
+      title="Carousel Workbench"
+      badge="Motion & Slides"
+      preview={
+        <div style={{ width: '100%', maxWidth: '38rem', margin: '0 auto' }}>
+          <Carousel
+            indicatorVariant={indicatorVariant}
+            arrowVariant={arrowVariant}
+            autoPlay={autoPlay}
+            interval={interval}
+            loop={loop}
+          >
+            <div
+              style={{
+                height: 240,
+                padding: '2rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, rgba(37,99,235,0.12), var(--pui-surface))',
+                borderRadius: 'inherit',
+              }}
+            >
+              <Badge tone="primary" dot>Autonomous Edge</Badge>
+              <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>
+                AI Agents Orchestrator
+              </h3>
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '24rem' }}>
+                Deploy autonomous reasoning models across 300+ edge nodes with zero cold-starts.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <Button size="sm" variant="primary">Deploy Model</Button>
+                <Button size="sm" variant="secondary">Documentation</Button>
+              </div>
+            </div>
+
+            <div
+              style={{
+                height: 240,
+                padding: '2rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, rgba(5,150,105,0.12), var(--pui-surface))',
+                borderRadius: 'inherit',
+              }}
+            >
+              <Badge tone="success" dot>Real-time Telemetry</Badge>
+              <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>
+                Sub-Millisecond Global Radar
+              </h3>
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '24rem' }}>
+                Global mesh routing with automated failover and p99 latency under 12ms.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <Button size="sm" variant="primary">View Live Nodes</Button>
+                <Button size="sm" variant="secondary">Status Page</Button>
+              </div>
+            </div>
+
+            <div
+              style={{
+                height: 240,
+                padding: '2rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                background: 'linear-gradient(135deg, rgba(124,58,237,0.12), var(--pui-surface))',
+                borderRadius: 'inherit',
+              }}
+            >
+              <Badge tone="info" dot>Enterprise Vault</Badge>
+              <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>
+                Hardware Enclave HSM Keys
+              </h3>
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '24rem' }}>
+                SOC-2 Type II and HIPAA certified with automated cryptographic key rotation.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <Button size="sm" variant="primary">Security Whitepaper</Button>
+                <Button size="sm" variant="secondary">Audit Report</Button>
+              </div>
+            </div>
+          </Carousel>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Indicator Pagination</span>
+            <div className="workbench__pills">
+              {(['bars', 'dots', 'numbers'] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`workbench__pill${indicatorVariant === v ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setIndicatorVariant(v)}
+                >
+                  {v === 'bars' ? 'Modern Bars' : v === 'dots' ? 'Refined Dots' : 'Numeric (01/03)'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Arrow Style</span>
+            <div className="workbench__pills">
+              {(['floating', 'solid', 'outline'] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`workbench__pill${arrowVariant === v ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setArrowVariant(v)}
+                >
+                  {v === 'floating' ? 'Frosted Glass' : v === 'solid' ? 'Solid Surface' : 'Outline'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Autoplay Interval ({interval / 1000}s)</span>
+            <div className="workbench__pills">
+              {[2000, 4000, 6000].map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${interval === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setInterval(t)}
+                >
+                  {t / 1000}s
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Autoplay timer transition" checked={autoPlay} onCheckedChange={setAutoPlay} />
+            <Switch label="Loop infinitely at ends" checked={loop} onCheckedChange={setLoop} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Charts Workbench */
+
+export function ChartsWorkbench() {
+  const [chartType, setChartType] = useState<'area' | 'bar' | 'donut'>('area');
+  const [height, setHeight] = useState(260);
+  const [colorMode, setColorMode] = useState<'brand' | 'emerald' | 'violet' | 'rose' | 'amber'>('brand');
+  const [showGrid, setShowGrid] = useState(true);
+  const [smooth, setSmooth] = useState(true);
+  const [showTracks, setShowTracks] = useState(true);
+
+  const colors: Record<string, string> = {
+    brand: '#2563eb',
+    emerald: '#059669',
+    violet: '#7c3aed',
+    rose: '#f43f5e',
+    amber: '#d97706',
+  };
+  const activeColor = colors[colorMode]!;
+
+  const sampleData = [
+    { label: 'Jan', value: 32 },
+    { label: 'Feb', value: 45 },
+    { label: 'Mar', value: 41 },
+    { label: 'Apr', value: 58 },
+    { label: 'May', value: 64 },
+    { label: 'Jun', value: 60 },
+    { label: 'Jul', value: 78 },
+    { label: 'Aug', value: 92 },
+    { label: 'Sep', value: 88 },
+    { label: 'Oct', value: 104 },
+    { label: 'Nov', value: 118 },
+    { label: 'Dec', value: 135 },
+  ];
+
+  const donutData = [
+    { label: 'Direct', value: 4210, color: '#2563eb' },
+    { label: 'Organic', value: 3180, color: '#059669' },
+    { label: 'Referral', value: 1640, color: '#7c3aed' },
+    { label: 'Social', value: 980, color: '#f43f5e' },
+  ];
+
+  let jsx = '';
+  if (chartType === 'area') {
+    jsx = `<AreaChart
+  data={data}
+  height={${height}}
+  color="${activeColor}"
+  format={(v) => '$' + v + 'k'}
+  showGrid={${showGrid}}
+  smooth={${smooth}}
+/>`;
+  } else if (chartType === 'bar') {
+    jsx = `<BarChart
+  data={data}
+  height={${height}}
+  color="${activeColor}"
+  format={(v) => v + ' requests'}
+  showGrid={${showGrid}}
+  showTracks={${showTracks}}
+/>`;
+  } else {
+    jsx = `<DonutChart
+  data={trafficData}
+  size={${Math.min(height, 240)}}
+  thickness={26}
+  centerValue="10.0k"
+  centerLabel="Total Visits"
+/>`;
+  }
+
+  return (
+    <PropsWorkbench
+      title="Charts Workbench"
+      badge="SVG Telemetry"
+      preview={
+        <div style={{ width: '100%', padding: '0.5rem' }}>
+          {chartType === 'area' && (
+            <AreaChart
+              data={sampleData}
+              height={height}
+              color={activeColor}
+              format={(v) => `$${v}k`}
+              showGrid={showGrid}
+              smooth={smooth}
+            />
+          )}
+          {chartType === 'bar' && (
+            <BarChart
+              data={sampleData}
+              height={height}
+              color={activeColor}
+              format={(v) => `${v} reqs`}
+              showGrid={showGrid}
+              showTracks={showTracks}
+            />
+          )}
+          {chartType === 'donut' && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+              <DonutChart
+                data={donutData}
+                size={Math.min(height, 240)}
+                thickness={26}
+                centerValue="10.0k"
+                centerLabel="Total Visits"
+              />
+            </div>
+          )}
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Chart Type</span>
+            <div className="workbench__pills">
+              {(['area', 'bar', 'donut'] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${chartType === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setChartType(t)}
+                >
+                  {t.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Color Theme</span>
+            <div className="workbench__pills">
+              {(['brand', 'emerald', 'violet', 'rose', 'amber'] as const).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`workbench__pill${colorMode === c ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setColorMode(c)}
+                >
+                  {c.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Height / Dimension ({height}px)</span>
+            <Slider value={height} onValueChange={setHeight} min={180} max={320} step={10} />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Show horizontal gridlines" checked={showGrid} onCheckedChange={setShowGrid} />
+            {chartType === 'area' && (
+              <Switch label="Smooth cubic Bézier spline" checked={smooth} onCheckedChange={setSmooth} />
+            )}
+            {chartType === 'bar' && (
+              <Switch label="Subtle background pillar tracks" checked={showTracks} onCheckedChange={setShowTracks} />
+            )}
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}

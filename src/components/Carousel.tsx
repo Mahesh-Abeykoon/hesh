@@ -22,6 +22,10 @@ export interface CarouselProps extends HTMLAttributes<HTMLDivElement> {
   showArrows?: boolean;
   /** Show pagination dot indicators (default: true) */
   showDots?: boolean;
+  /** Indicator pagination style: modern expanding bars, refined dots, or numeric badge. @default 'bars' */
+  indicatorVariant?: 'bars' | 'dots' | 'numbers';
+  /** Arrow button visual variant: floating frosted glass, solid, or outline. @default 'floating' */
+  arrowVariant?: 'floating' | 'solid' | 'outline';
   /** Callback fired when active slide index changes */
   onSlideChange?: (index: number) => void;
   /** Accessible label describing the carousel */
@@ -36,6 +40,8 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(function Carou
     loop = true,
     showArrows = true,
     showDots = true,
+    indicatorVariant = 'bars',
+    arrowVariant = 'floating',
     onSlideChange,
     className,
     'aria-label': ariaLabel = 'Image and content carousel',
@@ -150,43 +156,68 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(function Carou
         <>
           <button
             type="button"
-            className="pui-carousel__arrow pui-carousel__arrow--prev"
+            className={cn(
+              'pui-carousel__arrow pui-carousel__arrow--prev',
+              `pui-carousel__arrow--${arrowVariant}`
+            )}
             aria-label="Previous slide"
             onClick={prev}
             disabled={!loop && current === 0}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6" />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
             type="button"
-            className="pui-carousel__arrow pui-carousel__arrow--next"
+            className={cn(
+              'pui-carousel__arrow pui-carousel__arrow--next',
+              `pui-carousel__arrow--${arrowVariant}`
+            )}
             aria-label="Next slide"
             onClick={next}
             disabled={!loop && current === slideCount - 1}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="m9 18 6-6-6-6" />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </>
       )}
 
       {showDots && slideCount > 1 && (
-        <div className="pui-carousel__dots" role="tablist" aria-label="Slides">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              type="button"
-              role="tab"
-              aria-selected={idx === current}
-              aria-label={`Go to slide ${idx + 1}`}
-              className={cn('pui-carousel__dot', idx === current && 'pui-carousel__dot--active')}
-              onClick={() => goTo(idx)}
-            />
-          ))}
-        </div>
+        indicatorVariant === 'numbers' ? (
+          <div className="pui-carousel__counter" aria-live="polite">
+            <span className="pui-carousel__counter-current">{String(current + 1).padStart(2, '0')}</span>
+            <span className="pui-carousel__counter-divider">/</span>
+            <span className="pui-carousel__counter-total">{String(slideCount).padStart(2, '0')}</span>
+          </div>
+        ) : (
+          <div
+            className={cn(
+              'pui-carousel__dots',
+              indicatorVariant === 'bars' ? 'pui-carousel__dots--bars' : 'pui-carousel__dots--dots'
+            )}
+            role="tablist"
+            aria-label="Slides"
+          >
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                role="tab"
+                aria-selected={idx === current}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={cn(
+                  'pui-carousel__dot',
+                  indicatorVariant === 'bars' && 'pui-carousel__dot--bar',
+                  idx === current && 'pui-carousel__dot--active'
+                )}
+                onClick={() => goTo(idx)}
+              />
+            ))}
+          </div>
+        )
       )}
     </div>
   );

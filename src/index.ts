@@ -107,8 +107,11 @@ export {
   generateThemeCss,
   applyThemeStyle,
   removeThemeStyle,
+  NEUTRAL_PALETTES,
+  getContrastRatio,
+  getWcagRating,
 } from './utils/theme';
-export type { CustomThemeConfig, BrandRampStep } from './utils/theme';
+export type { CustomThemeConfig, BrandRampStep, NeutralBase } from './utils/theme';
 export { ThemeSwitch } from './components/ThemeSwitch';
 export type { ThemeSwitchProps } from './components/ThemeSwitch';
 export { PresetSwitch } from './components/PresetSwitch';
@@ -246,6 +249,21 @@ export type { MarqueeProps } from './components/Marquee';
 
 export { Gauge } from './components/Gauge';
 export type { GaugeProps } from './components/Gauge';
+
+export { QRCode } from './components/QRCode';
+export type { QRCodeProps, QRCodeErrorCorrectionLevel } from './components/QRCode';
+
+export { NotificationBadge } from './components/NotificationBadge';
+export type { NotificationBadgeProps, NotificationBadgeTone, NotificationBadgePlacement } from './components/NotificationBadge';
+
+export { Tour } from './components/Tour';
+export type { TourProps, TourStep } from './components/Tour';
+
+export { DiffViewer } from './components/DiffViewer';
+export type { DiffViewerProps, DiffViewMode } from './components/DiffViewer';
+
+export { Confetti, fireConfetti } from './components/Confetti';
+export type { ConfettiProps, ConfettiOptions, ConfettiOrigin } from './components/Confetti';
 
 /* ---------------------------------------------------------------- utilities */
 export { cn } from './utils/cn';

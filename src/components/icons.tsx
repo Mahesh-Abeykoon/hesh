@@ -267,12 +267,29 @@ export const LayoutIcon = (p: IconProps) => (
   </Icon>
 );
 
-export const SparklesIcon = (p: IconProps) => (
+export const PaletteIcon = (p: IconProps) => (
   <Icon {...p}>
-    <path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9Z" />
-    <path d="M19 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z" />
+    <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+    <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+    <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+    <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+    <path d="M12 2C6.5 2 2 6.5 2 12a10 10 0 0 0 10 10c.9 0 1.6-.7 1.6-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.7 1.7-1.7h2c3 0 5.5-2.5 5.5-5.6C22 6.5 17.5 2 12 2z" />
   </Icon>
 );
+
+export const PaintbrushIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m18.37 2.63 3 3L13.5 13.5H9.75v-3.75z" />
+    <path d="M14 14c-1.5 1.5-2.5 3.5-2 5.5.3 1.2-1.5 2-2 1-1.5-3 0-5 2-6.5" />
+  </Icon>
+);
+
+export const ZapIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+  </Icon>
+);
+
 
 export const MenuIcon = (p: IconProps) => (
   <Icon {...p}>

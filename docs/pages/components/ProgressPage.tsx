@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Progress, Button, Badge } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { ProgressWorkbench } from '../../components/PropsWorkbench';
 
 const BASIC_DEMO = `const [value, setValue] = useState(68);
 
@@ -42,6 +43,13 @@ export function ProgressPage() {
       lede="Visual indicators displaying completion percentage, multi-category resource allocation, and indeterminate background task activity."
       importStatement="import { Progress } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Tune progress percentage, sizes, semantic tones, and preview live TSX code."
+      >
+        <ProgressWorkbench />
+      </Section>
+
       <Section
         title="Interactive Progress Bar"
         description="Linear track showing current completion with dynamic labels and percentage counters."

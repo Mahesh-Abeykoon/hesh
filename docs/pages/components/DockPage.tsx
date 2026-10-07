@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { Dock, DockIcon } from '../../../src/index';
-import { SparklesIcon, SearchIcon, MoonIcon, SunIcon, CheckIcon } from '../../../src/index';
+import { ZapIcon, SearchIcon, MoonIcon, SunIcon, CheckIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
 
 const DOCK_DEMO = `<Dock>
   <DockIcon label="Search"><SearchIcon /></DockIcon>
-  <DockIcon label="AI Copilot" active><SparklesIcon /></DockIcon>
+  <DockIcon label="Quick Actions" active><ZapIcon /></DockIcon>
   <DockIcon label="Toggle Theme"><MoonIcon /></DockIcon>
 </Dock>`;
 
 export function DockPage() {
-  const [activeTab, setActiveTab] = useState('copilot');
+  const [activeTab, setActiveTab] = useState('actions');
 
   return (
     <DocPage
@@ -35,11 +35,11 @@ export function DockPage() {
                 <SearchIcon size={18} />
               </DockIcon>
               <DockIcon
-                label="AI Copilot"
-                active={activeTab === 'copilot'}
-                onClick={() => setActiveTab('copilot')}
+                label="Quick Actions"
+                active={activeTab === 'actions'}
+                onClick={() => setActiveTab('actions')}
               >
-                <SparklesIcon size={18} />
+                <ZapIcon size={18} />
               </DockIcon>
               <DockIcon
                 label="Light Theme"

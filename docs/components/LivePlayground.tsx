@@ -11,7 +11,7 @@ import React, {
 import { transform } from 'sucrase';
 import * as Hesh from '../../src/index';
 import { Badge, Button, IconButton, Switch, Tooltip } from '../../src/index';
-import { CheckIcon, CopyIcon } from '../../src/index';
+import { CheckIcon, CopyIcon, ShareIcon } from '../../src/index';
 
 const ResetIcon = ({ size = 13 }: { size?: number }) => (
   <svg
@@ -29,6 +29,51 @@ const ResetIcon = ({ size = 13 }: { size?: number }) => (
     <path d="M3 3v5h5" />
   </svg>
 );
+
+const FormatIcon = ({ size = 13 }: { size?: number }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="21" y1="6" x2="3" y2="6" />
+    <line x1="15" y1="12" x2="3" y2="12" />
+    <line x1="17" y1="18" x2="3" y2="18" />
+  </svg>
+);
+
+export function formatCode(code: string): string {
+  const lines = code.split('\n');
+  let indent = 0;
+  const result: string[] = [];
+  for (const rawLine of lines) {
+    const trimmed = rawLine.trim();
+    if (!trimmed) {
+      if (result.length > 0 && result[result.length - 1] !== '') {
+        result.push('');
+      }
+      continue;
+    }
+    if (trimmed.startsWith('}') || trimmed.startsWith(')') || trimmed.startsWith('</') || trimmed.startsWith('];') || trimmed.startsWith('/>')) {
+      indent = Math.max(0, indent - 1);
+    }
+    result.push('  '.repeat(indent) + trimmed);
+    const opens = (trimmed.match(/(\{|\[|\()/g) || []).length;
+    const closes = (trimmed.match(/(\}|\]|\))/g) || []).length;
+    const opensTag = (trimmed.match(/<[A-Za-z0-9_]+(?:\s+[^>]*)?>/g) || []).length;
+    const closesTag = (trimmed.match(/<\/[A-Za-z0-9_]+>|\/>/g) || []).length;
+    const diff = (opens - closes) + (opensTag - closesTag);
+    if (diff > 0) indent += diff;
+    else if (diff < 0) indent = Math.max(0, indent + diff);
+  }
+  return result.join('\n');
+}
 
 /* ------------------------------------------------------------------ Code Preparation */
 
@@ -179,6 +224,56 @@ export function useLiveCompiler(code: string) {
   }, [code]);
 }
 
+const SplitIcon = ({ size = 13 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="18" height="18" x="3" y="3" rx="2" />
+    <path d="M12 3v18" />
+  </svg>
+);
+
+const CodeIcon = ({ size = 13 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polyline points="16 18 22 12 16 6" />
+    <polyline points="8 6 2 12 8 18" />
+  </svg>
+);
+
+const EyeIcon = ({ size = 13 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const DesktopIcon = ({ size = 13 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="20" height="14" x="2" y="3" rx="2" />
+    <line x1="8" x2="16" y1="21" y2="21" />
+    <line x1="12" x2="12" y1="17" y2="21" />
+  </svg>
+);
+
+const TabletIcon = ({ size = 13 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="16" height="20" x="4" y="2" rx="2" />
+    <line x1="12" x2="12.01" y1="18" y2="18" strokeWidth="2.5" />
+  </svg>
+);
+
+const MobileIcon = ({ size = 13 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="14" height="20" x="5" y="2" rx="2" />
+    <line x1="12" x2="12.01" y1="17" y2="17" strokeWidth="2.5" />
+  </svg>
+);
+
+const GridIcon = ({ size = 13 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="18" height="18" x="3" y="3" rx="2" />
+    <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
+  </svg>
+);
+
 /* ------------------------------------------------------------------ Live Code Editor */
 
 export interface LiveCodeEditorProps {
@@ -187,6 +282,8 @@ export interface LiveCodeEditorProps {
   onReset?: () => void;
   minHeight?: string;
   maxHeight?: string;
+  fillHeight?: boolean;
+  hideHeader?: boolean;
 }
 
 export function LiveCodeEditor({
@@ -195,9 +292,12 @@ export function LiveCodeEditor({
   onReset,
   minHeight = '180px',
   maxHeight = '420px',
+  fillHeight = false,
+  hideHeader = false,
 }: LiveCodeEditorProps) {
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const gutterRef = useRef<HTMLDivElement>(null);
 
   const lines = useMemo(() => code.split('\n'), [code]);
 
@@ -242,38 +342,43 @@ export function LiveCodeEditor({
   };
 
   return (
-    <div className="live-editor">
-      <div className="live-editor__header">
-        <div className="live-editor__badge">
-          <span className="live-editor__dot" />
-          <span>Live TSX Editor</span>
-        </div>
-        <div className="live-editor__actions">
-          {onReset && (
+    <div className={`live-editor${fillHeight ? ' live-editor--fill' : ''}`}>
+      {!hideHeader && (
+        <div className="live-editor__header">
+          <div className="live-editor__badge">
+            <span className="live-editor__dot" />
+            <span>Live TSX Editor</span>
+          </div>
+          <div className="live-editor__actions">
+            {onReset && (
+              <button
+                type="button"
+                className="live-editor__btn"
+                onClick={onReset}
+                title="Reset code to original"
+              >
+                <ResetIcon size={13} />
+                <span>Reset</span>
+              </button>
+            )}
             <button
               type="button"
               className="live-editor__btn"
-              onClick={onReset}
-              title="Reset code to original"
+              onClick={handleCopy}
+              title="Copy code"
             >
-              <ResetIcon size={13} />
-              <span>Reset</span>
+              {copied ? <CheckIcon size={13} /> : <CopyIcon size={13} />}
+              <span>{copied ? 'Copied!' : 'Copy'}</span>
             </button>
-          )}
-          <button
-            type="button"
-            className="live-editor__btn"
-            onClick={handleCopy}
-            title="Copy code"
-          >
-            {copied ? <CheckIcon size={13} /> : <CopyIcon size={13} />}
-            <span>{copied ? 'Copied!' : 'Copy'}</span>
-          </button>
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="live-editor__container" style={{ minHeight, maxHeight }}>
-        <div className="live-editor__gutter" aria-hidden="true">
+      <div
+        className="live-editor__container"
+        style={fillHeight ? { flex: 1, minHeight: 0, height: '100%' } : { minHeight, maxHeight }}
+      >
+        <div ref={gutterRef} className="live-editor__gutter" aria-hidden="true">
           {lines.map((_, i) => (
             <span key={i} className="live-editor__line-no">
               {i + 1}
@@ -285,6 +390,11 @@ export function LiveCodeEditor({
           className="live-editor__textarea"
           value={code}
           onChange={(e) => onChange(e.target.value)}
+          onScroll={(e) => {
+            if (gutterRef.current) {
+              gutterRef.current.scrollTop = e.currentTarget.scrollTop;
+            }
+          }}
           onKeyDown={handleKeyDown}
           spellCheck={false}
           autoCapitalize="off"
@@ -297,13 +407,17 @@ export function LiveCodeEditor({
   );
 }
 
-/* ------------------------------------------------------------------ Live Playground */
+/* ------------------------------------------------------------------ Live Playground (Split Studio) */
 
 export interface LivePlaygroundProps {
   initialCode: string;
   title?: string;
   badge?: string;
   description?: string;
+  code?: string;
+  onChange?: (code: string) => void;
+  onReset?: () => void;
+  customizers?: ReactNode;
 }
 
 export function LivePlayground({
@@ -311,87 +425,253 @@ export function LivePlayground({
   title = 'Live Code Playground',
   badge = 'Editable',
   description,
+  code: controlledCode,
+  onChange,
+  onReset,
+  customizers,
 }: LivePlaygroundProps) {
-  const [code, setCode] = useState(initialCode);
-  const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [internalCode, setInternalCode] = useState(initialCode);
+  const code = controlledCode !== undefined ? controlledCode : internalCode;
+
+  const handleCodeChange = (newCode: string) => {
+    if (controlledCode === undefined) {
+      setInternalCode(newCode);
+    }
+    onChange?.(newCode);
+  };
+
+  const handleReset = () => {
+    if (onReset) {
+      onReset();
+    } else {
+      setInternalCode(initialCode);
+      onChange?.(initialCode);
+    }
+  };
+
+  const [canvasGrid, setCanvasGrid] = useState(true);
+  const [mobileTab, setMobileTab] = useState<'preview' | 'code'>('preview');
+  const [copied, setCopied] = useState(false);
+
+  // Sync internal code when initialCode changes
+  useEffect(() => {
+    setInternalCode(initialCode);
+  }, [initialCode]);
+
   const { element, error } = useLiveCompiler(code);
 
-  const viewportWidth = {
-    desktop: '100%',
-    tablet: '640px',
-    mobile: '360px',
-  }[viewport];
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  }, [code]);
+
+  const [shared, setShared] = useState(false);
+
+  const handleFormat = useCallback(() => {
+    const formatted = formatCode(code);
+    handleCodeChange(formatted);
+  }, [code, handleCodeChange]);
+
+  const handleShare = useCallback(async () => {
+    try {
+      const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(code))));
+      const origin = window.location.origin;
+      const pathname = window.location.pathname;
+      const shareUrl = `${origin}${pathname}#/playground?code=${encoded}`;
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+      }
+      window.location.hash = `/playground?code=${encoded}`;
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+    } catch (err) {
+      console.warn('Share encoding error:', err);
+    }
+  }, [code]);
 
   return (
-    <div className="workbench">
-      <div className="workbench__header">
-        <div className="workbench__title">
-          <span>{title}</span>
-          <Badge tone="primary" pill>
-            {badge}
-          </Badge>
-        </div>
-        <div className="live-editor__viewports">
-          {(['desktop', 'tablet', 'mobile'] as const).map((v) => (
-            <button
-              key={v}
-              type="button"
-              className={`live-editor__viewport-opt${viewport === v ? ' live-editor__viewport-opt--active' : ''}`}
-              onClick={() => setViewport(v)}
-              title={`Preview in ${v} viewport`}
-            >
-              {v === 'desktop' ? '100%' : v === 'tablet' ? 'Tablet' : 'Mobile'}
-            </button>
-          ))}
+    <div className="playground-studio">
+      {/* Studio Header Command Bar */}
+      <div className="playground-studio__header">
+        {/* Live Customize Controls (replaces clutter, starts from left) */}
+        {customizers && (
+          <div className="playground-studio__center-tools">
+            {customizers}
+          </div>
+        )}
+
+        {/* Show error pill only when syntax error actually occurs */}
+        {error && (
+          <div className="playground-studio__status playground-studio__status--error">
+            <span className="playground-studio__status-dot playground-studio__status-dot--error" />
+            <span className="playground-studio__status-text">Syntax Error</span>
+          </div>
+        )}
+
+        {/* Right Tools: Grid, Format, Reset, Share, Copy */}
+        <div className="playground-studio__right-tools">
+          <button
+            type="button"
+            className={`playground-studio__action-btn${
+              canvasGrid ? ' playground-studio__action-btn--active' : ''
+            }`}
+            onClick={() => setCanvasGrid((prev) => !prev)}
+            title="Toggle canvas background grid"
+          >
+            <GridIcon size={13} />
+            <span>Grid</span>
+          </button>
+
+          <button
+            type="button"
+            className="playground-studio__action-btn"
+            onClick={handleFormat}
+            title="Auto-format code indentation"
+          >
+            <FormatIcon size={13} />
+            <span>Format</span>
+          </button>
+
+          <button
+            type="button"
+            className="playground-studio__action-btn"
+            onClick={handleReset}
+            title="Reset code to original template"
+          >
+            <ResetIcon size={13} />
+            <span>Reset</span>
+          </button>
+
+          <button
+            type="button"
+            className="playground-studio__action-btn"
+            onClick={handleShare}
+            title="Copy shareable permalink with current code"
+          >
+            {shared ? <CheckIcon size={13} /> : <ShareIcon size={13} />}
+            <span>{shared ? 'Link Copied!' : 'Share'}</span>
+          </button>
+
+          <button
+            type="button"
+            className="playground-studio__action-btn"
+            onClick={handleCopy}
+            title="Copy component code"
+          >
+            {copied ? <CheckIcon size={13} /> : <CopyIcon size={13} />}
+            <span>{copied ? 'Copied!' : 'Copy'}</span>
+          </button>
         </div>
       </div>
 
-      {description && (
-        <div style={{ padding: '0.75rem 1.25rem', fontSize: '0.8125rem', color: 'var(--pui-fg-muted)' }}>
-          {description}
-        </div>
-      )}
-
-      <div className="workbench__body" style={{ flexDirection: 'column' }}>
-        <div
-          className="workbench__preview"
-          style={{
-            width: '100%',
-            maxWidth: viewportWidth,
-            margin: '0 auto',
-            transition: 'max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-            minHeight: '160px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+      {/* Mobile Tab Switcher (Visible on small screens in split mode) */}
+      <div className="playground-studio__mobile-tabs">
+        <button
+          type="button"
+          className={`playground-studio__mobile-tab${
+            mobileTab === 'preview' ? ' playground-studio__mobile-tab--active' : ''
+          }`}
+          onClick={() => setMobileTab('preview')}
         >
-          {error ? (
-            <div className="live-error">
-              <div className="live-error__title">Compilation Notice</div>
-              <div className="live-error__message">{error.message}</div>
+          <EyeIcon size={14} />
+          <span>Live Preview</span>
+        </button>
+        <button
+          type="button"
+          className={`playground-studio__mobile-tab${
+            mobileTab === 'code' ? ' playground-studio__mobile-tab--active' : ''
+          }`}
+          onClick={() => setMobileTab('code')}
+        >
+          <CodeIcon size={14} />
+          <span>TSX Code Editor</span>
+        </button>
+      </div>
+
+      {/* Studio Split Workspace Body (Clean Permanent 50/50 Desktop Split) */}
+      <div
+        className="playground-studio__body playground-studio__body--split"
+        data-mobile-tab={mobileTab}
+      >
+        {/* Left Pane: Code Editor */}
+        <div className="playground-studio__pane playground-studio__pane--code">
+          <div className="playground-studio__pane-bar">
+            <div className="playground-studio__file-tab">
+              <span className="playground-studio__ts-icon">TSX</span>
+              <span>App.tsx</span>
             </div>
-          ) : (
-            <LiveErrorBoundary
-              fallback={(runtimeErr) => (
-                <div className="live-error">
-                  <div className="live-error__title">Runtime Exception</div>
-                  <div className="live-error__message">{runtimeErr.message}</div>
-                </div>
-              )}
-              resetKey={code}
-            >
-              {element}
-            </LiveErrorBoundary>
+            <div className="playground-studio__editor-hint">
+              <span>Live Synced Editor</span>
+            </div>
+          </div>
+
+          <LiveCodeEditor
+            code={code}
+            onChange={handleCodeChange}
+            fillHeight
+            hideHeader
+          />
+
+          {error && (
+            <div className="playground-studio__error-bar">
+              <span className="playground-studio__error-title">Syntax Warning:</span>
+              <span className="playground-studio__error-msg">{error.message}</span>
+            </div>
           )}
         </div>
 
-        <div style={{ width: '100%' }}>
-          <LiveCodeEditor
-            code={code}
-            onChange={setCode}
-            onReset={() => setCode(initialCode)}
-          />
+        {/* Right Pane: Live Preview Canvas */}
+        <div className="playground-studio__pane playground-studio__pane--preview">
+          <div className="playground-studio__pane-bar">
+            <div className="playground-studio__preview-tab">
+              <EyeIcon size={13} />
+              <span>Real-Time Component Preview</span>
+            </div>
+            <div className="playground-studio__preview-meta">
+              <span>100% FLUID CANVAS</span>
+            </div>
+          </div>
+
+          <div
+            className={`playground-studio__canvas${
+              canvasGrid ? ' playground-studio__canvas--grid' : ''
+            }`}
+          >
+            <div className="playground-studio__viewport-frame">
+              {error ? (
+                <div className="live-error">
+                  <div className="live-error__title">Transpilation Notice</div>
+                  <div className="live-error__message">{error.message}</div>
+                </div>
+              ) : (
+                <LiveErrorBoundary
+                  fallback={(runtimeErr) => (
+                    <div className="live-error">
+                      <div className="live-error__title">Runtime Exception</div>
+                      <div className="live-error__message">{runtimeErr.message}</div>
+                      <button
+                        type="button"
+                        className="playground-studio__action-btn"
+                        style={{ marginTop: '0.75rem' }}
+                        onClick={handleReset}
+                      >
+                        <ResetIcon size={13} />
+                        <span>Reset Code</span>
+                      </button>
+                    </div>
+                  )}
+                  resetKey={code}
+                >
+                  {element}
+                </LiveErrorBoundary>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

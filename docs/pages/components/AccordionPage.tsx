@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Accordion, Badge, Button } from '../../../src/index';
 import {
   SettingsIcon,
-  SparklesIcon,
+  LockIcon,
   CheckIcon,
 } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
@@ -27,7 +27,7 @@ const ACCORDION_DEMO = `const [open, setOpen] = useState<string[]>(['billing']);
       id: 'security',
       title: 'Security & Access',
       subtitle: 'Configure two-factor authentication',
-      icon: <SparklesIcon />,
+      icon: <LockIcon />,
       content: 'Two-factor authentication is enforced across all organization accounts.',
     },
   ]}
@@ -65,7 +65,7 @@ export function AccordionPage() {
       id: 'security',
       title: 'Security & Two-Factor Authentication',
       subtitle: 'Protect account with hardware keys or TOTP apps',
-      icon: <SparklesIcon size={18} />,
+      icon: <LockIcon size={18} />,
       badge: <Badge tone="primary" pill>Recommended</Badge>,
       content: 'Two-factor authentication (2FA) is enforced across all team members with owner or developer permissions. WebAuthn security keys are supported.',
     },

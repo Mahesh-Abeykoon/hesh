@@ -21,7 +21,7 @@ import {
   useToast,
   PresetSwitch,
 } from '../../src/index';
-import { ArrowRightIcon, CheckIcon, SparklesIcon } from '../../src/index';
+import { ArrowRightIcon, CheckIcon, ZapIcon } from '../../src/index';
 
 /* ------------------------------------------------------------------ hero */
 
@@ -63,7 +63,7 @@ function Hero() {
 
       <div className="hero__inner">
         <span className="hero__badge">
-          <SparklesIcon size={13} />
+          <ZapIcon size={13} />
           Zero dependencies · 33 components · accessible by default
         </span>
 

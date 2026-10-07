@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Command, Button, Kbd, useCommandShortcut } from '../../../src/index';
-import { HomeIcon, SettingsIcon, SparklesIcon, UsersIcon } from '../../../src/index';
+import { HomeIcon, SettingsIcon, PaletteIcon, UsersIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
 
@@ -25,7 +25,7 @@ export function CommandPage() {
   const items = [
     { id: 'home', label: 'Go to Overview', group: 'Navigation', hint: '#/home', icon: <HomeIcon />, onSelect: () => (window.location.hash = '/home') },
     { id: 'team', label: 'Invite teammate', group: 'Actions', hint: '⌘I', icon: <UsersIcon />, onSelect: () => alert('Invite dialog') },
-    { id: 'theme', label: 'Toggle theme', group: 'Actions', icon: <SparklesIcon />, onSelect: () => alert('Theme toggled') },
+    { id: 'theme', label: 'Toggle theme', group: 'Actions', icon: <PaletteIcon />, onSelect: () => alert('Theme toggled') },
     { id: 'settings', label: 'Account settings', group: 'Settings', icon: <SettingsIcon />, onSelect: () => alert('Settings opened') },
   ];
 

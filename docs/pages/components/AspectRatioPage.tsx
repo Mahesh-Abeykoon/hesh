@@ -4,7 +4,7 @@ import { DocPage, Section } from '../../components/DocPage';
 
 const DEMO = `<AspectRatio ratio={16 / 9}>
   <img
-    src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1200&auto=format&fit=crop&q=80"
+    src="https://images.pexels.com/photos/39161184/pexels-photo-39161184.jpeg?w=1200&auto=format&fit=crop&q=80"
     alt="Gradient art"
     style={{ borderRadius: 'var(--pui-radius-lg)', objectFit: 'cover' }}
   />
@@ -26,7 +26,7 @@ export function AspectRatioPage() {
           <div style={{ maxWidth: '32rem', width: '100%', margin: '0 auto' }}>
             <AspectRatio ratio={16 / 9}>
               <img
-                src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1200&auto=format&fit=crop&q=80"
+                src="https://images.pexels.com/photos/39161184/pexels-photo-39161184/free-photo-of-dynamic-jump-on-modern-architectural-surface.jpeg?w=1200&auto=format&fit=crop&q=80"
                 alt="Gradient art"
                 style={{ borderRadius: 'var(--pui-radius-lg)', objectFit: 'cover' }}
               />
@@ -44,7 +44,7 @@ export function AspectRatioPage() {
             <div style={{ fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--pui-fg-muted)' }}>1:1 Ratio (Square)</div>
             <AspectRatio ratio={1}>
               <img
-                src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+                src="https://images.pexels.com/photos/7135005/pexels-photo-7135005.jpeg?w=600&auto=format&fit=crop&q=80"
                 alt="Abstract art"
                 style={{ borderRadius: 'var(--pui-radius-lg)', objectFit: 'cover' }}
               />
@@ -54,7 +54,7 @@ export function AspectRatioPage() {
             <div style={{ fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--pui-fg-muted)' }}>4:3 Ratio (Classic)</div>
             <AspectRatio ratio={4 / 3}>
               <img
-                src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=600&auto=format&fit=crop&q=80"
+                src="https://images.pexels.com/photos/7134990/pexels-photo-7134990.jpeg?w=600&auto=format&fit=crop&q=80"
                 alt="Colorful fluid"
                 style={{ borderRadius: 'var(--pui-radius-lg)', objectFit: 'cover' }}
               />

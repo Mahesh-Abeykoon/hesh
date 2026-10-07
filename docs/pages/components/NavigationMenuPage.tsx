@@ -5,7 +5,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
   NavigationMenuLink,
-  SparklesIcon,
+  ZapIcon,
   BarChartIcon,
   CreditCardIcon,
   UsersIcon,
@@ -27,11 +27,11 @@ const NAV_MENU_DEMO = `<NavigationMenu>
             href="#analytics"
           />
           <NavigationMenuLink
-            title="AI Engine"
-            description="Semantic summarization & embeddings."
-            icon={<SparklesIcon size={18} />}
+            title="Automations"
+            description="Event-driven triggers and webhook pipelines."
+            icon={<ZapIcon size={18} />}
             badge="New"
-            href="#ai"
+            href="#automations"
           />
         </div>
       </NavigationMenuContent>
@@ -66,11 +66,11 @@ export function NavigationMenuPage() {
                         href="#analytics"
                       />
                       <NavigationMenuLink
-                        title="Copilot Intelligence"
-                        description="AI assistants built for production developer workflows."
-                        icon={<SparklesIcon size={18} />}
+                        title="Workflow Automations"
+                        description="Event-driven webhooks and background task runner."
+                        icon={<ZapIcon size={18} />}
                         badge="Pro"
-                        href="#copilot"
+                        href="#automations"
                       />
                       <NavigationMenuLink
                         title="Team Collaboration"

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   Badge,
-  SparklesIcon,
+  ZapIcon,
   CheckIcon,
   LockIcon,
   StarIcon,
@@ -151,7 +151,7 @@ export function BadgePage() {
         <Showcase
           code={`<Badge count={5} tone="danger" />
 <Badge count={142} tone="primary" />
-<Badge icon={<SparklesIcon size={12} />} tone="primary">AI Generated</Badge>
+<Badge icon={<ZapIcon size={12} />} tone="primary">Fast Track</Badge>
 <Badge icon={<LockIcon size={12} />} tone="neutral">Encrypted</Badge>`}
           width="md"
         >
@@ -159,8 +159,8 @@ export function BadgePage() {
             <Badge count={3} tone="danger" />
             <Badge count={24} tone="primary" />
             <Badge count={150} tone="warning" />
-            <Badge icon={<SparklesIcon size={12} />} tone="primary">
-              AI Generated
+            <Badge icon={<ZapIcon size={12} />} tone="primary">
+              Fast Track
             </Badge>
             <Badge icon={<CheckIcon size={12} />} tone="success">
               Complete

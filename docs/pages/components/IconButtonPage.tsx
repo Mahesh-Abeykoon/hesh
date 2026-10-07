@@ -1,10 +1,10 @@
 import { IconButton } from '../../../src/index';
-import { SparklesIcon, SettingsIcon, UsersIcon } from '../../../src/index';
+import { PaletteIcon, SettingsIcon, UsersIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
 
-const ICON_BUTTON_DEMO = `<IconButton aria-label="Toggle theme" variant="secondary">
-  <SparklesIcon />
+const ICON_BUTTON_DEMO = `<IconButton aria-label="Customize theme" variant="secondary">
+  <PaletteIcon />
 </IconButton>
 
 <IconButton aria-label="Settings" variant="primary">
@@ -29,8 +29,8 @@ export function IconButtonPage() {
       >
         <Showcase code={ICON_BUTTON_DEMO} defaultOpen width="md">
           <div className="row-wrap" style={{ gap: '1rem', alignItems: 'center' }}>
-            <IconButton aria-label="Toggle theme" variant="secondary">
-              <SparklesIcon />
+            <IconButton aria-label="Customize theme" variant="secondary">
+              <PaletteIcon />
             </IconButton>
             <IconButton aria-label="Settings" variant="primary">
               <SettingsIcon />

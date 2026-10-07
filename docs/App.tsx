@@ -10,7 +10,7 @@ import {
   useCommandShortcut,
   type CommandItem,
 } from '../src/index';
-import { MenuIcon, SparklesIcon, XIcon } from '../src/index';
+import { MenuIcon, PaletteIcon, XIcon } from '../src/index';
 
 import { HomePage } from './pages/Home';
 import { GettingStartedPage } from './pages/GettingStarted';
@@ -46,10 +46,12 @@ import { CheckboxPage } from './pages/components/CheckboxPage';
 import { CollapsiblePage } from './pages/components/CollapsiblePage';
 import { ColorPickerPage } from './pages/components/ColorPickerPage';
 import { CommandPage } from './pages/components/CommandPage';
+import { ConfettiPage } from './pages/components/ConfettiPage';
 import { ContextMenuPage } from './pages/components/ContextMenuPage';
 import { CopyButtonPage } from './pages/components/CopyButtonPage';
 import { DatePickerPage } from './pages/components/DatePickerPage';
 import { DialogPage } from './pages/components/DialogPage';
+import { DiffViewerPage } from './pages/components/DiffViewerPage';
 import { DockPage } from './pages/components/DockPage';
 import { DrawerPage } from './pages/components/DrawerPage';
 import { DropzonePage } from './pages/components/DropzonePage';
@@ -62,6 +64,7 @@ import { KanbanPage } from './pages/components/KanbanPage';
 import { KbdPage } from './pages/components/KbdPage';
 import { MarqueePage } from './pages/components/MarqueePage';
 import { NavigationMenuPage } from './pages/components/NavigationMenuPage';
+import { NotificationBadgePage } from './pages/components/NotificationBadgePage';
 import { NumberInputPage } from './pages/components/NumberInputPage';
 import { OtpInputPage } from './pages/components/OtpInputPage';
 import { PageHeaderPage } from './pages/components/PageHeaderPage';
@@ -69,6 +72,7 @@ import { PaginationPage } from './pages/components/PaginationPage';
 import { PasswordInputPage } from './pages/components/PasswordInputPage';
 import { PopoverPage } from './pages/components/PopoverPage';
 import { ProgressPage } from './pages/components/ProgressPage';
+import { QRCodePage } from './pages/components/QRCodePage';
 import { RadioPage } from './pages/components/RadioPage';
 import { RatingPage } from './pages/components/RatingPage';
 import { ResizablePage } from './pages/components/ResizablePage';
@@ -91,6 +95,7 @@ import { ToastPage } from './pages/components/ToastPage';
 import { TogglePage } from './pages/components/TogglePage';
 import { ToggleGroupPage } from './pages/components/ToggleGroupPage';
 import { TooltipPage } from './pages/components/TooltipPage';
+import { TourPage } from './pages/components/TourPage';
 import { TreePage } from './pages/components/TreePage';
 import { DocNavigationContext } from './components/DocPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -142,11 +147,13 @@ export const DOC_GROUPS: DocGroup[] = [
       { id: 'color-picker', title: 'Color picker', Component: ColorPickerPage },
       { id: 'combobox', title: 'Combobox', Component: ComboboxPage },
       { id: 'command', title: 'Command', Component: CommandPage },
+      { id: 'confetti', title: 'Confetti', Component: ConfettiPage },
       { id: 'context-menu', title: 'Context menu', Component: ContextMenuPage },
       { id: 'copy-button', title: 'Copy button', Component: CopyButtonPage },
       { id: 'data-table', title: 'Data table', Component: DataTablePage },
       { id: 'date-picker', title: 'Date picker', Component: DatePickerPage },
       { id: 'dialog', title: 'Dialog', Component: DialogPage },
+      { id: 'diff-viewer', title: 'Diff viewer', Component: DiffViewerPage },
       { id: 'dock', title: 'Dock', Component: DockPage },
       { id: 'drawer', title: 'Drawer', Component: DrawerPage },
       { id: 'dropdown-menu', title: 'Dropdown menu', Component: DropdownMenuPage },
@@ -160,6 +167,7 @@ export const DOC_GROUPS: DocGroup[] = [
       { id: 'kbd', title: 'Kbd', Component: KbdPage },
       { id: 'marquee', title: 'Marquee', Component: MarqueePage },
       { id: 'navigation-menu', title: 'Navigation menu', Component: NavigationMenuPage },
+      { id: 'notification-badge', title: 'Notification badge', Component: NotificationBadgePage },
       { id: 'number-input', title: 'Number input', Component: NumberInputPage },
       { id: 'otp-input', title: 'Otp input', Component: OtpInputPage },
       { id: 'page-header', title: 'Page header', Component: PageHeaderPage },
@@ -167,6 +175,7 @@ export const DOC_GROUPS: DocGroup[] = [
       { id: 'password-input', title: 'Password input', Component: PasswordInputPage },
       { id: 'popover', title: 'Popover', Component: PopoverPage },
       { id: 'progress', title: 'Progress', Component: ProgressPage },
+      { id: 'qr-code', title: 'QR code', Component: QRCodePage },
       { id: 'radio', title: 'Radio', Component: RadioPage },
       { id: 'rating', title: 'Rating', Component: RatingPage },
       { id: 'resizable', title: 'Resizable', Component: ResizablePage },
@@ -190,6 +199,7 @@ export const DOC_GROUPS: DocGroup[] = [
       { id: 'toggle', title: 'Toggle', Component: TogglePage },
       { id: 'toggle-group', title: 'Toggle group', Component: ToggleGroupPage },
       { id: 'tooltip', title: 'Tooltip', Component: TooltipPage },
+      { id: 'tour', title: 'Tour', Component: TourPage },
       { id: 'tree', title: 'Tree', Component: TreePage },
     ],
   },
@@ -254,7 +264,8 @@ function useRoute() {
 
   const navigate = (id: string) => {
     window.location.hash = `/${id}`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('main')?.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0 });
   };
 
   return { route, navigate };
@@ -395,7 +406,7 @@ function Shell() {
                       >
                         <span className="sidebar__link-text">{page.title}</span>
                         {page.id === 'theme-studio' ? (
-                          <SparklesIcon size={13} />
+                          <PaletteIcon size={13} />
                         ) : isFirstOfChar ? (
                           <span className="sidebar__char" aria-hidden="true">
                             {initialChar}
@@ -422,7 +433,12 @@ function Shell() {
           <div className="sidebar__scrim" onClick={() => setMobileNavOpen(false)} aria-hidden="true" />
         )}
 
-        <main className={`content${route === 'home' ? ' content--home' : ''}`} id="main">
+        <main
+          className={`content${route === 'home' ? ' content--home' : ''}${
+            route === 'playground' ? ' content--playground' : ''
+          }`}
+          id="main"
+        >
           <div className="content__inner">
             {active ? (
               <DocNavigationContext.Provider

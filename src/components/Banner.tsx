@@ -1,6 +1,6 @@
 import React, { forwardRef, useState, type HTMLAttributes, type ReactNode } from 'react';
 import { cn } from '../utils/cn';
-import { XIcon, SparklesIcon, AlertCircleIcon, CheckCircleIcon, InfoIcon } from './icons';
+import { XIcon, PaletteIcon, AlertCircleIcon, CheckCircleIcon, InfoIcon } from './icons';
 
 export type BannerTone = 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'promo';
 
@@ -22,12 +22,12 @@ export interface BannerProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const DEFAULT_ICONS: Record<BannerTone, ReactNode> = {
-  primary: <SparklesIcon size={16} aria-hidden="true" />,
+  primary: <InfoIcon size={16} aria-hidden="true" />,
   info: <InfoIcon size={16} aria-hidden="true" />,
   success: <CheckCircleIcon size={16} aria-hidden="true" />,
   warning: <AlertCircleIcon size={16} aria-hidden="true" />,
   danger: <AlertCircleIcon size={16} aria-hidden="true" />,
-  promo: <SparklesIcon size={16} aria-hidden="true" />,
+  promo: <PaletteIcon size={16} aria-hidden="true" />,
 };
 
 /**

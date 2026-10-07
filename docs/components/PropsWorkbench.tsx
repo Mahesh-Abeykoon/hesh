@@ -1,25 +1,34 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import {
+  Alert,
+  Avatar,
   Badge,
   Button,
+  Card,
+  CardHeader,
   Checkbox,
   Input,
   NumberInput,
   OtpInput,
   PasswordInput,
+  Progress,
   SegmentedControl,
   Select,
   Slider,
   Switch,
   TagInput,
   Textarea,
+  type AlertTone,
+  type AlertVariant,
+  type AvatarSize,
+  type AvatarStatus,
   type ButtonVariant,
   type ButtonSize,
   type BadgeTone,
   type SliderMark,
   type SegmentedControlOption,
 } from '../../src/index';
-import { ArrowRightIcon, PlusIcon, SparklesIcon, TrashIcon } from '../../src/index';
+import { ArrowRightIcon, PlusIcon, ZapIcon, TrashIcon } from '../../src/index';
 import { CodeBlock } from './CodeBlock';
 import { LiveCodeEditor, LiveErrorBoundary, useLiveCompiler } from './LivePlayground';
 
@@ -140,7 +149,7 @@ export function ButtonWorkbench() {
   const variants: ButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'subtle', 'danger', 'link'];
   const sizes: ButtonSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
-  const leftIcon = icon === 'left' || icon === 'both' ? <SparklesIcon size={size === 'xs' ? 12 : 14} /> : undefined;
+  const leftIcon = icon === 'left' || icon === 'both' ? <ZapIcon size={size === 'xs' ? 12 : 14} /> : undefined;
   const rightIcon = icon === 'right' || icon === 'both' ? <ArrowRightIcon size={size === 'xs' ? 12 : 14} /> : undefined;
 
   // Generate clean JSX string
@@ -149,7 +158,7 @@ export function ButtonWorkbench() {
   if (size !== 'md') propList.push(`size="${size}"`);
   if (loading) propList.push('loading');
   if (disabled) propList.push('disabled');
-  if (icon === 'left' || icon === 'both') propList.push('leftIcon={<SparklesIcon />}');
+  if (icon === 'left' || icon === 'both') propList.push('leftIcon={<ZapIcon />}');
   if (icon === 'right' || icon === 'both') propList.push('rightIcon={<ArrowRightIcon />}');
 
   const jsx = propList.length > 0
@@ -1325,6 +1334,350 @@ export function SegmentedControlWorkbench() {
               checked={disabled}
               onCheckedChange={setDisabled}
             />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Alert Workbench */
+
+export function AlertWorkbench() {
+  const [tone, setTone] = useState<AlertTone>('info');
+  const [variant, setVariant] = useState<AlertVariant>('subtle');
+  const [title, setTitle] = useState('Deployment Completed');
+  const [message, setMessage] = useState('All 24 edge nodes were updated with zero downtime.');
+  const [hasIcon, setHasIcon] = useState(true);
+  const [dismissible, setDismissible] = useState(true);
+  const [hasAction, setHasAction] = useState(false);
+
+  const tones: AlertTone[] = ['info', 'success', 'warning', 'danger', 'neutral'];
+  const variants: AlertVariant[] = ['subtle', 'solid', 'accent', 'outline', 'glass'];
+
+  const propList: string[] = [];
+  if (tone !== 'info') propList.push(`tone="${tone}"`);
+  if (variant !== 'subtle') propList.push(`variant="${variant}"`);
+  if (title) propList.push(`title="${title}"`);
+  if (!hasIcon) propList.push('icon={false}');
+  if (dismissible) propList.push('onDismiss={() => {}}');
+  if (hasAction) propList.push('action={<Button size="xs" variant="primary">View logs</Button>}');
+
+  const jsx = propList.length > 0
+    ? `<Alert ${propList.join(' ')}>\n  ${message}\n</Alert>`
+    : `<Alert>\n  ${message}\n</Alert>`;
+
+  return (
+    <PropsWorkbench
+      title="Alert Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '28rem' }}>
+          <Alert
+            tone={tone}
+            variant={variant}
+            title={title || undefined}
+            icon={hasIcon ? undefined : false}
+            onDismiss={dismissible ? () => {} : undefined}
+            action={hasAction ? <Button size="xs" variant="primary">View logs</Button> : undefined}
+          >
+            {message}
+          </Alert>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Tone</span>
+            <div className="workbench__pills">
+              {tones.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${tone === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setTone(t)}
+                >
+                  {t.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Variant Finish</span>
+            <div className="workbench__pills">
+              {variants.map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`workbench__pill${variant === v ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setVariant(v)}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Title</span>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Alert title" />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Message</span>
+            <Input value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Alert body message" />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Show tone icon" checked={hasIcon} onCheckedChange={setHasIcon} />
+            <Switch label="Dismissible (close button)" checked={dismissible} onCheckedChange={setDismissible} />
+            <Switch label="Action button" checked={hasAction} onCheckedChange={setHasAction} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Avatar Workbench */
+
+export function AvatarWorkbench() {
+  const [name, setName] = useState('Elena Rostova');
+  const [size, setSize] = useState<AvatarSize>('md');
+  const [status, setStatus] = useState<AvatarStatus | 'none'>('online');
+  const [square, setSquare] = useState(false);
+  const [useImage, setUseImage] = useState(false);
+
+  const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
+  const statuses: (AvatarStatus | 'none')[] = ['none', 'online', 'away', 'busy', 'offline'];
+
+  const imgUrl = useImage ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=faces' : undefined;
+
+  const propList: string[] = [`name="${name}"`];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (square) propList.push('square');
+  if (status !== 'none') propList.push(`status="${status}"`);
+  if (useImage) propList.push(`src="${imgUrl}"`);
+
+  const jsx = `<Avatar ${propList.join(' ')} />`;
+
+  return (
+    <PropsWorkbench
+      title="Avatar Workbench"
+      preview={
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.875rem' }}>
+          <Avatar
+            name={name}
+            size={size}
+            square={square}
+            status={status === 'none' ? undefined : status}
+            src={imgUrl}
+          />
+          <div style={{ fontSize: '0.8125rem', color: 'var(--pui-fg-muted)' }}>
+            Generated Initials: <strong>{name.trim() ? name.trim().split(/\s+/).slice(0, 2).map((s) => s[0]).join('').toUpperCase() : '?'}</strong>
+          </div>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {sizes.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Presence Status</span>
+            <div className="workbench__pills">
+              {statuses.map((st) => (
+                <button
+                  key={st}
+                  type="button"
+                  className={`workbench__pill${status === st ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setStatus(st)}
+                >
+                  {st}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Person Name</span>
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Square avatar shape" checked={square} onCheckedChange={setSquare} />
+            <Switch label="Use photo image avatar" checked={useImage} onCheckedChange={setUseImage} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Card Workbench */
+
+export function CardWorkbench() {
+  const [elevation, setElevation] = useState<'flat' | 'default' | 'elevated'>('default');
+  const [padded, setPadded] = useState(true);
+  const [interactive, setInteractive] = useState(false);
+  const [title, setTitle] = useState('Cluster Metrics');
+  const [description, setDescription] = useState('Real-time edge compute throughput');
+
+  const elevations = ['flat', 'default', 'elevated'] as const;
+
+  const propList: string[] = [];
+  if (elevation !== 'default') propList.push(`elevation="${elevation}"`);
+  if (padded) propList.push('padded');
+  if (interactive) propList.push('interactive');
+
+  const jsx = `<Card ${propList.join(' ')}>\n  <CardHeader\n    title="${title}"\n    description="${description}"\n  />\n  <p style={{ margin: '0.75rem 0 0', fontSize: '0.875rem' }}>\n    Active throughput: 14.8 GB/s across 12 zones.\n  </p>\n</Card>`;
+
+  return (
+    <PropsWorkbench
+      title="Card Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <Card elevation={elevation} padded={padded} interactive={interactive}>
+            <CardHeader title={title} description={description} />
+            <p style={{ margin: '0.75rem 0 0', fontSize: '0.875rem', color: 'var(--pui-fg-muted)' }}>
+              Active throughput: 14.8 GB/s across 12 zones.
+            </p>
+          </Card>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Elevation</span>
+            <div className="workbench__pills">
+              {elevations.map((el) => (
+                <button
+                  key={el}
+                  type="button"
+                  className={`workbench__pill${elevation === el ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setElevation(el)}
+                >
+                  {el.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Header Title</span>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Header Description</span>
+            <Input value={description} onChange={(e) => setDescription(e.target.value)} />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Padded surface (card padding)" checked={padded} onCheckedChange={setPadded} />
+            <Switch label="Interactive hover effect" checked={interactive} onCheckedChange={setInteractive} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Progress Workbench */
+
+export function ProgressWorkbench() {
+  const [val, setVal] = useState(68);
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [tone, setTone] = useState<'primary' | 'success' | 'warning' | 'danger'>('primary');
+  const [showValue, setShowValue] = useState(true);
+  const [indeterminate, setIndeterminate] = useState(false);
+
+  const sizes = ['sm', 'md', 'lg'] as const;
+  const tones = ['primary', 'success', 'warning', 'danger'] as const;
+
+  const propList: string[] = ['label="Deployment Sync"'];
+  if (!indeterminate) propList.push(`value={${val}}`);
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (tone !== 'primary') propList.push(`tone="${tone}"`);
+  if (showValue && !indeterminate) propList.push('showValue');
+  if (indeterminate) propList.push('indeterminate');
+
+  const jsx = `<Progress\n  ${propList.join('\n  ')}\n/>`;
+
+  return (
+    <PropsWorkbench
+      title="Progress Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <Progress
+            label="Deployment Sync"
+            value={indeterminate ? undefined : val}
+            size={size}
+            tone={tone}
+            showValue={showValue && !indeterminate}
+            indeterminate={indeterminate}
+          />
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Tone</span>
+            <div className="workbench__pills">
+              {tones.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${tone === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setTone(t)}
+                >
+                  {t.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {sizes.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Progress Percentage ({val}%)</span>
+            <Slider value={val} onValueChange={setVal} min={0} max={100} disabled={indeterminate} />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Show percentage label" checked={showValue} onCheckedChange={setShowValue} disabled={indeterminate} />
+            <Switch label="Indeterminate pulsing mode" checked={indeterminate} onCheckedChange={setIndeterminate} />
           </div>
         </>
       }

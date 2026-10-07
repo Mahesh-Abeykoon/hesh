@@ -4,7 +4,7 @@ import {
   Button,
   IconButton,
   SettingsIcon,
-  SparklesIcon,
+  ZapIcon,
   CopyIcon,
 } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
@@ -22,7 +22,7 @@ const TOOLTIP_DEMO = `<Tooltip content="Create deployment" shortcut="⌘D">
 
 <Tooltip content="View changelog" tone="primary" placement="top" arrow>
   <IconButton aria-label="Changelog" variant="ghost">
-    <SparklesIcon />
+    <ZapIcon />
   </IconButton>
 </Tooltip>`;
 
@@ -86,7 +86,7 @@ export function TooltipPage() {
 
             <Tooltip content="View changelog & updates" tone="primary" placement="top" arrow>
               <IconButton aria-label="Changelog" variant="ghost">
-                <SparklesIcon />
+                <ZapIcon />
               </IconButton>
             </Tooltip>
 

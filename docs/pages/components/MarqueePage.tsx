@@ -1,11 +1,11 @@
-import { Marquee, Badge, SparklesIcon } from '../../../src/index';
+import { Marquee, Badge, ZapIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
 
 const MARQUEE_DEMO = `<Marquee speed={20} pauseOnHover fade>
   <div className="partner-card">⚡ Stripe</div>
-  <div className="partner-card">✨ Vercel</div>
-  <div className="partner-card">🚀 GitHub</div>
+  <div className="partner-card">🚀 Vercel</div>
+  <div className="partner-card">📦 GitHub</div>
   <div className="partner-card">🔥 Supabase</div>
 </Marquee>`;
 
@@ -17,7 +17,7 @@ export function MarqueePage() {
     { name: 'Supabase', tag: 'Database' },
     { name: 'Resend', tag: 'Emails' },
     { name: 'Cloudflare', tag: 'Edge' },
-    { name: 'OpenAI', tag: 'Models' },
+    { name: 'Datadog', tag: 'Monitoring' },
   ];
 
   return (
@@ -52,7 +52,7 @@ export function MarqueePage() {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  <SparklesIcon size={16} />
+                  <ZapIcon size={16} />
                   <span>{p.name}</span>
                   <Badge tone="neutral">{p.tag}</Badge>
                 </div>

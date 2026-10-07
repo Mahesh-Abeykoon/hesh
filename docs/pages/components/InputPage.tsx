@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Input, SearchIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { InputWorkbench } from '../../components/PropsWorkbench';
 
 const BASIC_DEMO = `<Input
   label="Workspace subdomain"
@@ -44,6 +45,13 @@ export function InputPage() {
       lede="Text field with built-in accessible label association, helper hints, error validation, affixes, sizes, and clear actions."
       importStatement="import { Input } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure input props, helper text, error validations, states, and live test TypeScript code."
+      >
+        <InputWorkbench />
+      </Section>
+
       <Section
         title="1. Labels, Add-ons & Validation States"
         description="Handles automatic ARIA label and error announcement wiring, plus prefix/suffix add-on attachments."

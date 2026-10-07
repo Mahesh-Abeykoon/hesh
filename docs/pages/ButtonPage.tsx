@@ -6,7 +6,7 @@ import {
   Tooltip,
   DropdownMenu,
   ChevronDownIcon,
-  SparklesIcon,
+  ZapIcon,
   ArrowRightIcon,
   PlusIcon,
   TrashIcon,
@@ -42,7 +42,7 @@ const SHAPES_GLOW_CODE = `<!-- Pill Shape -->
 <Button shape="square" variant="secondary">Sharp Square</Button>`;
 
 const SPLIT_BUTTON_CODE = `<ButtonGroup attached>
-  <Button variant="primary" leftIcon={<SparklesIcon size={16} />}>Deploy Branch</Button>
+  <Button variant="primary" leftIcon={<ZapIcon size={16} />}>Deploy Branch</Button>
   <DropdownMenu
     items={[
       { type: 'item', label: 'Deploy to Staging', onSelect: () => {} },
@@ -98,7 +98,7 @@ export function ButtonPage() {
             <Button variant="subtle">Subtle</Button>
             <Button variant="success" leftIcon={<CheckIcon size={16} />}>Success</Button>
             <Button variant="danger">Danger</Button>
-            <Button variant="gradient" leftIcon={<SparklesIcon size={16} />}>Gradient</Button>
+            <Button variant="gradient" leftIcon={<ZapIcon size={16} />}>Gradient</Button>
             <Button variant="glass">Glass</Button>
             <Button variant="link">Link action</Button>
           </div>
@@ -112,7 +112,7 @@ export function ButtonPage() {
         <Showcase code={SHAPES_GLOW_CODE} width="full">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
             <Button shape="pill" variant="primary">Pill Primary</Button>
-            <Button shape="pill" variant="gradient" leftIcon={<SparklesIcon size={16} />}>Gradient Pill</Button>
+            <Button shape="pill" variant="gradient" leftIcon={<ZapIcon size={16} />}>Gradient Pill</Button>
             <Button glow variant="primary">Glow Primary</Button>
             <Button glow variant="gradient">Glow Gradient</Button>
             <Button shape="square" variant="secondary">Sharp Square</Button>
@@ -128,7 +128,7 @@ export function ButtonPage() {
         <Showcase code={SPLIT_BUTTON_CODE} width="md">
           <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <ButtonGroup attached>
-              <Button variant="primary" leftIcon={<SparklesIcon size={16} />}>
+              <Button variant="primary" leftIcon={<ZapIcon size={16} />}>
                 Deploy Branch
               </Button>
               <DropdownMenu

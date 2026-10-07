@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import {
   Drawer,
+  Dialog,
+  Textarea,
   Button,
   Badge,
   Switch,
@@ -16,8 +18,12 @@ import {
   hexToHsl,
   hslToHex,
   buildBrandRamp,
+  NEUTRAL_PALETTES,
+  type NeutralBase,
+  getContrastRatio,
+  getWcagRating,
 } from '../../src/index';
-import { SparklesIcon, CopyIcon } from '../../src/components/icons';
+import { PaletteIcon, CopyIcon } from '../../src/components/icons';
 import { cn } from '../../src/utils/cn';
 
 const EXTRA_PRESETS = [
@@ -65,7 +71,7 @@ export function ThemeCustomizerTrigger({
       aria-label="Open theme customizer"
       title="Customize theme (colors, radius, density)"
     >
-      <SparklesIcon size={14} />
+      <PaletteIcon size={14} />
       <span className="topbar__customizer-btn__text">Theme</span>
       {customTheme && <span className="topbar__customizer-btn__dot" aria-hidden="true" />}
     </button>
@@ -116,14 +122,35 @@ export function ThemeCustomizer({
     return 8;
   });
   const [fontFamily, setFontFamily] = useState<string>(customTheme?.fontFamily ?? '');
+  const [neutralBase, setNeutralBase] = useState<NeutralBase>(customTheme?.neutralBase ?? 'neutral');
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [importJsonText, setImportJsonText] = useState('');
 
   // Keep internal state in sync with active theme
   useEffect(() => {
     setHue(hsl.h);
     setSaturation(hsl.s);
-  }, [hsl]);
+    if (customTheme?.radius !== undefined) {
+      const r = typeof customTheme.radius === 'number' ? customTheme.radius : parseFloat(customTheme.radius) || 8;
+      setRadius(r);
+    } else {
+      setRadius(8);
+    }
+    setFontFamily(customTheme?.fontFamily ?? '');
+    setNeutralBase(customTheme?.neutralBase ?? 'neutral');
+  }, [hsl, customTheme]);
 
   const ramp = useMemo(() => buildBrandRamp(hue, saturation), [hue, saturation]);
+
+  // Real-time WCAG 2.1 contrast calculations
+  const contrastWhite = useMemo(() => getContrastRatio(currentHex, '#ffffff'), [currentHex]);
+  const contrastDark = useMemo(() => {
+    const darkBg = neutralBase === 'oled' ? '#000000' : (NEUTRAL_PALETTES[neutralBase]?.ramps[900] ?? '#0f172a');
+    return getContrastRatio(currentHex, darkBg);
+  }, [currentHex, neutralBase]);
+
+  const ratingWhite = useMemo(() => getWcagRating(contrastWhite), [contrastWhite]);
+  const ratingDark = useMemo(() => getWcagRating(contrastDark), [contrastDark]);
 
   const handleColorChange = (newHex: string) => {
     const nextHsl = hexToHsl(newHex);
@@ -136,6 +163,7 @@ export function ThemeCustomizer({
       radius,
       fontFamily: fontFamily || undefined,
       density,
+      neutralBase,
     });
   };
 
@@ -150,6 +178,15 @@ export function ThemeCustomizer({
       radius,
       fontFamily: fontFamily || undefined,
       density,
+      neutralBase,
+    });
+  };
+
+  const handleNeutralChange = (base: NeutralBase) => {
+    setNeutralBase(base);
+    setCustomTheme({
+      ...(customTheme ?? { primaryColor: currentHex, hue, saturation, radius, density }),
+      neutralBase: base,
     });
   };
 
@@ -191,6 +228,7 @@ export function ThemeCustomizer({
       radius,
       fontFamily: fontFamily || undefined,
       density,
+      neutralBase,
     };
     const css = generateThemeCss(activeConfig);
     navigator.clipboard.writeText(css).then(() => {
@@ -210,6 +248,7 @@ export function ThemeCustomizer({
         primaryColor: currentHex,
         hue,
         saturation,
+        neutralBase,
         radius: `${radius}px`,
         density,
         fontFamily: fontFamily || undefined,
@@ -226,10 +265,42 @@ export function ThemeCustomizer({
     });
   };
 
+  const handleApplyImportJson = () => {
+    try {
+      const parsed = JSON.parse(importJsonText);
+      if (!parsed || typeof parsed !== 'object') throw new Error('Invalid JSON');
+      setCustomTheme(parsed);
+      if (parsed.primaryColor) {
+        const ph = hexToHsl(parsed.primaryColor);
+        setHue(ph.h);
+        setSaturation(ph.s);
+      }
+      if (parsed.neutralBase) setNeutralBase(parsed.neutralBase);
+      if (parsed.radius !== undefined) {
+        setRadius(typeof parsed.radius === 'number' ? parsed.radius : parseFloat(parsed.radius) || 8);
+      }
+      if (parsed.fontFamily !== undefined) setFontFamily(parsed.fontFamily);
+      if (parsed.density) setDensity(parsed.density);
+      setImportDialogOpen(false);
+      showToast({
+        title: 'Theme imported successfully!',
+        description: 'New tokens and parameters are now live.',
+        tone: 'success',
+      });
+    } catch {
+      showToast({
+        title: 'Failed to import JSON',
+        description: 'Please ensure valid JSON format with proper quotes.',
+        tone: 'danger',
+      });
+    }
+  };
+
   const handleReset = () => {
     resetCustomTheme();
     setRadius(8);
     setFontFamily('');
+    setNeutralBase('neutral');
     showToast({
       title: 'Restored default theme',
       description: 'Reset all tokens and density back to initial Indigo setup.',
@@ -250,7 +321,7 @@ export function ThemeCustomizer({
             title="Open Theme Customizer"
           >
             <span className="pui-customizer-fab__icon">
-              <SparklesIcon size={18} />
+              <PaletteIcon size={18} />
             </span>
             <span className="pui-customizer-fab__label">Customizer</span>
             {customTheme && <span className="pui-customizer-fab__badge" title="Custom theme active" />}
@@ -276,7 +347,7 @@ export function ThemeCustomizer({
                 color: 'var(--pui-primary)',
               }}
             >
-              <SparklesIcon size={16} />
+              <PaletteIcon size={16} />
             </span>
             <span>Theme Customizer</span>
           </span>
@@ -300,6 +371,29 @@ export function ThemeCustomizer({
               onClick={handleExportJson}
             >
               Export JSON
+            </Button>
+
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                setImportJsonText(
+                  JSON.stringify(
+                    {
+                      primaryColor: currentHex,
+                      neutralBase,
+                      radius: `${radius}px`,
+                      fontFamily: fontFamily || undefined,
+                      density,
+                    },
+                    null,
+                    2
+                  )
+                );
+                setImportDialogOpen(true);
+              }}
+            >
+              Import JSON
             </Button>
 
             <Button
@@ -412,6 +506,87 @@ export function ThemeCustomizer({
                 </div>
               ))}
             </div>
+
+            {/* Real-time WCAG 2.1 Contrast Indicator */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.5rem',
+                padding: '0.625rem 0.875rem',
+                background: 'var(--pui-surface-subtle, #f8fafc)',
+                borderRadius: 'var(--pui-radius-md, 8px)',
+                border: '1px solid var(--pui-border, #e2e8f0)',
+                marginTop: '0.75rem',
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--pui-fg)' }}>
+                  WCAG Accessibility
+                </span>
+                <span style={{ fontSize: '0.6875rem', color: 'var(--pui-fg-muted)' }}>
+                  Surface compliance
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
+                <Badge
+                  size="sm"
+                  tone={ratingWhite.pass ? 'success' : 'warning'}
+                  variant="subtle"
+                  title={`Contrast ratio against #FFFFFF light surface: ${contrastWhite}:1`}
+                >
+                  Light: {ratingWhite.label}
+                </Badge>
+                <Badge
+                  size="sm"
+                  tone={ratingDark.pass ? 'success' : 'warning'}
+                  variant="subtle"
+                  title={`Contrast ratio against dark surface: ${contrastDark}:1`}
+                >
+                  Dark: {ratingDark.label}
+                </Badge>
+              </div>
+            </div>
+          </section>
+
+          <Separator />
+
+          {/* Neutral Base Surface Palette */}
+          <section className="pui-customizer-sec">
+            <div className="pui-customizer-sec__head">
+              <span className="pui-customizer-sec__title">Neutral Base Palette</span>
+              <span className="pui-customizer-sec__badge">{NEUTRAL_PALETTES[neutralBase]?.name ?? 'Neutral'}</span>
+            </div>
+
+            <div className="pui-customizer-chip-group">
+              {(Object.keys(NEUTRAL_PALETTES) as NeutralBase[]).map((base) => {
+                const pal = NEUTRAL_PALETTES[base];
+                const isActive = neutralBase === base;
+                return (
+                  <button
+                    key={base}
+                    type="button"
+                    className={`pui-customizer-chip ${isActive ? 'pui-customizer-chip--active' : ''}`}
+                    onClick={() => handleNeutralChange(base)}
+                    title={pal.description}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+                  >
+                    <span
+                      style={{
+                        width: '0.625rem',
+                        height: '0.625rem',
+                        borderRadius: '9999px',
+                        background: pal.swatch,
+                        border: '1px solid rgba(255,255,255,0.2)',
+                      }}
+                    />
+                    <span>{pal.name}</span>
+                  </button>
+                );
+              })}
+            </div>
           </section>
 
           <Separator />
@@ -523,6 +698,34 @@ export function ThemeCustomizer({
           </section>
         </div>
       </Drawer>
+
+      {/* Import Theme JSON Dialog */}
+      <Dialog
+        open={importDialogOpen}
+        onClose={() => setImportDialogOpen(false)}
+        title="Import Theme JSON"
+        description="Paste your theme configuration JSON below to apply custom brand colors, neutral palette, and radii in real time."
+        footer={
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', width: '100%' }}>
+            <Button variant="ghost" onClick={() => setImportDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleApplyImportJson}>
+              Apply Theme
+            </Button>
+          </div>
+        }
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
+          <Textarea
+            value={importJsonText}
+            onChange={(e) => setImportJsonText(e.target.value)}
+            rows={8}
+            placeholder='{\n  "primaryColor": "#6366f1",\n  "neutralBase": "zinc",\n  "radius": 8\n}'
+            style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8125rem' }}
+          />
+        </div>
+      </Dialog>
     </>
   );
 }

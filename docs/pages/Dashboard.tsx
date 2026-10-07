@@ -37,7 +37,7 @@ import {
   PlusIcon,
   SearchIcon,
   SettingsIcon,
-  SparklesIcon,
+  ZapIcon,
   TrendingUpIcon,
   UsersIcon,
 } from '../../src/index';
@@ -275,7 +275,7 @@ function DashboardScreen() {
       <aside className="dash__sidebar">
         <div className="dash__brand">
           <span className="dash__logo">
-            <SparklesIcon size={16} />
+            <ZapIcon size={16} />
           </span>
           <span className="dash__brand-name">Northwind</span>
         </div>

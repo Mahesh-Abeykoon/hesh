@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Alert, Button, SparklesIcon } from '../../../src/index';
+import { Alert, Button, ZapIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { AlertWorkbench } from '../../components/PropsWorkbench';
 
 const SUBTLE_DEMO = `<Alert tone="info" title="Scheduled Maintenance">
   Read replicas will undergo scheduled database upgrades at 02:00 UTC.
@@ -64,6 +65,13 @@ export function AlertPage() {
       lede="Displays prominent, persistent feedback and contextual banners in multiple tones, variants, and action compositions."
       importStatement="import { Alert } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure alert tones, visual finishes, titles, and live test TypeScript code."
+      >
+        <AlertWorkbench />
+      </Section>
+
       <Section
         title="1. Semantic Tones (Subtle Tint)"
         description="Standard soft-tint alerts designed for non-disruptive feedback across five semantic tones: info, success, warning, danger, and neutral."
@@ -158,19 +166,19 @@ export function AlertPage() {
         description="Add one-click dismissal buttons or customize icons with any React SVG component."
       >
         <Showcase
-          code={`<Alert tone="info" icon={<SparklesIcon size={18} />} title="Copilot Intelligence">
-  Ask AI to generate unit tests for selected functions.
+          code={`<Alert tone="info" icon={<ZapIcon size={18} />} title="Real-Time Telemetry">
+  Live latency metrics and edge health diagnostics are streaming.
 </Alert>`}
           width="md"
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', width: '100%' }}>
             <Alert
               tone="info"
-              icon={<SparklesIcon size={18} />}
-              title="AI Copilot Activated"
+              icon={<ZapIcon size={18} />}
+              title="Real-Time Telemetry Active"
               variant="subtle"
             >
-              Contextual code suggestions are ready for your project workspace.
+              Live latency metrics and edge health diagnostics are streaming.
             </Alert>
 
             {showDismissible ? (

@@ -241,7 +241,10 @@ export function DocPage({
             <button
               type="button"
               className="doc-toc__top-btn"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={() => {
+                document.getElementById('main')?.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
               ↑ Back to top
             </button>

@@ -18,7 +18,7 @@ import {
   Switch,
   useToast,
 } from '../../src/index';
-import { BarChartIcon, HomeIcon, SettingsIcon, SparklesIcon, UsersIcon } from '../../src/index';
+import { BarChartIcon, HomeIcon, SettingsIcon, PaletteIcon, UsersIcon } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
 
@@ -110,7 +110,7 @@ export function AdvancedPage() {
     { id: 'home', label: 'Go to Overview', group: 'Navigate', hint: '#/home', icon: <HomeIcon />, onSelect: () => (window.location.hash = '/home') },
     { id: 'dash', label: 'Go to Dashboard', group: 'Navigate', hint: '#/dashboard', icon: <BarChartIcon />, onSelect: () => (window.location.hash = '/dashboard') },
     { id: 'team', label: 'Invite teammate', group: 'Actions', hint: '⌘I', icon: <UsersIcon />, onSelect: () => toast({ title: 'Invite flow', tone: 'info' }) },
-    { id: 'theme', label: 'Toggle theme', group: 'Actions', icon: <SparklesIcon />, onSelect: () => toast({ title: 'Theme toggled', tone: 'success' }) },
+    { id: 'theme', label: 'Toggle theme', group: 'Actions', icon: <PaletteIcon />, onSelect: () => toast({ title: 'Theme toggled', tone: 'success' }) },
     { id: 'danger', label: 'Delete workspace', group: 'Danger zone', icon: <SettingsIcon />, disabled: true, onSelect: () => {} },
   ];
 

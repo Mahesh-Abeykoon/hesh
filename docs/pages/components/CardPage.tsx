@@ -9,12 +9,13 @@ import {
   Separator,
   Stat,
   Sparkline,
-  SparklesIcon,
+  PaletteIcon,
   CheckIcon,
   ArrowRightIcon,
 } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { CardWorkbench } from '../../components/PropsWorkbench';
 
 const MEDIA_CARD_CODE = `<Card style={{ maxWidth: '340px' }}>
   <CardMedia
@@ -22,7 +23,7 @@ const MEDIA_CARD_CODE = `<Card style={{ maxWidth: '340px' }}>
     style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
   >
     <div style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-      <SparklesIcon size={24} /> Design System 2.0
+      <PaletteIcon size={24} /> Design System 2.0
     </div>
   </CardMedia>
   <CardHeader
@@ -72,6 +73,13 @@ export function CardPage() {
       importStatement="import { Card, CardHeader, CardBody, CardFooter, CardMedia } from 'hesh';"
     >
       <Section
+        title="Interactive Props Workbench"
+        description="Inspect and tune card elevation, padding, interactive behavior, and test live code."
+      >
+        <CardWorkbench />
+      </Section>
+
+      <Section
         title="1. Media Cover Card"
         description="Combines CardMedia with header badges, structured descriptive body, and footer actions."
       >
@@ -88,7 +96,7 @@ export function CardPage() {
                 }}
               >
                 <div style={{ color: '#fff', fontSize: '1.125rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <SparklesIcon size={20} /> Design System 2.0
+                  <PaletteIcon size={20} /> Design System 2.0
                 </div>
               </CardMedia>
               <CardHeader

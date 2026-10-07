@@ -2834,37 +2834,56 @@ export function DataTableWorkbench() {
 /* ------------------------------------------------------------------ Carousel Workbench */
 
 export function CarouselWorkbench() {
+  const [itemsPerView, setItemsPerView] = useState<number>(1);
   const [indicatorVariant, setIndicatorVariant] = useState<'bars' | 'dots' | 'numbers'>('bars');
   const [arrowVariant, setArrowVariant] = useState<'floating' | 'solid' | 'outline'>('floating');
   const [autoPlay, setAutoPlay] = useState(false);
   const [interval, setInterval] = useState(4000);
   const [loop, setLoop] = useState(true);
 
+  const effectiveLoop = loop && itemsPerView === 1;
+
   const propList: string[] = [];
+  if (itemsPerView > 1) {
+    propList.push(`itemsPerView={${itemsPerView}}`);
+    propList.push('gap={16}');
+  }
   if (indicatorVariant !== 'bars') propList.push(`indicatorVariant="${indicatorVariant}"`);
   if (arrowVariant !== 'floating') propList.push(`arrowVariant="${arrowVariant}"`);
   if (autoPlay) propList.push('autoPlay');
   if (interval !== 4000) propList.push(`interval={${interval}}`);
-  if (!loop) propList.push('loop={false}');
+  if (!effectiveLoop) propList.push('loop={false}');
 
   const jsx = `<Carousel
   ${propList.length ? propList.join('\n  ') + '\n' : ''}>
-  <div style={{ height: 240, padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(37,99,235,0.1), var(--pui-surface))' }}>
-    <Badge tone="primary" dot>Autonomous Edge</Badge>
-    <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem' }}>AI Agents Orchestrator</h3>
-    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem' }}>Deploy autonomous reasoning agents across 300+ edge nodes.</p>
+  <div style={{ height: 220, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(37,99,235,0.1), var(--pui-surface))', borderRadius: 'inherit' }}>
+    <Badge tone="primary" dot>AI Cluster</Badge>
+    <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem' }}>Agents Orchestrator</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.8125rem' }}>Autonomous reasoning graph across 300+ nodes.</p>
   </div>
 
-  <div style={{ height: 240, padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(5,150,105,0.1), var(--pui-surface))' }}>
-    <Badge tone="success" dot>Real-time Telemetry</Badge>
-    <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem' }}>Sub-Millisecond Radar</h3>
-    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem' }}>Global mesh routing with instant dynamic failover.</p>
+  <div style={{ height: 220, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(5,150,105,0.1), var(--pui-surface))', borderRadius: 'inherit' }}>
+    <Badge tone="success" dot>KV Cache</Badge>
+    <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem' }}>Distributed Memory</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.8125rem' }}>Global mesh routing with instant dynamic failover.</p>
   </div>
 
-  <div style={{ height: 240, padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(124,58,237,0.1), var(--pui-surface))' }}>
-    <Badge tone="info" dot>Enterprise Vault</Badge>
-    <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem' }}>Hardware Enclave Keys</h3>
-    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem' }}>SOC-2 Type II compliant with zero-knowledge rotation.</p>
+  <div style={{ height: 220, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(124,58,237,0.1), var(--pui-surface))', borderRadius: 'inherit' }}>
+    <Badge tone="info" dot>HSM Vault</Badge>
+    <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem' }}>Cryptographic Keys</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.8125rem' }}>SOC-2 Type II with zero-knowledge key rotation.</p>
+  </div>
+
+  <div style={{ height: 220, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(245,158,11,0.1), var(--pui-surface))', borderRadius: 'inherit' }}>
+    <Badge tone="warning" dot>Anycast</Badge>
+    <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem' }}>Edge Routing Mesh</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.8125rem' }}>Predictive latency bypass across 320 global PoPs.</p>
+  </div>
+
+  <div style={{ height: 220, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'linear-gradient(135deg, rgba(236,72,153,0.1), var(--pui-surface))', borderRadius: 'inherit' }}>
+    <Badge tone="neutral" dot>Vector</Badge>
+    <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem' }}>Semantic Search</h3>
+    <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.8125rem' }}>128M embeddings with HNSW sub-5ms lookup.</p>
   </div>
 </Carousel>`;
 
@@ -2873,96 +2892,159 @@ export function CarouselWorkbench() {
       title="Carousel Workbench"
       badge="Motion & Slides"
       preview={
-        <div style={{ width: '100%', maxWidth: '38rem', margin: '0 auto' }}>
+        <div style={{ width: '100%', maxWidth: itemsPerView > 1 ? '48rem' : '38rem', margin: '0 auto', transition: 'max-width 300ms ease' }}>
           <Carousel
+            itemsPerView={itemsPerView}
+            gap={16}
             indicatorVariant={indicatorVariant}
             arrowVariant={arrowVariant}
             autoPlay={autoPlay}
             interval={interval}
-            loop={loop}
+            loop={effectiveLoop}
           >
             <div
               style={{
-                height: 240,
-                padding: '2rem',
+                height: 230,
+                padding: '1.5rem',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
+                alignItems: itemsPerView === 1 ? 'center' : 'flex-start',
+                textAlign: itemsPerView === 1 ? 'center' : 'left',
                 background: 'linear-gradient(135deg, rgba(37,99,235,0.12), var(--pui-surface))',
+                border: '1px solid var(--pui-border)',
                 borderRadius: 'inherit',
               }}
             >
-              <Badge tone="primary" dot>Autonomous Edge</Badge>
-              <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>
-                AI Agents Orchestrator
+              <Badge tone="primary" dot>AI Cluster</Badge>
+              <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem', fontWeight: 700 }}>
+                Agents Orchestrator
               </h3>
-              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '24rem' }}>
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.8125rem', maxWidth: '24rem' }}>
                 Deploy autonomous reasoning models across 300+ edge nodes with zero cold-starts.
               </p>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <Button size="sm" variant="primary">Deploy Model</Button>
-                <Button size="sm" variant="secondary">Documentation</Button>
-              </div>
+              <Button size="xs" variant="primary">Deploy Model</Button>
             </div>
 
             <div
               style={{
-                height: 240,
-                padding: '2rem',
+                height: 230,
+                padding: '1.5rem',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
+                alignItems: itemsPerView === 1 ? 'center' : 'flex-start',
+                textAlign: itemsPerView === 1 ? 'center' : 'left',
                 background: 'linear-gradient(135deg, rgba(5,150,105,0.12), var(--pui-surface))',
+                border: '1px solid var(--pui-border)',
                 borderRadius: 'inherit',
               }}
             >
-              <Badge tone="success" dot>Real-time Telemetry</Badge>
-              <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>
-                Sub-Millisecond Global Radar
+              <Badge tone="success" dot>KV Cache</Badge>
+              <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem', fontWeight: 700 }}>
+                Sub-ms Radar
               </h3>
-              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '24rem' }}>
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.8125rem', maxWidth: '24rem' }}>
                 Global mesh routing with automated failover and p99 latency under 12ms.
               </p>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <Button size="sm" variant="primary">View Live Nodes</Button>
-                <Button size="sm" variant="secondary">Status Page</Button>
-              </div>
+              <Button size="xs" variant="primary">View Nodes</Button>
             </div>
 
             <div
               style={{
-                height: 240,
-                padding: '2rem',
+                height: 230,
+                padding: '1.5rem',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
+                alignItems: itemsPerView === 1 ? 'center' : 'flex-start',
+                textAlign: itemsPerView === 1 ? 'center' : 'left',
                 background: 'linear-gradient(135deg, rgba(124,58,237,0.12), var(--pui-surface))',
+                border: '1px solid var(--pui-border)',
                 borderRadius: 'inherit',
               }}
             >
-              <Badge tone="info" dot>Enterprise Vault</Badge>
-              <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>
-                Hardware Enclave HSM Keys
+              <Badge tone="info" dot>HSM Vault</Badge>
+              <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem', fontWeight: 700 }}>
+                Enclave Keys
               </h3>
-              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '24rem' }}>
-                SOC-2 Type II and HIPAA certified with automated cryptographic key rotation.
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.8125rem', maxWidth: '24rem' }}>
+                SOC-2 Type II with automated cryptographic key rotation and isolation.
               </p>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <Button size="sm" variant="primary">Security Whitepaper</Button>
-                <Button size="sm" variant="secondary">Audit Report</Button>
-              </div>
+              <Button size="xs" variant="primary">Security Specs</Button>
+            </div>
+
+            <div
+              style={{
+                height: 230,
+                padding: '1.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: itemsPerView === 1 ? 'center' : 'flex-start',
+                textAlign: itemsPerView === 1 ? 'center' : 'left',
+                background: 'linear-gradient(135deg, rgba(245,158,11,0.12), var(--pui-surface))',
+                border: '1px solid var(--pui-border)',
+                borderRadius: 'inherit',
+              }}
+            >
+              <Badge tone="warning" dot>Anycast</Badge>
+              <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem', fontWeight: 700 }}>
+                Edge Routing
+              </h3>
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.8125rem', maxWidth: '24rem' }}>
+                Predictive latency bypass across 320 global transit node points.
+              </p>
+              <Button size="xs" variant="primary">Mesh Status</Button>
+            </div>
+
+            <div
+              style={{
+                height: 230,
+                padding: '1.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: itemsPerView === 1 ? 'center' : 'flex-start',
+                textAlign: itemsPerView === 1 ? 'center' : 'left',
+                background: 'linear-gradient(135deg, rgba(236,72,153,0.12), var(--pui-surface))',
+                border: '1px solid var(--pui-border)',
+                borderRadius: 'inherit',
+              }}
+            >
+              <Badge tone="neutral" dot>Vector</Badge>
+              <h3 style={{ margin: '0.5rem 0 0.25rem', fontSize: '1.125rem', fontWeight: 700 }}>
+                Semantic Search
+              </h3>
+              <p style={{ margin: '0 0 1rem', color: 'var(--pui-fg-muted)', fontSize: '0.8125rem', maxWidth: '24rem' }}>
+                128M embeddings with HNSW sub-5ms approximate nearest search.
+              </p>
+              <Button size="xs" variant="primary">Query Store</Button>
             </div>
           </Carousel>
         </div>
       }
       controls={
         <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Items Visible at Once</span>
+            <div className="workbench__pills">
+              {[1, 2, 3].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  className={`workbench__pill${itemsPerView === n ? ' workbench__pill--active' : ''}`}
+                  onClick={() => {
+                    setItemsPerView(n);
+                    if (n > 1) setLoop(false);
+                  }}
+                >
+                  {n === 1 ? '1 Slide (Hero)' : `${n} Items`}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="workbench__control-group">
             <span className="workbench__control-label">Indicator Pagination</span>
             <div className="workbench__pills">
@@ -3013,7 +3095,11 @@ export function CarouselWorkbench() {
 
           <div className="workbench__switches">
             <Switch label="Autoplay timer transition" checked={autoPlay} onCheckedChange={setAutoPlay} />
-            <Switch label="Loop infinitely at ends" checked={loop} onCheckedChange={setLoop} />
+            <Switch
+              label="Loop infinitely at ends"
+              checked={itemsPerView > 1 ? loop : loop}
+              onCheckedChange={setLoop}
+            />
           </div>
         </>
       }

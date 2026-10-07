@@ -324,4 +324,26 @@ export const INTERACTIONS = [
       assert(indeterminate, 'an indeterminate bar omits aria-valuenow');
     },
   },
+
+  {
+    route: 'carousel',
+    name: 'multi-item carousel locks previous arrow at start and unlocks on forward click',
+    run: async ({ document, click, wait, assert }) => {
+      const multiCarousel = document.querySelector('.pui-carousel--multi-item');
+      assert(multiCarousel, 'multi-item carousel rendered');
+
+      const prevBtn = multiCarousel.querySelector('.pui-carousel__arrow--prev');
+      const nextBtn = multiCarousel.querySelector('.pui-carousel__arrow--next');
+      assert(prevBtn, 'previous arrow rendered');
+      assert(nextBtn, 'next arrow rendered');
+
+      assert(prevBtn.disabled, 'previous arrow starts locked/disabled at index 0');
+      assert(!nextBtn.disabled, 'next arrow starts enabled when items remain');
+
+      await click(nextBtn);
+      await wait();
+
+      assert(!prevBtn.disabled, 'previous arrow is unlocked after navigating forward');
+    },
+  },
 ];

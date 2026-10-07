@@ -2544,9 +2544,11 @@ input:focus-visible + .pui-choice__box {
 }
 
 .pui-carousel__arrow:disabled {
-  opacity: 0.25;
+  opacity: 0.22;
   cursor: not-allowed;
   pointer-events: none;
+  filter: grayscale(1);
+  box-shadow: none;
 }
 
 .pui-carousel__dots {
@@ -2633,6 +2635,18 @@ input:focus-visible + .pui-choice__box {
 
 .pui-carousel__counter-total {
   opacity: 0.75;
+}
+
+.pui-carousel--dots-outside .pui-carousel__dots {
+  position: static;
+  margin-top: 1.25rem;
+  bottom: auto;
+}
+
+.pui-carousel--dots-outside .pui-carousel__counter {
+  position: static;
+  margin: 1.25rem auto 0;
+  bottom: auto;
 }
 
 /* ==========================================================================

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Badge, Button, Combobox, Separator } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
+import { ComboboxWorkbench } from '../components/PropsWorkbench';
 
 const COUNTRIES = [
   { value: 'us', label: 'United States', group: 'Americas' },
@@ -138,6 +139,13 @@ export function ComboboxPage() {
       lede="A high-performance searchable select with accessible WAI-ARIA combobox behavior, multi-select tag chips, categorized option groups, and custom option renderers."
       importStatement="import { Combobox } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Switch between single and multi-select, adjust sizes (sm, md, lg), toggle grouped options, or write live TypeScript code."
+      >
+        <ComboboxWorkbench />
+      </Section>
+
       <Section title="Basic Searchable Select">
         <Showcase code={BASIC_DEMO} defaultOpen width="md">
           <div className="stack">

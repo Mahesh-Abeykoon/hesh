@@ -3,6 +3,7 @@ import { Badge, Card, CardBody, Separator, Tabs } from '../../src/index';
 import { BarChartIcon, SettingsIcon, UsersIcon } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
+import { TabsWorkbench } from '../components/PropsWorkbench';
 
 const BASIC = `<Tabs
   items={[
@@ -97,6 +98,13 @@ export function TabsPage() {
       title="Tabs"
       lede="Roving-tabindex tabs: one tab stop for the whole list, arrow keys to move, Home and End to jump. Selection follows focus, which is what native platforms do."
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Switch between line, pills, and boxed styles, toggle vertical orientation, full-width justification, badges, and live test code."
+      >
+        <TabsWorkbench />
+      </Section>
+
       <Section title="Basic">
         <Showcase code={BASIC} defaultOpen>
           <Tabs items={items} defaultValue="overview" />

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Confetti, fireConfetti, Button, Card, ZapIcon } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { ConfettiWorkbench } from '../../components/PropsWorkbench';
 
 const CONFETTI_DEMO = `// 1. Imperative trigger (anywhere in handlers):
 fireConfetti({ particleCount: 90, spread: 80 });
@@ -19,6 +20,13 @@ export function ConfettiPage() {
       lede="Lightweight zero-dependency canvas particle celebration blast with gravity, air drag, flutter rotations, and full 60fps performance."
       importStatement="import { Confetti, fireConfetti } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Configure particle densities, spread angles, blast velocities, and color palettes, then trigger live bursts."
+      >
+        <ConfettiWorkbench />
+      </Section>
+
       <Section
         title="Interactive Celebration Blasts"
         description="Celebrate successful form submissions, deployments, upgrades, and achievement milestones."

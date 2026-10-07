@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Drawer, Button, Switch, Separator, Badge, Input } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { DrawerWorkbench } from '../../components/PropsWorkbench';
 
 const SIDES_DEMO = `const [activeSide, setActiveSide] = useState<null | 'left' | 'right' | 'bottom' | 'top'>(null);
 
@@ -113,6 +114,13 @@ export function DrawerPage() {
       lede="An edge-anchored sliding panel for secondary navigation, filters, contextual workflows, and mobile bottom sheets."
       importStatement="import { Drawer } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Test drawer sides (bottom, right, left, top), bottom sheet drag handles, title/description configs, or edit live code."
+      >
+        <DrawerWorkbench />
+      </Section>
+
       <Section
         title="Edge Placements"
         description="Dock drawers to any viewport boundary: right, left, bottom (sheet with handle), or top (tray)."

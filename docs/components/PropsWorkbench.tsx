@@ -7,17 +7,28 @@ import {
   Card,
   CardHeader,
   Checkbox,
+  Combobox,
+  Confetti,
+  DataTable,
+  Dialog,
+  Drawer,
+  fireConfetti,
+  Gauge,
+  HoverCard,
   Input,
   NumberInput,
   OtpInput,
   PasswordInput,
   Progress,
+  QRCode,
   SegmentedControl,
   Select,
   Slider,
   Switch,
+  Tabs,
   TagInput,
   Textarea,
+  Tooltip,
   type AlertTone,
   type AlertVariant,
   type AvatarSize,
@@ -25,10 +36,28 @@ import {
   type ButtonVariant,
   type ButtonSize,
   type BadgeTone,
+  type Column,
   type SliderMark,
   type SegmentedControlOption,
+  type TabsSize,
+  type TabsVariant,
+  type TooltipTone,
 } from '../../src/index';
-import { ArrowRightIcon, PlusIcon, ZapIcon, TrashIcon } from '../../src/index';
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  CopyIcon,
+  DownloadIcon,
+  ExternalLinkIcon,
+  InfoIcon,
+  PlusIcon,
+  SearchIcon,
+  StarIcon,
+  TrashIcon,
+  UsersIcon,
+  ZapIcon,
+} from '../../src/index';
 import { CodeBlock } from './CodeBlock';
 import { LiveCodeEditor, LiveErrorBoundary, useLiveCompiler } from './LivePlayground';
 
@@ -1686,5 +1715,1114 @@ export function ProgressWorkbench() {
   );
 }
 
+/* ------------------------------------------------------------------ Combobox Workbench */
 
+export function ComboboxWorkbench() {
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md');
+  const [multiple, setMultiple] = useState(false);
+  const [singleVal, setSingleVal] = useState('us');
+  const [multiVals, setMultiVals] = useState<string[]>(['us', 'gb']);
+  const [clearable, setClearable] = useState(true);
+  const [searchable, setSearchable] = useState(true);
+  const [grouped, setGrouped] = useState(false);
+  const [customRender, setCustomRender] = useState(false);
+
+  const ALL_OPTIONS = [
+    { value: 'us', label: 'United States', group: 'Americas', description: 'North America · +1' },
+    { value: 'ca', label: 'Canada', group: 'Americas', description: 'North America · +1' },
+    { value: 'gb', label: 'United Kingdom', group: 'Europe', description: 'Western Europe · +44' },
+    { value: 'de', label: 'Germany', group: 'Europe', description: 'Central Europe · +49' },
+    { value: 'jp', label: 'Japan', group: 'Asia-Pacific', description: 'East Asia · +81' },
+    { value: 'sg', label: 'Singapore', group: 'Asia-Pacific', description: 'Southeast Asia · +65' },
+    { value: 'au', label: 'Australia', group: 'Asia-Pacific', description: 'Oceania · +61' },
+  ];
+
+  const effectiveOptions = grouped
+    ? ALL_OPTIONS
+    : ALL_OPTIONS.map(({ group, ...rest }) => rest);
+
+  const propList: string[] = [];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (multiple) propList.push('multiple');
+  if (clearable) propList.push('clearable');
+  if (!searchable) propList.push('searchable={false}');
+  if (multiple) {
+    propList.push(`values={${JSON.stringify(multiVals)}}`);
+    propList.push('onValuesChange={setValues}');
+  } else {
+    propList.push(`value="${singleVal}"`);
+    propList.push('onValueChange={setValue}');
+  }
+  if (customRender) {
+    propList.push(`renderOption={(opt) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+      <Avatar name={opt.label} size="xs" />
+      <div>
+        <div style={{ fontWeight: 600 }}>{opt.label}</div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>{opt.description}</div>
+      </div>
+    </div>
+  )}`);
+  }
+
+  const jsx = `<Combobox
+  label="Select Country"
+  placeholder="Search countries…"
+  options={countries}
+  ${propList.join('\n  ')}
+/>`;
+
+  return (
+    <PropsWorkbench
+      title="Combobox Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: '24rem' }}>
+          <Combobox
+            label="Select Country"
+            placeholder="Search countries…"
+            size={size}
+            multiple={multiple}
+            options={effectiveOptions}
+            value={singleVal}
+            onValueChange={setSingleVal}
+            values={multiVals}
+            onValuesChange={setMultiVals}
+            clearable={clearable}
+            searchable={searchable}
+            renderOption={
+              customRender
+                ? (opt) => (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', width: '100%' }}>
+                      <Avatar name={opt.label} size="xs" />
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{opt.label}</span>
+                        {opt.description && (
+                          <span style={{ fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+                            {opt.description}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )
+                : undefined
+            }
+          />
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Multi-select chips mode" checked={multiple} onCheckedChange={setMultiple} />
+            <Switch label="Clearable with inline cross" checked={clearable} onCheckedChange={setClearable} />
+            <Switch label="Search filterable" checked={searchable} onCheckedChange={setSearchable} />
+            <Switch label="Categorized regions" checked={grouped} onCheckedChange={setGrouped} />
+            <Switch label="Custom avatar renderer" checked={customRender} onCheckedChange={setCustomRender} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ HoverCard Workbench */
+
+export function HoverCardWorkbench() {
+  const [placement, setPlacement] = useState<'top' | 'bottom' | 'left' | 'right'>('top');
+  const [align, setAlign] = useState<'start' | 'center' | 'end'>('center');
+  const [arrow, setArrow] = useState(true);
+  const [width, setWidth] = useState(300);
+  const [preset, setPreset] = useState<'profile' | 'repo' | 'product'>('profile');
+
+  const placements: ('top' | 'bottom' | 'left' | 'right')[] = ['top', 'bottom', 'left', 'right'];
+  const aligns: ('start' | 'center' | 'end')[] = ['start', 'center', 'end'];
+
+  const content = (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {preset === 'profile' && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Avatar name="Sarah Connor" size="md" status="online" />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontWeight: 700, fontSize: '0.875rem' }}>Sarah Connor</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>@sconnor · Staff Architect</div>
+            </div>
+          </div>
+          <p style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--pui-fg-muted)', lineHeight: 1.5 }}>
+            Distributed systems, high-performance UI components, and accessible design tokens.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', fontSize: '0.75rem', paddingTop: '0.25rem', borderTop: '1px solid var(--pui-border)' }}>
+            <div><strong>1.4k</strong> Following</div>
+            <div><strong>28.9k</strong> Followers</div>
+          </div>
+        </>
+      )}
+
+      {preset === 'repo' && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>hesh / ui-library</span>
+            <Badge tone="success" pill>v2.4.0</Badge>
+          </div>
+          <p style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--pui-fg-muted)' }}>
+            Zero-dependency accessible component library built with vanilla CSS.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', fontSize: '0.75rem', color: 'var(--pui-fg-subtle)' }}>
+            <span>★ 14,200</span>
+            <span>⑂ 1,850</span>
+            <span>TypeScript</span>
+          </div>
+        </>
+      )}
+
+      {preset === 'product' && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>Enterprise Pro Tier</span>
+            <span style={{ fontWeight: 700, color: 'var(--pui-primary)' }}>$49/mo</span>
+          </div>
+          <p style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--pui-fg-muted)' }}>
+            Unlimited active team seats, SOC2 compliance logs, and priority SLA runtime support.
+          </p>
+          <Button size="sm" variant="primary" fullWidth>Upgrade Now</Button>
+        </>
+      )}
+    </div>
+  );
+
+  const propList: string[] = [];
+  if (placement !== 'bottom') propList.push(`placement="${placement}"`);
+  if (align !== 'start') propList.push(`align="${align}"`);
+  if (arrow) propList.push('arrow');
+  if (width !== 320) propList.push(`width={${width}}`);
+
+  const jsx = `<HoverCard
+  ${propList.join('\n  ')}
+  content={/* rich preview card */}
+>
+  <Button variant="outline" size="sm">
+    Hover to Preview
+  </Button>
+</HoverCard>`;
+
+  return (
+    <PropsWorkbench
+      title="HoverCard Workbench"
+      preview={
+        <div style={{ padding: '2rem 1rem', display: 'flex', justifyContent: 'center' }}>
+          <HoverCard
+            placement={placement}
+            align={align}
+            arrow={arrow}
+            width={width}
+            content={content}
+          >
+            <Button variant="outline" size="sm" leftIcon={<UsersIcon size={14} />}>
+              Hover or Tap Preview
+            </Button>
+          </HoverCard>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Card Preset</span>
+            <div className="workbench__pills">
+              {(['profile', 'repo', 'product'] as const).map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  className={`workbench__pill${preset === p ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setPreset(p)}
+                >
+                  {p.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Placement</span>
+            <div className="workbench__pills">
+              {placements.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  className={`workbench__pill${placement === p ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setPlacement(p)}
+                >
+                  {p.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Alignment</span>
+            <div className="workbench__pills">
+              {aligns.map((a) => (
+                <button
+                  key={a}
+                  type="button"
+                  className={`workbench__pill${align === a ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setAlign(a)}
+                >
+                  {a.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Width ({width}px)</span>
+            <Slider value={width} onValueChange={setWidth} min={240} max={360} step={10} />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Anchor pointer arrow" checked={arrow} onCheckedChange={setArrow} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Tooltip Workbench */
+
+export function TooltipWorkbench() {
+  const [tone, setTone] = useState<TooltipTone>('dark');
+  const [placement, setPlacement] = useState<'top' | 'bottom' | 'left' | 'right'>('top');
+  const [arrow, setArrow] = useState(true);
+  const [shortcut, setShortcut] = useState<'⌘K' | '⇧⌘P' | 'Esc' | 'none'>('⌘K');
+  const [text, setText] = useState('Quick search and command palette');
+
+  const tones: TooltipTone[] = ['dark', 'light', 'primary', 'invert'];
+  const placements: ('top' | 'bottom' | 'left' | 'right')[] = ['top', 'bottom', 'left', 'right'];
+
+  const propList: string[] = [];
+  if (tone !== 'dark') propList.push(`tone="${tone}"`);
+  if (placement !== 'top') propList.push(`placement="${placement}"`);
+  if (!arrow) propList.push('arrow={false}');
+  if (shortcut !== 'none') propList.push(`shortcut="${shortcut}"`);
+
+  const jsx = `<Tooltip
+  content="${text}"
+  ${propList.join('\n  ')}
+>
+  <Button variant="secondary" size="sm">
+    Command Palette
+  </Button>
+</Tooltip>`;
+
+  return (
+    <PropsWorkbench
+      title="Tooltip Workbench"
+      preview={
+        <div style={{ padding: '2.5rem 1rem', display: 'flex', justifyContent: 'center' }}>
+          <Tooltip
+            content={text}
+            tone={tone}
+            placement={placement}
+            arrow={arrow}
+            shortcut={shortcut !== 'none' ? shortcut : undefined}
+          >
+            <Button variant="secondary" size="sm" leftIcon={<ZapIcon size={14} />}>
+              Hover or Focus Me
+            </Button>
+          </Tooltip>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Tone</span>
+            <div className="workbench__pills">
+              {tones.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${tone === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setTone(t)}
+                >
+                  {t.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Placement</span>
+            <div className="workbench__pills">
+              {placements.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  className={`workbench__pill${placement === p ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setPlacement(p)}
+                >
+                  {p.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Keyboard Shortcut</span>
+            <div className="workbench__pills">
+              {(['⌘K', '⇧⌘P', 'Esc', 'none'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${shortcut === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setShortcut(s)}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Tooltip Content</span>
+            <Input value={text} onChange={(e) => setText(e.target.value)} />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Pointer arrow" checked={arrow} onCheckedChange={setArrow} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Tabs Workbench */
+
+export function TabsWorkbench() {
+  const [variant, setVariant] = useState<TabsVariant>('line');
+  const [size, setSize] = useState<TabsSize>('md');
+  const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>('horizontal');
+  const [fullWidth, setFullWidth] = useState(false);
+  const [showBadges, setShowBadges] = useState(true);
+  const [showIcons, setShowIcons] = useState(true);
+
+  const items = [
+    {
+      value: 'overview',
+      label: 'Overview',
+      icon: showIcons ? <ZapIcon size={14} /> : undefined,
+      count: showBadges ? 4 : undefined,
+      content: <div style={{ padding: '0.75rem 0', color: 'var(--pui-fg-muted)' }}>Real-time telemetry and service pulse.</div>,
+    },
+    {
+      value: 'analytics',
+      label: 'Analytics',
+      icon: showIcons ? <StarIcon size={14} /> : undefined,
+      count: showBadges ? 12 : undefined,
+      content: <div style={{ padding: '0.75rem 0', color: 'var(--pui-fg-muted)' }}>Funnel conversion graphs and cohort metrics.</div>,
+    },
+    {
+      value: 'settings',
+      label: 'Settings',
+      icon: showIcons ? <UsersIcon size={14} /> : undefined,
+      content: <div style={{ padding: '0.75rem 0', color: 'var(--pui-fg-muted)' }}>Team member access and API credentials.</div>,
+    },
+  ];
+
+  const propList: string[] = [];
+  if (variant !== 'line') propList.push(`variant="${variant}"`);
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (orientation !== 'horizontal') propList.push(`orientation="${orientation}"`);
+  if (fullWidth) propList.push('fullWidth');
+
+  const jsx = `<Tabs
+  items={tabItems}
+  ${propList.join('\n  ')}
+/>`;
+
+  return (
+    <PropsWorkbench
+      title="Tabs Workbench"
+      preview={
+        <div style={{ width: '100%', maxWidth: orientation === 'vertical' ? '30rem' : '26rem' }}>
+          <Tabs
+            items={items}
+            variant={variant}
+            size={size}
+            orientation={orientation}
+            fullWidth={fullWidth}
+          />
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Variant</span>
+            <div className="workbench__pills">
+              {(['line', 'pills', 'boxed'] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`workbench__pill${variant === v ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setVariant(v)}
+                >
+                  {v.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size</span>
+            <div className="workbench__pills">
+              {(['sm', 'md', 'lg'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Orientation</span>
+            <div className="workbench__pills">
+              {(['horizontal', 'vertical'] as const).map((o) => (
+                <button
+                  key={o}
+                  type="button"
+                  className={`workbench__pill${orientation === o ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setOrientation(o)}
+                >
+                  {o.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Full width distribution" checked={fullWidth} onCheckedChange={setFullWidth} />
+            <Switch label="Show count badge pills" checked={showBadges} onCheckedChange={setShowBadges} />
+            <Switch label="Show leading icons" checked={showIcons} onCheckedChange={setShowIcons} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ QRCode Workbench */
+
+export function QRCodeWorkbench() {
+  const [val, setVal] = useState('https://github.com/hesh/ui-library');
+  const [size, setSize] = useState(160);
+  const [bordered, setBordered] = useState(true);
+  const [colorMode, setColorMode] = useState<'default' | 'brand' | 'emerald' | 'violet'>('default');
+
+  const fgColor =
+    colorMode === 'brand'
+      ? '#2563eb'
+      : colorMode === 'emerald'
+        ? '#059669'
+        : colorMode === 'violet'
+          ? '#7c3aed'
+          : '#0f172a';
+
+  const propList: string[] = [`value="${val}"`];
+  if (size !== 160) propList.push(`size={${size}}`);
+  if (!bordered) propList.push('bordered={false}');
+  if (colorMode !== 'default') propList.push(`fgColor="${fgColor}"`);
+
+  const jsx = `<QRCode
+  ${propList.join('\n  ')}
+/>`;
+
+  return (
+    <PropsWorkbench
+      title="QRCode Workbench"
+      badge="Live Generator"
+      preview={
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', padding: '1rem' }}>
+          <QRCode
+            value={val || 'https://hesh.dev'}
+            size={size}
+            bordered={bordered}
+            fgColor={fgColor}
+          />
+          <span className="mono-note" style={{ maxWidth: '20rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {val || 'https://hesh.dev'}
+          </span>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Target URL / Text</span>
+            <Input value={val} onChange={(e) => setVal(e.target.value)} placeholder="https://..." />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size ({size}px)</span>
+            <Slider value={size} onValueChange={setSize} min={120} max={240} step={10} />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Color Theme</span>
+            <div className="workbench__pills">
+              {(['default', 'brand', 'emerald', 'violet'] as const).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`workbench__pill${colorMode === c ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setColorMode(c)}
+                >
+                  {c.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Border card container" checked={bordered} onCheckedChange={setBordered} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Gauge Workbench */
+
+export function GaugeWorkbench() {
+  const [val, setVal] = useState(68);
+  const [type, setType] = useState<'circle' | 'semicircle' | 'arc'>('circle');
+  const [tone, setTone] = useState<'primary' | 'success' | 'warning' | 'danger' | 'gradient'>('primary');
+  const [size, setSize] = useState(150);
+  const [strokeWidth, setStrokeWidth] = useState(12);
+  const [showValue, setShowValue] = useState(true);
+
+  const propList: string[] = [`value={${val}}`];
+  if (type !== 'circle') propList.push(`type="${type}"`);
+  if (tone !== 'primary') propList.push(`tone="${tone}"`);
+  if (size !== 140) propList.push(`size={${size}}`);
+  if (strokeWidth !== 12) propList.push(`strokeWidth={${strokeWidth}}`);
+  if (!showValue) propList.push('showValue={false}');
+
+  const jsx = `<Gauge
+  ${propList.join('\n  ')}
+  label="CPU Utilization"
+/>`;
+
+  return (
+    <PropsWorkbench
+      title="Gauge Workbench"
+      badge="Radial Telemetry"
+      preview={
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', padding: '1rem' }}>
+          <Gauge
+            value={val}
+            type={type}
+            tone={tone}
+            size={size}
+            strokeWidth={strokeWidth}
+            showValue={showValue}
+            label="System Load"
+          />
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Live Value ({val}%)</span>
+            <Slider value={val} onValueChange={setVal} min={0} max={100} />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Gauge Type</span>
+            <div className="workbench__pills">
+              {(['circle', 'semicircle', 'arc'] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${type === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setType(t)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Tone</span>
+            <div className="workbench__pills">
+              {(['primary', 'success', 'warning', 'danger', 'gradient'] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`workbench__pill${tone === t ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setTone(t)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Diameter ({size}px)</span>
+            <Slider value={size} onValueChange={setSize} min={120} max={220} step={10} />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Stroke Width ({strokeWidth}px)</span>
+            <Slider value={strokeWidth} onValueChange={setStrokeWidth} min={6} max={22} step={2} />
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Show center percentage text" checked={showValue} onCheckedChange={setShowValue} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Confetti Workbench */
+
+export function ConfettiWorkbench() {
+  const [particleCount, setParticleCount] = useState(60);
+  const [spread, setSpread] = useState(70);
+  const [velocity, setVelocity] = useState(35);
+  const [palette, setPalette] = useState<'classic' | 'neon' | 'sunset' | 'gold'>('classic');
+
+  const paletteColors: Record<string, string[]> = {
+    classic: ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
+    neon: ['#06b6d4', '#ec4899', '#84cc16', '#a855f7'],
+    sunset: ['#f97316', '#f43f5e', '#fbbf24', '#e11d48'],
+    gold: ['#f59e0b', '#fbbf24', '#d97706', '#fef3c7'],
+  };
+
+  const handleBurst = () => {
+    fireConfetti({
+      particleCount,
+      spread,
+      startVelocity: velocity,
+      colors: paletteColors[palette],
+    });
+  };
+
+  const jsx = `import { fireConfetti } from 'hesh';
+
+fireConfetti({
+  particleCount: ${particleCount},
+  spread: ${spread},
+  startVelocity: ${velocity},
+  colors: ${JSON.stringify(paletteColors[palette])},
+});`;
+
+  return (
+    <PropsWorkbench
+      title="Confetti Workbench"
+      badge="Physics Particle FX"
+      preview={
+        <div style={{ padding: '3rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+          <Button
+            size="lg"
+            variant="primary"
+            onClick={handleBurst}
+            leftIcon={<ZapIcon size={16} />}
+          >
+            Launch Confetti Burst 🎉
+          </Button>
+          <span className="mono-note">Click repeatedly to celebrate!</span>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Color Palette</span>
+            <div className="workbench__pills">
+              {(['classic', 'neon', 'sunset', 'gold'] as const).map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  className={`workbench__pill${palette === p ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setPalette(p)}
+                >
+                  {p.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Particle Count ({particleCount})</span>
+            <Slider value={particleCount} onValueChange={setParticleCount} min={20} max={120} step={5} />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Spread Angle ({spread}°)</span>
+            <Slider value={spread} onValueChange={setSpread} min={30} max={160} step={5} />
+          </div>
+
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Launch Velocity ({velocity})</span>
+            <Slider value={velocity} onValueChange={setVelocity} min={20} max={55} step={1} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Drawer Workbench */
+
+export function DrawerWorkbench() {
+  const [side, setSide] = useState<'bottom' | 'right' | 'left' | 'top'>('bottom');
+  const [handle, setHandle] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  const sides: ('bottom' | 'right' | 'left' | 'top')[] = ['bottom', 'right', 'left', 'top'];
+
+  const propList: string[] = ['open={isOpen}', 'onClose={() => setIsOpen(false)}'];
+  if (side !== 'bottom') propList.push(`side="${side}"`);
+  if (!handle) propList.push('handle={false}');
+
+  const jsx = `<Drawer
+  title="Action Center"
+  description="Manage notifications and device settings"
+  ${propList.join('\n  ')}
+  footer={<Button variant="secondary" fullWidth onClick={() => setIsOpen(false)}>Done</Button>}
+>
+  <div style={{ padding: '1rem 0' }}>Drawer sheet content</div>
+</Drawer>`;
+
+  return (
+    <PropsWorkbench
+      title="Drawer Workbench"
+      badge="Slide Overlay"
+      preview={
+        <div style={{ padding: '2.5rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+          <Button variant="primary" size="md" onClick={() => setOpen(true)}>
+            Open ${side.toUpperCase()} Drawer Sheet
+          </Button>
+          <span className="mono-note">Dismiss with swipe, backdrop click, or Done</span>
+
+          <Drawer
+            open={open}
+            onClose={() => setOpen(false)}
+            side={side}
+            handle={handle}
+            title="Action Center"
+            description="Manage your system preferences and integrations."
+            footer={
+              <Button variant="secondary" fullWidth onClick={() => setOpen(false)}>
+                Done
+              </Button>
+            }
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '0.5rem 0' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))', gap: '0.75rem', textAlign: 'center' }}>
+                {[
+                  { name: 'Copy Link', icon: '🔗' },
+                  { name: 'Email', icon: '✉️' },
+                  { name: 'Slack', icon: '💬' },
+                  { name: 'Export PDF', icon: '📄' },
+                ].map((action, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.75rem 0.5rem',
+                      background: 'var(--pui-surface-subtle)',
+                      border: '1px solid var(--pui-border)',
+                      borderRadius: 'var(--pui-radius-lg)',
+                      cursor: 'pointer',
+                      color: 'var(--pui-fg)',
+                    }}
+                  >
+                    <span style={{ fontSize: '1.25rem' }}>{action.icon}</span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 550 }}>{action.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </Drawer>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Side Edge</span>
+            <div className="workbench__pills">
+              {sides.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${side === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSide(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Show drag handle indicator" checked={handle} onCheckedChange={setHandle} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ Dialog Workbench */
+
+export function DialogWorkbench() {
+  const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'xl'>('md');
+  const [dismissOnBackdrop, setDismissOnBackdrop] = useState(true);
+  const [hideCloseButton, setHideCloseButton] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const sizes: ('sm' | 'md' | 'lg' | 'xl')[] = ['sm', 'md', 'lg', 'xl'];
+
+  const propList: string[] = ['open={isOpen}', 'onClose={() => setIsOpen(false)}'];
+  if (size !== 'md') propList.push(`size="${size}"`);
+  if (!dismissOnBackdrop) propList.push('dismissOnBackdrop={false}');
+  if (hideCloseButton) propList.push('hideCloseButton');
+
+  const jsx = `<Dialog
+  title="Publish Library"
+  description="Confirm release to public registry and announce."
+  ${propList.join('\n  ')}
+  footer={
+    <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+      <Button variant="ghost" onClick={() => setIsOpen(false)}>Cancel</Button>
+      <Button variant="primary" onClick={() => setIsOpen(false)}>Publish v2.4.0</Button>
+    </div>
+  }
+>
+  <p>Ready to deploy package updates across all CDN nodes.</p>
+</Dialog>`;
+
+  return (
+    <PropsWorkbench
+      title="Dialog Workbench"
+      badge="Accessible Modal"
+      preview={
+        <div style={{ padding: '2.5rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+          <Button variant="primary" size="md" onClick={() => setOpen(true)}>
+            Open ${size.toUpperCase()} Modal Dialog
+          </Button>
+          <span className="mono-note">Focus-trapped, closes on Esc or backdrop</span>
+
+          <Dialog
+            open={open}
+            onClose={() => setOpen(false)}
+            size={size}
+            dismissOnBackdrop={dismissOnBackdrop}
+            hideCloseButton={hideCloseButton}
+            title="Publish Library v2.4.0"
+            description="Confirm publishing this release to npm and notify subscribers."
+            footer={
+              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', width: '100%' }}>
+                <Button variant="ghost" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={() => setOpen(false)}>
+                  Publish Release
+                </Button>
+              </div>
+            }
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.875rem', color: 'var(--pui-fg-muted)' }}>
+              <p style={{ margin: 0 }}>
+                This will trigger the production build pipeline, run bundle size analysis, and tag release <strong>v2.4.0</strong> on GitHub.
+              </p>
+            </div>
+          </Dialog>
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Size Scale</span>
+            <div className="workbench__pills">
+              {sizes.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`workbench__pill${size === s ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Dismiss on backdrop click" checked={dismissOnBackdrop} onCheckedChange={setDismissOnBackdrop} />
+            <Switch label="Hide top cross close button" checked={hideCloseButton} onCheckedChange={setHideCloseButton} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ DataTable Workbench */
+
+export function DataTableWorkbench() {
+  const [density, setDensity] = useState<'compact' | 'comfortable' | 'spacious'>('comfortable');
+  const [striped, setStriped] = useState(false);
+  const [bordered, setBordered] = useState(false);
+  const [selectable, setSelectable] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>(['1', '3']);
+
+  interface UserRow {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    status: 'active' | 'invited' | 'offline';
+  }
+
+  const columns: Column<UserRow>[] = [
+    {
+      id: 'name',
+      header: 'User',
+      accessor: (r) => r.name,
+      cell: (r) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Avatar name={r.name} size="xs" />
+          <span style={{ fontWeight: 600 }}>{r.name}</span>
+        </div>
+      ),
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessor: (r) => r.role,
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessor: (r) => r.status,
+      cell: (r) => (
+        <Badge tone={r.status === 'active' ? 'success' : r.status === 'invited' ? 'warning' : 'neutral'} pill>
+          {r.status}
+        </Badge>
+      ),
+    },
+  ];
+
+  const data: UserRow[] = [
+    { id: '1', name: 'Ada Lovelace', email: 'ada@hesh.dev', role: 'Staff Architect', status: 'active' },
+    { id: '2', name: 'Grace Hopper', email: 'grace@hesh.dev', role: 'Director', status: 'active' },
+    { id: '3', name: 'Alan Turing', email: 'alan@hesh.dev', role: 'Security Lead', status: 'offline' },
+    { id: '4', name: 'Margaret Hamilton', email: 'margaret@hesh.dev', role: 'VP Engineering', status: 'invited' },
+  ];
+
+  const propList: string[] = ['columns={columns}', 'data={data}', 'rowKey={(r) => r.id}'];
+  if (density !== 'comfortable') propList.push(`density="${density}"`);
+  if (striped) propList.push('striped');
+  if (bordered) propList.push('bordered');
+  if (selectable) {
+    propList.push('selectable');
+    propList.push(`selectedKeys={${JSON.stringify(selectedKeys)}}`);
+    propList.push('onSelectionChange={setSelectedKeys}');
+  }
+  if (loading) propList.push('loading');
+
+  const jsx = `<DataTable
+  ${propList.join('\n  ')}
+/>`;
+
+  return (
+    <PropsWorkbench
+      title="DataTable Workbench"
+      badge="Data Grid"
+      preview={
+        <div style={{ width: '100%' }}>
+          <DataTable
+            columns={columns}
+            data={data}
+            rowKey={(r) => r.id}
+            density={density}
+            striped={striped}
+            bordered={bordered}
+            selectable={selectable}
+            selectedKeys={selectedKeys}
+            onSelectionChange={setSelectedKeys}
+            loading={loading}
+          />
+        </div>
+      }
+      controls={
+        <>
+          <div className="workbench__control-group">
+            <span className="workbench__control-label">Density</span>
+            <div className="workbench__pills">
+              {(['compact', 'comfortable', 'spacious'] as const).map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  className={`workbench__pill${density === d ? ' workbench__pill--active' : ''}`}
+                  onClick={() => setDensity(d)}
+                >
+                  {d.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="workbench__switches">
+            <Switch label="Selectable checkbox column" checked={selectable} onCheckedChange={setSelectable} />
+            <Switch label="Zebra striped alternating rows" checked={striped} onCheckedChange={setStriped} />
+            <Switch label="Bordered cell borders" checked={bordered} onCheckedChange={setBordered} />
+            <Switch label="Loading skeleton overlay" checked={loading} onCheckedChange={setLoading} />
+          </div>
+        </>
+      }
+      code={jsx}
+    />
+  );
+}
 

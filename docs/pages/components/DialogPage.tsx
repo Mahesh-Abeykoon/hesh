@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Dialog, ConfirmDialog, Button, Input, Badge, Textarea, Select } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { DialogWorkbench } from '../../components/PropsWorkbench';
 
 const SIZES_DEMO = `const [activeSize, setActiveSize] = useState<null | 'sm' | 'md' | 'lg' | 'xl' | 'full'>(null);
 
@@ -142,6 +143,13 @@ export function DialogPage() {
       lede="A modal window overlaid onto the viewport. Traps keyboard focus, locks background scrolling, and complies with the WAI-ARIA 1.2 modal dialog specification."
       importStatement="import { Dialog, ConfirmDialog } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Select modal sizes (sm, md, lg, xl), toggle backdrop click dismissal and close buttons, or edit live TypeScript code."
+      >
+        <DialogWorkbench />
+      </Section>
+
       <Section
         title="Dialog Sizes"
         description="Supports sizes ranging from compact prompt cards to wide multi-column dialogs and full-screen immersive views."

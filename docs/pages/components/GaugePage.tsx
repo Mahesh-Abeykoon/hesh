@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Gauge, Button } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { GaugeWorkbench } from '../../components/PropsWorkbench';
 
 const GAUGE_DEMO = `<Gauge
   value={78}
@@ -22,6 +23,13 @@ export function GaugePage() {
       lede="Circular, semicircular, and speedometer arc meters with animated stroke transitions and customizable tone palettes."
       importStatement="import { Gauge } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Slide real-time metrics, switch between circle/semicircle/arc shapes, stroke thickness, tones, or live edit code."
+      >
+        <GaugeWorkbench />
+      </Section>
+
       <Section
         title="Interactive Gauge Meters"
         description="Change values to watch the SVG stroke dashoffset transition smoothly."

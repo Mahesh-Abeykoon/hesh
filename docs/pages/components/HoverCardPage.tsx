@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HoverCard, Avatar, Button, Badge } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { HoverCardWorkbench } from '../../components/PropsWorkbench';
 
 const PROFILE_DEMO = `<HoverCard
   placement="top"
@@ -161,6 +162,13 @@ export function HoverCardPage() {
       lede="Displays rich preview cards on hover or keyboard focus, enabling users to glimpse contextual metadata without navigating away, featuring anchor arrows, custom widths, and smooth bridge timing."
       importStatement="import { HoverCard } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Fine-tune placement sides, alignment, pointer arrows, card widths, and preview content presets."
+      >
+        <HoverCardWorkbench />
+      </Section>
+
       <Section
         title="Interactive Profile Preview"
         description="Hover over the author link below. Notice how you can effortlessly glide your pointer into the floating preview card without it closing."

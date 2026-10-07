@@ -372,6 +372,153 @@ render(<SaaSMetricsDashboard />);`;
     },
   },
   {
+    id: 'combobox',
+    title: 'Combobox Select',
+    category: 'Forms & Selects',
+    defaultState: { multiple: false, size: 'md', clearable: true },
+    generateCode: (s) => {
+      const isMulti = !!s.multiple;
+      const sizeVal = s.size || 'md';
+      const clearVal = !!s.clearable;
+      return `function ComboboxDemo() {
+  const [val, setVal] = useState(${isMulti ? "['us', 'gb']" : "'us'"});
+  const countries = [
+    { value: 'us', label: 'United States', group: 'Americas' },
+    { value: 'ca', label: 'Canada', group: 'Americas' },
+    { value: 'gb', label: 'United Kingdom', group: 'Europe' },
+    { value: 'de', label: 'Germany', group: 'Europe' },
+    { value: 'jp', label: 'Japan', group: 'Asia-Pacific' },
+    { value: 'sg', label: 'Singapore', group: 'Asia-Pacific' },
+  ];
+
+  return (
+    <div style={{ width: '100%', maxWidth: '24rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Combobox
+        label="Select Destinations"
+        placeholder="Type to filter countries..."
+        options={countries}
+        size="${sizeVal}"
+        ${isMulti ? 'multiple\n        values={val as string[]}\n        onValuesChange={setVal}' : 'value={val as string}\n        onValueChange={setVal}'}
+        clearable={${clearVal}}
+      />
+      <span style={{ fontSize: '0.8125rem', color: 'var(--pui-fg-muted)' }}>
+        Selected: {Array.isArray(val) ? val.join(', ') : val}
+      </span>
+    </div>
+  );
+}
+
+render(<ComboboxDemo />);`;
+    },
+  },
+  {
+    id: 'gauge',
+    title: 'Gauge Telemetry',
+    category: 'Visual & Metrics',
+    defaultState: { type: 'arc', tone: 'primary', val: 78 },
+    generateCode: (s) => {
+      const gType = s.type || 'arc';
+      const gTone = s.tone || 'primary';
+      const gVal = s.val ?? 78;
+      return `function GaugeDemo() {
+  const [val, setVal] = useState(${gVal});
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', width: '100%' }}>
+      <Gauge
+        value={val}
+        type="${gType}"
+        tone="${gTone}"
+        size={170}
+        strokeWidth={13}
+        label="Production Load"
+        sublabel="Real-time CPU telemetry"
+      />
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <Button size="sm" variant="outline" onClick={() => setVal(v => Math.max(0, v - 15))}>-15%</Button>
+        <Button size="sm" variant="outline" onClick={() => setVal(v => Math.min(100, v + 15))}>+15%</Button>
+      </div>
+    </div>
+  );
+}
+
+render(<GaugeDemo />);`;
+    },
+  },
+  {
+    id: 'confetti',
+    title: 'Confetti Cannons',
+    category: 'Delight & Feedback',
+    defaultState: { count: 80, spread: 70 },
+    generateCode: (s) => {
+      const count = s.count || 80;
+      const spread = s.spread || 70;
+      return `function ConfettiDemo() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', textAlign: 'center' }}>
+      <Badge tone="success" pill>Production Deployed 🚀</Badge>
+      <h3 style={{ margin: 0 }}>Celebration Launcher</h3>
+      <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem' }}>
+        Particle blasts with physics gravity, air resistance, and 60fps canvas performance.
+      </p>
+      <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <Button
+          variant="primary"
+          onClick={() => fireConfetti({ particleCount: ${count}, spread: ${spread} })}
+          leftIcon={<ZapIcon size={14} />}
+        >
+          Fire Confetti Blast
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            fireConfetti({ particleCount: 50, angle: 60, origin: { x: 0, y: 0.7 } });
+            fireConfetti({ particleCount: 50, angle: 120, origin: { x: 1, y: 0.7 } });
+          }}
+        >
+          Twin Cannons
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+render(<ConfettiDemo />);`;
+    },
+  },
+  {
+    id: 'qrcode',
+    title: 'Live QR Code',
+    category: 'Visual & Utilities',
+    defaultState: { bordered: true, size: 160, color: 'default' },
+    generateCode: (s) => {
+      const bordered = !!s.bordered;
+      const size = s.size || 160;
+      const fgColor = s.color === 'brand' ? '#2563eb' : s.color === 'emerald' ? '#059669' : '#0f172a';
+      return `function QRCodeDemo() {
+  const [url, setUrl] = useState('https://github.com/hesh/ui-library');
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', width: '100%', maxWidth: '20rem' }}>
+      <QRCode
+        value={url}
+        size={${size}}
+        bordered={${bordered}}
+        fgColor="${fgColor}"
+      />
+      <Input
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+        placeholder="Type any URL or text..."
+      />
+    </div>
+  );
+}
+
+render(<QRCodeDemo />);`;
+    },
+  },
+  {
     id: 'scratch',
     title: 'Blank Sandbox',
     category: 'Freeform',
@@ -409,6 +556,10 @@ export function PlaygroundPage() {
     otp: { ...TEMPLATES[4]!.defaultState },
     settings: { ...TEMPLATES[5]!.defaultState },
     analytics: { ...TEMPLATES[6]!.defaultState },
+    combobox: { multiple: false, size: 'md', clearable: true },
+    gauge: { type: 'arc', tone: 'primary', val: 78 },
+    confetti: { count: 80, spread: 70 },
+    qrcode: { bordered: true, size: 160, color: 'default' },
     scratch: {},
   });
 
@@ -807,6 +958,150 @@ export function PlaygroundPage() {
             onClick={() => updateCustomizerState({ showProgress: !activeState.showProgress })}
           >
             📊 Quota Bar
+          </button>
+        </div>
+      );
+    }
+
+    if (activeTemplate.id === 'combobox') {
+      return (
+        <div className="playground-studio__customizers">
+          <button
+            type="button"
+            className={`playground-studio__cust-toggle${activeState.multiple ? ' playground-studio__cust-toggle--active' : ''}`}
+            onClick={() => updateCustomizerState({ multiple: !activeState.multiple })}
+          >
+            Multi-Select Tags
+          </button>
+
+          <div className="playground-studio__cust-group">
+            <span className="playground-studio__cust-label">Size</span>
+            <div className="playground-studio__cust-pills">
+              {['sm', 'md', 'lg'].map((sz) => (
+                <button
+                  key={sz}
+                  type="button"
+                  className={`playground-studio__cust-btn${activeState.size === sz ? ' playground-studio__cust-btn--active' : ''}`}
+                  onClick={() => updateCustomizerState({ size: sz })}
+                >
+                  {sz.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className={`playground-studio__cust-toggle${activeState.clearable ? ' playground-studio__cust-toggle--active' : ''}`}
+            onClick={() => updateCustomizerState({ clearable: !activeState.clearable })}
+          >
+            Clearable
+          </button>
+        </div>
+      );
+    }
+
+    if (activeTemplate.id === 'gauge') {
+      return (
+        <div className="playground-studio__customizers">
+          <div className="playground-studio__cust-group">
+            <span className="playground-studio__cust-label">Shape</span>
+            <div className="playground-studio__cust-pills">
+              {['arc', 'circle', 'semicircle'].map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`playground-studio__cust-btn${activeState.type === t ? ' playground-studio__cust-btn--active' : ''}`}
+                  onClick={() => updateCustomizerState({ type: t })}
+                >
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="playground-studio__cust-group">
+            <span className="playground-studio__cust-label">Tone</span>
+            <div className="playground-studio__cust-pills">
+              {['primary', 'success', 'warning', 'danger'].map((tn) => (
+                <button
+                  key={tn}
+                  type="button"
+                  className={`playground-studio__cust-btn${activeState.tone === tn ? ' playground-studio__cust-btn--active' : ''}`}
+                  onClick={() => updateCustomizerState({ tone: tn })}
+                >
+                  {tn.charAt(0).toUpperCase() + tn.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTemplate.id === 'confetti') {
+      return (
+        <div className="playground-studio__customizers">
+          <div className="playground-studio__cust-group">
+            <span className="playground-studio__cust-label">Particle Burst</span>
+            <div className="playground-studio__cust-pills">
+              {[50, 80, 140].map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`playground-studio__cust-btn${activeState.count === c ? ' playground-studio__cust-btn--active' : ''}`}
+                  onClick={() => updateCustomizerState({ count: c })}
+                >
+                  {c} particles
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="playground-studio__cust-group">
+            <span className="playground-studio__cust-label">Spread</span>
+            <div className="playground-studio__cust-pills">
+              {[45, 70, 100].map((sp) => (
+                <button
+                  key={sp}
+                  type="button"
+                  className={`playground-studio__cust-btn${activeState.spread === sp ? ' playground-studio__cust-btn--active' : ''}`}
+                  onClick={() => updateCustomizerState({ spread: sp })}
+                >
+                  {sp}° arc
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTemplate.id === 'qrcode') {
+      return (
+        <div className="playground-studio__customizers">
+          <div className="playground-studio__cust-group">
+            <span className="playground-studio__cust-label">Color</span>
+            <div className="playground-studio__cust-pills">
+              {['default', 'brand', 'emerald'].map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`playground-studio__cust-btn${activeState.color === c ? ' playground-studio__cust-btn--active' : ''}`}
+                  onClick={() => updateCustomizerState({ color: c })}
+                >
+                  {c.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className={`playground-studio__cust-toggle${activeState.bordered ? ' playground-studio__cust-toggle--active' : ''}`}
+            onClick={() => updateCustomizerState({ bordered: !activeState.bordered })}
+          >
+            Border Box
           </button>
         </div>
       );

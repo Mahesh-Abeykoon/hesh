@@ -9,6 +9,7 @@ import {
 } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { TooltipWorkbench } from '../../components/PropsWorkbench';
 
 const TOOLTIP_DEMO = `<Tooltip content="Create deployment" shortcut="⌘D">
   <Button>New Deployment</Button>
@@ -68,6 +69,13 @@ export function TooltipPage() {
       lede="An informative text bubble that appears when an element receives pointer hover or keyboard focus, complete with anchor arrows, hotkey badges, tones, and interactive modes."
       importStatement="import { Tooltip } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Switch tooltip tones, positions, pointer arrows, keyboard shortcuts, or live edit JSX."
+      >
+        <TooltipWorkbench />
+      </Section>
+
       <Section
         title="Hover & Focus Tooltips"
         description="Positioned cleanly relative to the trigger element with anchor arrow pointers, shortcut badges, and collision avoidance."

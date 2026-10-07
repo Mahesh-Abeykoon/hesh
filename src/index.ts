@@ -65,7 +65,7 @@ export { Portal } from './components/Portal';
 
 /* ---------------------------------------------------------------- navigation */
 export { Tabs, useTabsContext } from './components/Tabs';
-export type { TabsProps, TabItem } from './components/Tabs';
+export type { TabsProps, TabItem, TabsVariant, TabsSize } from './components/Tabs';
 
 export { SidebarNav, PageHeader, Breadcrumbs } from './components/Navigation';
 export type { SidebarNavProps, NavItem, NavGroup, PageHeaderProps, BreadcrumbsProps, BreadcrumbItem } from './components/Navigation';

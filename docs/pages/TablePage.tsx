@@ -15,6 +15,7 @@ import {
 import { PlusIcon, SearchIcon } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
+import { DataTableWorkbench } from '../components/PropsWorkbench';
 
 interface Customer {
   id: string;
@@ -189,6 +190,13 @@ export function TablePage() {
       title="Data table"
       lede="Sorting, row selection, expandable details, density scales, loading skeletons and empty states — with full WAI-ARIA grid accessibility semantics."
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Toggle compact/comfortable/spacious density scales, zebra stripes, cell borders, row selection, and live TypeScript code."
+      >
+        <DataTableWorkbench />
+      </Section>
+
       <Section title="Columns" description="Give each column an accessor and the table can sort it for you; give it a cell and you control the rendering.">
         <Showcase code={COLUMNS} defaultOpen />
       </Section>

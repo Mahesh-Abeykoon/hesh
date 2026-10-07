@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { QRCode, Input, Button, Card } from '../../../src/index';
 import { Callout, PropsTable, Showcase } from '../../components/Showcase';
 import { DocPage, Section } from '../../components/DocPage';
+import { QRCodeWorkbench } from '../../components/PropsWorkbench';
 
 const QR_DEMO = `const [url, setUrl] = useState('https://github.com/esh');
 
@@ -31,6 +32,13 @@ export function QRCodePage() {
       lede="Zero-dependency SVG QR code generator with crisp vector scaling, Galois Field error correction, border framing, and center logo embedding."
       importStatement="import { QRCode } from 'hesh';"
     >
+      <Section
+        title="Interactive Props Workbench"
+        description="Type any URL or secret token, resize pixel dimensions, customize brand colors, or edit live TypeScript code."
+      >
+        <QRCodeWorkbench />
+      </Section>
+
       <Section
         title="Interactive Dynamic QR Code"
         description="Type any URL, secret token, or text string to see the QR matrix update instantly."

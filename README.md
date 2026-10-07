@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./docs/assets/logo/hesh-icon.png" alt="Hesh UI" width="96" height="96" style="border-radius: 22px;" />
+
 # Hesh
 
 **A high-performance React component library with polished defaults, token-driven theming and accessibility built in.**

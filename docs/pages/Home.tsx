@@ -62,9 +62,22 @@ function Hero() {
       </div>
 
       <div className="hero__inner">
+        <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+          <img
+            src="/docs/assets/logo/hesh-icon.svg"
+            alt="Hesh UI"
+            width="64"
+            height="64"
+            style={{
+              borderRadius: '16px',
+              boxShadow: '0 8px 32px -4px rgba(79, 70, 229, 0.45), 0 4px 12px rgba(0,0,0,0.4)',
+            }}
+          />
+        </div>
+
         <span className="hero__badge">
           <ZapIcon size={13} />
-          Zero dependencies · 33 components · accessible by default
+          Zero dependencies · 48 components · accessible by default
         </span>
 
         <h1 className="hero__title">

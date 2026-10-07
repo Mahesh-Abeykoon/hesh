@@ -341,8 +341,38 @@ function Shell() {
 
         <a className="topbar__brand" href="#/home">
           <span className="topbar__logo" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M6 4v16M18 4v16M6 12h12" />
+            <svg width="28" height="28" viewBox="0 0 512 512" fill="none">
+              <defs>
+                <linearGradient id="topbarSquircleBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#2a2d35"/>
+                  <stop offset="100%" stop-color="#14161a"/>
+                </linearGradient>
+                <linearGradient id="topbarNeon" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#818cf8"/>
+                  <stop offset="100%" stop-color="#4f46e5"/>
+                </linearGradient>
+                <linearGradient id="topbarSilver" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#94a3b8"/>
+                </linearGradient>
+              </defs>
+              <rect x="24" y="24" width="464" height="464" rx="104" fill="url(#topbarSquircleBg)"/>
+              <rect x="25" y="25" width="462" height="462" rx="103" stroke="rgba(255,255,255,0.14)" strokeWidth="2"/>
+              <g transform="translate(256, 256) scale(0.68) translate(-512, -511)">
+                <g opacity="0.95">
+                  <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z" fill="url(#topbarNeon)"/>
+                  <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="url(#topbarNeon)"/>
+                  <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z" fill="url(#topbarNeon)"/>
+                </g>
+                <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="#181a20" stroke="#818cf8" strokeWidth="3"/>
+                <polygon points="260,511 483,358 483,419 336,511" fill="#ffffff"/>
+                <polygon points="260,511 336,511 483,603 483,664" fill="url(#topbarSilver)"/>
+                <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z" stroke="#ffffff" strokeWidth="2.5"/>
+                <polygon points="763,511 687,511 540,419 540,358" fill="#ffffff"/>
+                <polygon points="763,511 540,664 540,603 687,511" fill="url(#topbarSilver)"/>
+                <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z" stroke="#ffffff" strokeWidth="2.5"/>
+                <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="none" stroke="#ffffff" strokeWidth="2.5"/>
+              </g>
             </svg>
           </span>
           <span className="topbar__name">Hesh</span>

@@ -1,0 +1,17 @@
+{
+  "name": "use-controllable-state",
+  "title": "useControllableState",
+  "type": "hook",
+  "category": "Hooks",
+  "description": "Custom React hook useControllableState",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "useControllableState.ts",
+      "target": "hooks/useControllableState.ts",
+      "content": "import { useCallback, useRef, useState } from 'react';\n\n/**\n * Supports both controlled (`value` + `onChange`) and uncontrolled\n * (`defaultValue`) usage with a single code path.\n *\n * Returned setter is stable across renders, so it is safe in deps arrays.\n */\nexport function useControllableState<T>(options: {\n  value?: T;\n  defaultValue: T;\n  onChange?: (value: T) => void;\n}): [T, (next: T | ((prev: T) => T)) => void] {\n  const { value, defaultValue, onChange } = options;\n  const isControlled = value !== undefined;\n\n  const [uncontrolled, setUncontrolled] = useState<T>(defaultValue);\n  const current = isControlled ? (value as T) : uncontrolled;\n\n  const onChangeRef = useRef(onChange);\n  onChangeRef.current = onChange;\n\n  const setValue = useCallback(\n    (next: T | ((prev: T) => T)) => {\n      const resolver = (prev: T): T =>\n        typeof next === 'function' ? (next as (p: T) => T)(prev) : next;\n\n      if (!isControlled) setUncontrolled(resolver);\n      onChangeRef.current?.(resolver(isControlled ? (value as T) : uncontrolled));\n    },\n    [isControlled, value, uncontrolled]\n  );\n\n  return [current, setValue];\n}\n",
+      "type": "hook"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "badge",
+  "title": "Badge",
+  "type": "component",
+  "category": "Feedback & Status",
+  "description": "Accessible, token-driven Badge component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn",
+    "avatar",
+    "separator",
+    "skeleton"
+  ],
+  "files": [
+    {
+      "name": "Badge.tsx",
+      "target": "components/ui/Badge.tsx",
+      "content": "import type { HTMLAttributes, ReactNode } from 'react';\r\nimport { cn } from '../utils/cn';\r\n\r\nexport type BadgeTone =\r\n  | 'neutral'\r\n  | 'primary'\r\n  | 'success'\r\n  | 'warning'\r\n  | 'danger'\r\n  | 'info'\r\n  | 'outline';\r\n\r\nexport type BadgeVariant = 'subtle' | 'solid' | 'outline' | 'glass';\r\nexport type BadgeSize = 'sm' | 'md' | 'lg';\r\n\r\nexport interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {\r\n  tone?: BadgeTone;\r\n  variant?: BadgeVariant;\r\n  size?: BadgeSize;\r\n  /** Leading status dot. Colour inherits from the tone. */\r\n  dot?: boolean;\r\n  /** Enable pulsing glow animation on dot. */\r\n  pulse?: boolean;\r\n  pill?: boolean;\r\n  icon?: ReactNode;\r\n  removable?: boolean;\r\n  onRemove?: () => void;\r\n  count?: number;\r\n  children?: ReactNode;\r\n}\r\n\r\nexport function Badge({\r\n  tone = 'neutral',\r\n  variant = 'subtle',\r\n  size = 'md',\r\n  dot = false,\r\n  pulse = false,\r\n  pill = false,\r\n  icon,\r\n  removable = false,\r\n  onRemove,\r\n  count,\r\n  className,\r\n  children,\r\n  ...props\r\n}: BadgeProps) {\r\n  const isCount = count !== undefined;\r\n\r\n  return (\r\n    <span\r\n      className={cn(\r\n        'pui-badge',\r\n        `pui-badge--${tone}`,\r\n        variant !== 'subtle' && `pui-badge--${variant}`,\r\n        size !== 'md' && `pui-badge--${size}`,\r\n        (pill || isCount) && 'pui-badge--pill',\r\n        removable && 'pui-badge--removable',\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      {dot && (\r\n        <span\r\n          className={cn('pui-badge__dot', pulse && 'pui-badge__dot--pulse')}\r\n          aria-hidden=\"true\"\r\n        />\r\n      )}\r\n      {icon && <span className=\"pui-badge__icon\">{icon}</span>}\r\n      {isCount ? (count > 99 ? '99+' : count) : children}\r\n      {removable && (\r\n        <button\r\n          type=\"button\"\r\n          aria-label=\"Remove badge\"\r\n          onClick={(e) => {\r\n            e.stopPropagation();\r\n            onRemove?.();\r\n          }}\r\n          className=\"pui-badge__close-btn\"\r\n        >\r\n          ×\r\n        </button>\r\n      )}\r\n    </span>\r\n  );\r\n}\r\n\r\n// Re-exports for backwards compatibility\r\nexport { Avatar, AvatarGroup, initialsOf } from './Avatar';\r\nexport type { AvatarProps, AvatarGroupProps, AvatarSize, AvatarStatus } from './Avatar';\r\n\r\nexport { Separator } from './Separator';\r\nexport type { SeparatorProps } from './Separator';\r\n\r\nexport { Skeleton } from './Skeleton';\r\nexport type { SkeletonProps } from './Skeleton';\r\n",
+      "type": "component"
+    }
+  ]
+}

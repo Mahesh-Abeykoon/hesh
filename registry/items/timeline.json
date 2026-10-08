@@ -1,0 +1,19 @@
+{
+  "name": "timeline",
+  "title": "Timeline",
+  "type": "component",
+  "category": "Data Display & Layout",
+  "description": "Accessible, token-driven Timeline component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Timeline.tsx",
+      "target": "components/ui/Timeline.tsx",
+      "content": "import type { ReactNode } from 'react';\nimport { cn } from '../utils/cn';\n\nexport interface TimelineProps {\n  children: ReactNode;\n  className?: string;\n}\n\nexport function Timeline({ children, className }: TimelineProps) {\n  return <ol className={cn('pui-timeline', className)}>{children}</ol>;\n}\n\nexport interface TimelineItemProps {\n  timestamp?: string;\n  title: ReactNode;\n  description?: ReactNode;\n  dot?: ReactNode;\n  tone?: 'neutral' | 'primary' | 'success' | 'warning' | 'danger';\n  active?: boolean;\n  children?: ReactNode;\n}\n\nexport function TimelineItem({\n  timestamp,\n  title,\n  description,\n  dot,\n  tone = 'neutral',\n  active = false,\n  children,\n}: TimelineItemProps) {\n  return (\n    <li className={cn('pui-timeline__item', active && 'pui-timeline__item--active', `pui-timeline__item--${tone}`)}>\n      <div className=\"pui-timeline__dot-wrap\">\n        <span className=\"pui-timeline__dot\">\n          {dot ?? <span className=\"pui-timeline__dot-inner\" />}\n        </span>\n        <span className=\"pui-timeline__line\" aria-hidden=\"true\" />\n      </div>\n      <div className=\"pui-timeline__content\">\n        <div className=\"pui-timeline__head\">\n          <div className=\"pui-timeline__title\">{title}</div>\n          {timestamp && <time className=\"pui-timeline__time\">{timestamp}</time>}\n        </div>\n        {description && <div className=\"pui-timeline__desc\">{description}</div>}\n        {children && <div className=\"pui-timeline__body\">{children}</div>}\n      </div>\n    </li>\n  );\n}\n",
+      "type": "component"
+    }
+  ]
+}

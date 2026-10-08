@@ -1,0 +1,17 @@
+{
+  "name": "use-scroll-lock",
+  "title": "useScrollLock",
+  "type": "hook",
+  "category": "Hooks",
+  "description": "Custom React hook useScrollLock",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "useScrollLock.ts",
+      "target": "hooks/useScrollLock.ts",
+      "content": "import { useEffect } from 'react';\r\n\r\nlet lockCount = 0;\r\nlet originalOverflow = '';\r\nlet originalPaddingRight = '';\r\n\r\n/**\r\n * Prevents background scroll while an overlay is open.\r\n * Supports stacked overlays (nested dialogs, drawers) and compensates for\r\n * scrollbar width to prevent layout shifts.\r\n */\r\nexport function useScrollLock(active: boolean) {\r\n  useEffect(() => {\r\n    if (!active || typeof document === 'undefined') return;\r\n\r\n    if (lockCount === 0) {\r\n      originalOverflow = document.body.style.overflow;\r\n      originalPaddingRight = document.body.style.paddingRight;\r\n\r\n      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;\r\n      if (scrollbarWidth > 0) {\r\n        document.body.style.paddingRight = `${scrollbarWidth}px`;\r\n      }\r\n      document.body.style.overflow = 'hidden';\r\n    }\r\n\r\n    lockCount += 1;\r\n\r\n    return () => {\r\n      lockCount = Math.max(0, lockCount - 1);\r\n      if (lockCount === 0) {\r\n        document.body.style.overflow = originalOverflow;\r\n        document.body.style.paddingRight = originalPaddingRight;\r\n      }\r\n    };\r\n  }, [active]);\r\n}\r\n",
+      "type": "hook"
+    }
+  ]
+}

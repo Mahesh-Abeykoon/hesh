@@ -1,0 +1,20 @@
+{
+  "name": "toggle",
+  "title": "Toggle",
+  "type": "component",
+  "category": "Actions & Primitives",
+  "description": "Accessible, token-driven Toggle component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn",
+    "use-controllable-state"
+  ],
+  "files": [
+    {
+      "name": "Toggle.tsx",
+      "target": "components/ui/Toggle.tsx",
+      "content": "import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';\r\nimport { cn } from '../utils/cn';\r\nimport { useControllableState } from '../hooks/useControllableState';\r\n\r\nexport interface ToggleProps\r\n  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange' | 'value'> {\r\n  /** Controlled pressed state. */\r\n  pressed?: boolean;\r\n  /** Default pressed state when uncontrolled. */\r\n  defaultPressed?: boolean;\r\n  /** Callback fired when pressed state toggles. */\r\n  onPressedChange?: (pressed: boolean) => void;\r\n  /** Visual variant. @default 'default' */\r\n  variant?: 'default' | 'outline' | 'subtle';\r\n  /** Size variant. @default 'md' */\r\n  size?: 'sm' | 'md' | 'lg';\r\n  /** Child content or icon. */\r\n  children?: ReactNode;\r\n}\r\n\r\n/**\r\n * Toggle button with 2-state on/off behavior and full ARIA `aria-pressed` compliance.\r\n */\r\nexport const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle(\r\n  {\r\n    pressed: controlledPressed,\r\n    defaultPressed = false,\r\n    onPressedChange,\r\n    variant = 'default',\r\n    size = 'md',\r\n    disabled = false,\r\n    className,\r\n    children,\r\n    onClick,\r\n    ...props\r\n  },\r\n  ref\r\n) {\r\n  const [isPressed, setIsPressed] = useControllableState({\r\n    value: controlledPressed,\r\n    defaultValue: defaultPressed,\r\n    onChange: onPressedChange,\r\n  });\r\n\r\n  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {\r\n    if (disabled) return;\r\n    setIsPressed(!isPressed);\r\n    onClick?.(e);\r\n  };\r\n\r\n  return (\r\n    <button\r\n      ref={ref}\r\n      type=\"button\"\r\n      aria-pressed={isPressed}\r\n      disabled={disabled}\r\n      data-state={isPressed ? 'on' : 'off'}\r\n      onClick={handleClick}\r\n      className={cn(\r\n        'pui-toggle',\r\n        `pui-toggle--${variant}`,\r\n        `pui-toggle--${size}`,\r\n        isPressed && 'pui-toggle--pressed',\r\n        disabled && 'pui-toggle--disabled',\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      {children}\r\n    </button>\r\n  );\r\n});\r\n\r\nToggle.displayName = 'Toggle';\r\n",
+      "type": "component"
+    }
+  ]
+}

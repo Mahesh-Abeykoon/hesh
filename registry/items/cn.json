@@ -1,0 +1,17 @@
+{
+  "name": "cn",
+  "title": "cn",
+  "type": "util",
+  "category": "Utilities",
+  "description": "Lightweight classnames merger utility",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "cn.ts",
+      "target": "lib/utils.ts",
+      "content": "/**\n * Classnames utility - lightweight alternative to clsx/classnames\n * Combines class names conditionally\n */\n\ntype ClassValue = \n  | string \n  | number \n  | boolean \n  | undefined \n  | null \n  | ClassValue[] \n  | Record<string, boolean | undefined | null>;\n\nexport function cn(...inputs: ClassValue[]): string {\n  const classes: string[] = [];\n\n  for (const input of inputs) {\n    if (!input) continue;\n\n    if (typeof input === 'string' || typeof input === 'number') {\n      classes.push(String(input));\n    } else if (Array.isArray(input)) {\n      classes.push(cn(...input));\n    } else if (typeof input === 'object') {\n      for (const [key, value] of Object.entries(input)) {\n        if (value) classes.push(key);\n      }\n    }\n  }\n\n  return classes.join(' ');\n}",
+      "type": "util"
+    }
+  ]
+}

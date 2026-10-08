@@ -1,0 +1,17 @@
+{
+  "name": "use-click-outside",
+  "title": "useClickOutside",
+  "type": "hook",
+  "category": "Hooks",
+  "description": "Custom React hook useClickOutside",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "useClickOutside.ts",
+      "target": "hooks/useClickOutside.ts",
+      "content": "import { useEffect, type RefObject } from 'react';\r\n\r\nexport type ClickOutsideTarget = RefObject<HTMLElement | null> | HTMLElement | null | undefined;\r\n\r\n/**\r\n * Invokes `callback` when a pointerdown or touch event occurs outside all target elements.\r\n */\r\nexport function useClickOutside(\r\n  elements: ClickOutsideTarget | ClickOutsideTarget[],\r\n  callback: (event: MouseEvent | TouchEvent) => void,\r\n  active = true\r\n) {\r\n  useEffect(() => {\r\n    if (!active || typeof document === 'undefined') return;\r\n\r\n    const elementList = Array.isArray(elements) ? elements : [elements];\r\n\r\n    const listener = (event: MouseEvent | TouchEvent) => {\r\n      const target = event.target as Node | null;\r\n      if (!target) return;\r\n\r\n      const isInside = elementList.some((el) => {\r\n        const dom = el && 'current' in el ? el.current : el;\r\n        return dom ? dom.contains(target) : false;\r\n      });\r\n\r\n      if (!isInside) {\r\n        callback(event);\r\n      }\r\n    };\r\n\r\n    document.addEventListener('pointerdown', listener);\r\n    return () => {\r\n      document.removeEventListener('pointerdown', listener);\r\n    };\r\n  }, [elements, callback, active]);\r\n}\r\n",
+      "type": "hook"
+    }
+  ]
+}

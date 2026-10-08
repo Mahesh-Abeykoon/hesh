@@ -1,0 +1,19 @@
+{
+  "name": "separator",
+  "title": "Separator",
+  "type": "component",
+  "category": "Data Display & Layout",
+  "description": "Accessible, token-driven Separator component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Separator.tsx",
+      "target": "components/ui/Separator.tsx",
+      "content": "import type { HTMLAttributes, ReactNode } from 'react';\nimport { cn } from '../utils/cn';\n\nexport interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {\n  orientation?: 'horizontal' | 'vertical';\n  /** Renders a centred label with rules on either side (horizontal only). */\n  label?: ReactNode;\n  thick?: boolean;\n}\n\n/**\n * `role=\"separator\"` + `aria-orientation`; decorative by default when no label\n * is supplied, so it does not pollute the accessibility tree.\n */\nexport function Separator({\n  orientation = 'horizontal',\n  label,\n  thick = false,\n  className,\n  ...props\n}: SeparatorProps) {\n  if (label) {\n    return (\n      <div\n        className={cn('pui-separator', 'pui-separator--label', className)}\n        role=\"separator\"\n        aria-orientation=\"horizontal\"\n        {...props}\n      >\n        {label}\n      </div>\n    );\n  }\n\n  return (\n    <div\n      role=\"separator\"\n      aria-orientation={orientation}\n      className={cn(\n        'pui-separator',\n        orientation === 'vertical' && 'pui-separator--vertical',\n        thick && 'pui-separator--thick',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n",
+      "type": "component"
+    }
+  ]
+}

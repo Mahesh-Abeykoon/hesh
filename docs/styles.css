@@ -536,6 +536,58 @@ body { margin: 0; height: 100%; background: var(--pui-bg); overflow: hidden; }
   to { opacity: 1; transform: scale(1); }
 }
 
+/* Quick import mode selector tabs (CLI vs NPM) */
+.doc-quick-import__tabs {
+  display: inline-flex;
+  align-items: center;
+  background: rgb(0 0 0 / 0.08);
+  border-radius: var(--pui-radius-sm);
+  padding: 2px;
+  gap: 2px;
+  margin-right: 0.375rem;
+}
+
+:root[data-theme='dark'] .doc-quick-import__tabs {
+  background: rgb(255 255 255 / 0.08);
+}
+
+.doc-quick-import__tab {
+  border: none;
+  background: transparent;
+  color: var(--pui-fg-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.125rem 0.375rem;
+  border-radius: calc(var(--pui-radius-sm) - 2px);
+  cursor: pointer;
+  transition: all 120ms ease;
+  line-height: 1;
+}
+
+.doc-quick-import__tab:hover {
+  color: var(--pui-fg);
+}
+
+.doc-quick-import__tab.is-active {
+  background: var(--pui-surface);
+  color: var(--pui-primary, #6366f1);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+}
+
+:root[data-theme='dark'] .doc-quick-import__tab.is-active {
+  background: #1f1f2e;
+  color: var(--pui-primary, #818cf8);
+}
+
+.doc-syntax__prompt {
+  color: var(--pui-fg-muted);
+  font-weight: 600;
+  opacity: 0.6;
+  user-select: none;
+}
+
 /* Import group container */
 .doc-import-group {
   display: flex;

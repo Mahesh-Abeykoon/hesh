@@ -1,0 +1,24 @@
+{
+  "name": "interactive",
+  "title": "Interactive",
+  "type": "component",
+  "category": "Actions & Primitives",
+  "description": "Accessible, token-driven Interactive component",
+  "dependencies": [],
+  "registryDependencies": [
+    "popover",
+    "command",
+    "accordion",
+    "slider",
+    "calendar",
+    "date-picker"
+  ],
+  "files": [
+    {
+      "name": "Interactive.tsx",
+      "target": "components/ui/Interactive.tsx",
+      "content": "/**\n * Backward compatibility barrel for interactive components.\n * Components have been moved to their own dedicated files in accordance with the\n * library's \"one component family per file\" architecture:\n * - Popover.tsx\n * - Command.tsx\n * - Accordion.tsx\n * - Slider.tsx\n * - Calendar.tsx\n * - DatePicker.tsx\n */\n\nexport { Popover } from './Popover';\nexport type { PopoverProps } from './Popover';\n\nexport { Command, useCommandShortcut } from './Command';\nexport type { CommandProps, CommandItem } from './Command';\n\nexport { Accordion } from './Accordion';\nexport type { AccordionProps, AccordionItem } from './Accordion';\n\nexport { Slider } from './Slider';\nexport type { SliderProps } from './Slider';\n\nexport { Calendar } from './Calendar';\nexport type { CalendarProps } from './Calendar';\n\nexport { DatePicker } from './DatePicker';\nexport type { DatePickerProps } from './DatePicker';\n",
+      "type": "component"
+    }
+  ]
+}

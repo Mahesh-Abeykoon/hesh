@@ -63,8 +63,12 @@ function QuickStylesheetBadge() {
   );
 }
 
-function QuickImportBar({ statement }: { statement: string }) {
+function QuickImportBar({ statement, slug }: { statement: string; slug?: string }) {
+  const [mode, setMode] = useState<'cli' | 'npm'>('cli');
   const [copied, setCopied] = useState(false);
+
+  const cliCommand = `npx hesh-ui add ${slug || 'button'}`;
+  const textToCopy = mode === 'cli' ? cliCommand : statement;
 
   // Match: import { ... } from 'hesh-ui'; or import ... from 'hesh-ui';
   const match = statement.match(/^(import\s+)(\{[^}]+\}|\w+)(\s+from\s+)((?:'[^']+'|"[^"]+"))(;?)$/);
@@ -74,7 +78,7 @@ function QuickImportBar({ statement }: { statement: string }) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(statement);
+      await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
@@ -94,11 +98,35 @@ function QuickImportBar({ statement }: { statement: string }) {
           handleCopy();
         }
       }}
-      title={copied ? 'Copied to clipboard!' : 'Click to copy import'}
-      aria-label="Click to copy import statement"
+      title={copied ? 'Copied to clipboard!' : `Click to copy ${mode.toUpperCase()} snippet`}
+      aria-label={`Click to copy ${mode.toUpperCase()} snippet`}
     >
+      <div className="doc-quick-import__tabs" onClick={(e) => e.stopPropagation()}>
+        <button
+          type="button"
+          className={`doc-quick-import__tab ${mode === 'cli' ? 'is-active' : ''}`}
+          onClick={() => setMode('cli')}
+        >
+          CLI
+        </button>
+        <button
+          type="button"
+          className={`doc-quick-import__tab ${mode === 'npm' ? 'is-active' : ''}`}
+          onClick={() => setMode('npm')}
+        >
+          npm
+        </button>
+      </div>
+
       <div className="doc-quick-import__code">
-        {match && symbols && pkg ? (
+        {mode === 'cli' ? (
+          <>
+            <span className="doc-syntax__prompt">$ </span>
+            <span className="doc-syntax__keyword">npx </span>
+            <span className="doc-syntax__symbol">hesh-ui add </span>
+            <span className="doc-syntax__string">{slug || 'button'}</span>
+          </>
+        ) : match && symbols && pkg ? (
           <>
             <span className="doc-syntax__keyword">import</span>
             <span className="doc-syntax__space"> </span>
@@ -206,7 +234,10 @@ export function DocPage({
 
           {defaultImport && (
             <div className="doc-import-group">
-              <QuickImportBar statement={defaultImport} />
+              <QuickImportBar
+                statement={defaultImport}
+                slug={(nav?.currentPageId || title).toLowerCase().replace(/\s+/g, '-')}
+              />
               {eyebrow && !['Foundations', 'Examples', 'Start here'].includes(eyebrow) && (
                 <QuickStylesheetBadge />
               )}

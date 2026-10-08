@@ -1,0 +1,17 @@
+{
+  "name": "use-dismiss",
+  "title": "useDismiss",
+  "type": "hook",
+  "category": "Hooks",
+  "description": "Custom React hook useDismiss",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "useDismiss.ts",
+      "target": "hooks/useDismiss.ts",
+      "content": "import { useEffect, type RefObject } from 'react';\n\n/** The dismiss target: a live node, or a ref that resolves to one. */\nexport type DismissTarget = HTMLElement | null | RefObject<HTMLElement>;\n\nexport interface UseDismissOptions {\n  escape?: boolean;\n  outside?: boolean;\n  /**\n   * Extra nodes that count as \"inside\" — e.g. a menu rendered through a portal,\n   * which is not a DOM descendant of its trigger.\n   */\n  ignore?: RefObject<HTMLElement>[];\n}\n\n/**\n * Runs `handler` on pointerdown outside `ref` and on Escape.\n * Used by menus, popovers, comboboxes and tooltips.\n *\n * Uses `pointerdown` (not `click`) so the menu closes before a click lands on\n * whatever is underneath — avoids the classic \"click passed through\" bug.\n */\nexport function useDismiss(\n  ref: DismissTarget,\n  active: boolean,\n  handler: () => void,\n  options: UseDismissOptions = {}\n) {\n  const { escape = true, outside = true, ignore = [] } = options;\n\n  const self =\n    ref && typeof ref === 'object' && 'current' in ref ? ref.current : (ref as HTMLElement | null);\n\n  useEffect(() => {\n    if (!active) return;\n    const handlerRef = { current: handler };\n    handlerRef.current = handler;\n\n    const onPointerDown = (event: PointerEvent) => {\n      if (!outside) return;\n      const target = event.target as Node | null;\n      if (!target) return;\n      if (self?.contains(target)) return;\n      if (ignore.some((item) => item.current?.contains(target))) return;\n      handlerRef.current();\n    };\n\n    const onKeyDown = (event: KeyboardEvent) => {\n      if (escape && event.key === 'Escape') {\n        event.stopPropagation();\n        handlerRef.current();\n      }\n    };\n\n    document.addEventListener('pointerdown', onPointerDown, true);\n    document.addEventListener('keydown', onKeyDown);\n    return () => {\n      document.removeEventListener('pointerdown', onPointerDown, true);\n      document.removeEventListener('keydown', onKeyDown);\n    };\n    // `ignore` is a fresh array literal each render, so key on its contents.\n    // eslint-disable-next-line react-hooks/exhaustive-deps\n  }, [self, active, handler, escape, outside, ...ignore]);\n}\n",
+      "type": "hook"
+    }
+  ]
+}

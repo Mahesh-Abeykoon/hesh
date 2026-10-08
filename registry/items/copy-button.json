@@ -1,0 +1,20 @@
+{
+  "name": "copy-button",
+  "title": "CopyButton",
+  "type": "component",
+  "category": "Actions & Primitives",
+  "description": "Accessible, token-driven CopyButton component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn",
+    "icons"
+  ],
+  "files": [
+    {
+      "name": "CopyButton.tsx",
+      "target": "components/ui/CopyButton.tsx",
+      "content": "import {\r\n  forwardRef,\r\n  useState,\r\n  type ButtonHTMLAttributes,\r\n  type ReactNode,\r\n} from 'react';\r\nimport { cn } from '../utils/cn';\r\nimport { CheckIcon, CopyIcon } from './icons';\r\n\r\nexport interface CopyButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {\r\n  /** Text content to be copied to the clipboard. */\r\n  value: string;\r\n  /** Duration in ms for the copied state before resetting. @default 2000 */\r\n  timeout?: number;\r\n  /** Size variant. @default 'md' */\r\n  size?: 'sm' | 'md' | 'lg';\r\n  /** Visual variant. @default 'ghost' */\r\n  variant?: 'ghost' | 'outline' | 'secondary' | 'solid';\r\n  /** Optional custom label next to icon. */\r\n  label?: ReactNode;\r\n  /** Callback fired upon successful copy. */\r\n  onCopySuccess?: (copiedValue: string) => void;\r\n}\r\n\r\n/**\r\n * CopyButton provides a one-click clipboard copy action with instant checkmark feedback.\r\n */\r\nexport const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(function CopyButton(\r\n  {\r\n    value,\r\n    timeout = 2000,\r\n    size = 'md',\r\n    variant = 'ghost',\r\n    label,\r\n    onCopySuccess,\r\n    className,\r\n    disabled = false,\r\n    onClick,\r\n    ...props\r\n  },\r\n  ref\r\n) {\r\n  const [copied, setCopied] = useState(false);\r\n\r\n  const handleCopy = async (e: React.MouseEvent<HTMLButtonElement>) => {\r\n    if (disabled) return;\r\n    try {\r\n      await navigator.clipboard.writeText(value);\r\n      setCopied(true);\r\n      onCopySuccess?.(value);\r\n      setTimeout(() => setCopied(false), timeout);\r\n    } catch (err) {\r\n      console.error('Failed to copy to clipboard', err);\r\n    }\r\n    onClick?.(e);\r\n  };\r\n\r\n  return (\r\n    <button\r\n      ref={ref}\r\n      type=\"button\"\r\n      disabled={disabled}\r\n      aria-label={copied ? 'Copied to clipboard' : 'Copy to clipboard'}\r\n      data-copied={copied || undefined}\r\n      onClick={handleCopy}\r\n      className={cn(\r\n        'pui-copy-btn',\r\n        `pui-copy-btn--${variant}`,\r\n        `pui-copy-btn--${size}`,\r\n        copied && 'pui-copy-btn--copied',\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      <span className=\"pui-copy-btn__icon\" aria-hidden=\"true\">\r\n        {copied ? <CheckIcon /> : <CopyIcon />}\r\n      </span>\r\n      {label && <span className=\"pui-copy-btn__label\">{copied ? 'Copied!' : label}</span>}\r\n    </button>\r\n  );\r\n});\r\n\r\nCopyButton.displayName = 'CopyButton';\r\n",
+      "type": "component"
+    }
+  ]
+}

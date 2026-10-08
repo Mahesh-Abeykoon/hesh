@@ -1,0 +1,19 @@
+{
+  "name": "dock",
+  "title": "Dock",
+  "type": "component",
+  "category": "Data Display & Layout",
+  "description": "Accessible, token-driven Dock component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Dock.tsx",
+      "target": "components/ui/Dock.tsx",
+      "content": "import {\r\n  forwardRef,\r\n  useRef,\r\n  useState,\r\n  type HTMLAttributes,\r\n  type ReactNode,\r\n  type MouseEvent as ReactMouseEvent,\r\n} from 'react';\r\nimport { cn } from '../utils/cn';\r\n\r\nexport interface DockProps extends HTMLAttributes<HTMLDivElement> {\r\n  /** Maximum icon size on magnification (px). @default 56 */\r\n  magnification?: number;\r\n  /** Distance around cursor to apply magnification (px). @default 120 */\r\n  distance?: number;\r\n  /** Visual variant. @default 'glass' */\r\n  variant?: 'glass' | 'solid' | 'subtle';\r\n  children: ReactNode;\r\n}\r\n\r\n/**\r\n * Dock provides a floating macOS-style action bar with smooth cursor magnification\r\n * and glassmorphic elevated backdrop.\r\n */\r\nexport const Dock = forwardRef<HTMLDivElement, DockProps>(function Dock(\r\n  {\r\n    magnification = 52,\r\n    distance = 100,\r\n    variant = 'glass',\r\n    className,\r\n    children,\r\n    ...props\r\n  },\r\n  ref\r\n) {\r\n  const containerRef = useRef<HTMLDivElement | null>(null);\r\n  const [mouseX, setMouseX] = useState<number | null>(null);\r\n\r\n  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {\r\n    setMouseX(e.clientX);\r\n  };\r\n\r\n  const handleMouseLeave = () => {\r\n    setMouseX(null);\r\n  };\r\n\r\n  return (\r\n    <div\r\n      ref={(node) => {\r\n        containerRef.current = node;\r\n        if (typeof ref === 'function') ref(node);\r\n        else if (ref) (ref as any).current = node;\r\n      }}\r\n      role=\"toolbar\"\r\n      aria-label=\"Floating action dock\"\r\n      onMouseMove={handleMouseMove}\r\n      onMouseLeave={handleMouseLeave}\r\n      className={cn(\r\n        'pui-dock',\r\n        `pui-dock--${variant}`,\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      {children}\r\n    </div>\r\n  );\r\n});\r\n\r\nDock.displayName = 'Dock';\r\n\r\nexport interface DockIconProps extends HTMLAttributes<HTMLButtonElement> {\r\n  /** Accessible label and tooltip title. */\r\n  label: string;\r\n  /** Whether the dock item is active. */\r\n  active?: boolean;\r\n  children: ReactNode;\r\n}\r\n\r\nexport const DockIcon = forwardRef<HTMLButtonElement, DockIconProps>(function DockIcon(\r\n  { label, active = false, className, children, onClick, ...props },\r\n  ref\r\n) {\r\n  return (\r\n    <button\r\n      ref={ref}\r\n      type=\"button\"\r\n      aria-label={label}\r\n      title={label}\r\n      data-active={active || undefined}\r\n      onClick={onClick}\r\n      className={cn('pui-dock__icon', active && 'pui-dock__icon--active', className)}\r\n      {...props}\r\n    >\r\n      <span className=\"pui-dock__icon-content\">{children}</span>\r\n      {active && <span className=\"pui-dock__dot\" aria-hidden=\"true\" />}\r\n    </button>\r\n  );\r\n});\r\n\r\nDockIcon.displayName = 'DockIcon';\r\n",
+      "type": "component"
+    }
+  ]
+}

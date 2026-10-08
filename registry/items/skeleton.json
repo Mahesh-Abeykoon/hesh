@@ -1,0 +1,19 @@
+{
+  "name": "skeleton",
+  "title": "Skeleton",
+  "type": "component",
+  "category": "Feedback & Status",
+  "description": "Accessible, token-driven Skeleton component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Skeleton.tsx",
+      "target": "components/ui/Skeleton.tsx",
+      "content": "import type { HTMLAttributes } from 'react';\nimport { cn } from '../utils/cn';\n\nexport interface SkeletonProps extends HTMLAttributes<HTMLSpanElement> {\n  variant?: 'block' | 'text' | 'circle';\n  width?: number | string;\n  height?: number | string;\n  /** Renders N stacked lines — handy for text placeholders. */\n  lines?: number;\n}\n\nexport function Skeleton({ variant = 'block', width, height, lines, className, style, ...props }: SkeletonProps) {\n  if (lines && lines > 1) {\n    return (\n      <span className={cn('pui-field', className)} style={{ gap: 'var(--pui-space-2)' }} {...props}>\n        {Array.from({ length: lines }, (_, index) => (\n          <Skeleton\n            key={index}\n            variant=\"text\"\n            width={index === lines - 1 ? '62%' : width ?? '100%'}\n          />\n        ))}\n      </span>\n    );\n  }\n\n  return (\n    <span\n      aria-hidden=\"true\"\n      className={cn('pui-skeleton', variant === 'text' && 'pui-skeleton--text', variant === 'circle' && 'pui-skeleton--circle', className)}\n      style={{ width, height, ...style }}\n      {...props}\n    />\n  );\n}\n",
+      "type": "component"
+    }
+  ]
+}

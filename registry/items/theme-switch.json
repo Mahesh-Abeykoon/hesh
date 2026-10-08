@@ -1,0 +1,21 @@
+{
+  "name": "theme-switch",
+  "title": "ThemeSwitch",
+  "type": "component",
+  "category": "Components",
+  "description": "Accessible, token-driven ThemeSwitch component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn",
+    "use-theme",
+    "icons"
+  ],
+  "files": [
+    {
+      "name": "ThemeSwitch.tsx",
+      "target": "components/ui/ThemeSwitch.tsx",
+      "content": "import { cn } from '../utils/cn';\nimport { useTheme, type ThemeMode } from '../hooks/useTheme';\nimport { MonitorIcon, MoonIcon, SunIcon } from './icons';\n\nexport interface ThemeSwitchProps {\n  className?: string;\n  /** Show a \"system\" option that follows the OS preference. */\n  showSystem?: boolean;\n  size?: number;\n}\n\n/**\n * Three-way theme control. Each option is a toggle button with\n * `aria-pressed`, so the current state is announced without a live region.\n */\nexport function ThemeSwitch({ className, showSystem = true, size = 15 }: ThemeSwitchProps) {\n  const { mode, setMode } = useTheme();\n\n  const options: { value: ThemeMode; icon: typeof SunIcon; label: string }[] = [\n    { value: 'light', icon: SunIcon, label: 'Light theme' },\n    { value: 'dark', icon: MoonIcon, label: 'Dark theme' },\n    ...(showSystem\n      ? [{ value: 'system' as ThemeMode, icon: MonitorIcon, label: 'Follow system theme' }]\n      : []),\n  ];\n\n  return (\n    <div className={cn('pui-theme-switch', className)} role=\"group\" aria-label=\"Theme\">\n      {options.map(({ value, icon: IconComponent, label }) => (\n        <button\n          key={value}\n          type=\"button\"\n          className=\"pui-theme-switch__opt\"\n          aria-pressed={mode === value}\n          aria-label={label}\n          title={label}\n          onClick={() => setMode(value)}\n        >\n          <IconComponent size={size} />\n        </button>\n      ))}\n    </div>\n  );\n}\n",
+      "type": "component"
+    }
+  ]
+}

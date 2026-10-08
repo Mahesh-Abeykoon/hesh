@@ -1,0 +1,19 @@
+{
+  "name": "avatar",
+  "title": "Avatar",
+  "type": "component",
+  "category": "Data Display & Layout",
+  "description": "Accessible, token-driven Avatar component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Avatar.tsx",
+      "target": "components/ui/Avatar.tsx",
+      "content": "import type { HTMLAttributes } from 'react';\nimport { cn } from '../utils/cn';\n\nexport type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';\nexport type AvatarStatus = 'online' | 'away' | 'busy' | 'offline';\n\nexport interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {\n  name: string;\n  src?: string;\n  size?: AvatarSize;\n  square?: boolean;\n  status?: AvatarStatus;\n}\n\n/** Deterministic hue from the name, so the same person is always the same colour. */\nfunction hashHue(value: string) {\n  let hash = 0;\n  for (let i = 0; i < value.length; i += 1) {\n    hash = (hash << 5) - hash + value.charCodeAt(i);\n    hash |= 0;\n  }\n  return Math.abs(hash) % 360;\n}\n\nexport function initialsOf(name: string) {\n  const parts = name.trim().split(/\\s+/).filter(Boolean);\n  if (parts.length === 0) return '?';\n  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();\n  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();\n}\n\nexport function Avatar({\n  name,\n  src,\n  size = 'md',\n  square = false,\n  status,\n  className,\n  style,\n  ...props\n}: AvatarProps) {\n  const hue = hashHue(name);\n\n  return (\n    <span\n      className={cn('pui-avatar', `pui-avatar--${size}`, square && 'pui-avatar--square', className)}\n      role=\"img\"\n      aria-label={name}\n      style={{\n        background: src\n          ? undefined\n          : `linear-gradient(140deg, hsl(${hue} 72% 92%), hsl(${(hue + 24) % 360} 78% 84%))`,\n        color: src ? undefined : `hsl(${hue} 62% 28%)`,\n        ...style,\n      }}\n      {...props}\n    >\n      {src ? (\n        <img src={src} alt=\"\" loading=\"lazy\" decoding=\"async\" />\n      ) : (\n        <span aria-hidden=\"true\">{initialsOf(name)}</span>\n      )}\n      {status && (\n        <span\n          className={cn('pui-avatar__status', `pui-avatar__status--${status}`)}\n          title={status}\n        />\n      )}\n    </span>\n  );\n}\n\nexport interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {\n  people: readonly { name: string; src?: string }[];\n  max?: number;\n  size?: AvatarSize;\n}\n\nexport function AvatarGroup({ people, max = 4, size = 'md', className, ...props }: AvatarGroupProps) {\n  const shown = people.slice(0, max);\n  const overflow = people.length - shown.length;\n\n  return (\n    <div className={cn('pui-avatar-group', className)} {...props}>\n      {shown.map((person, index) => (\n        <Avatar key={`${person.name}-${index}`} name={person.name} src={person.src} size={size} />\n      ))}\n      {overflow > 0 && (\n        <span className=\"pui-avatar-group__more\" aria-label={`${overflow} more`}>\n          +{overflow}\n        </span>\n      )}\n    </div>\n  );\n}\n",
+      "type": "component"
+    }
+  ]
+}

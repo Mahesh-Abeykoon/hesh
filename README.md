@@ -38,7 +38,25 @@ a 10-line CSS change, not a refactor.
 
 ---
 
-## Install
+---
+
+## Quick Install
+
+### Option A: Component CLI (Recommended — Own your code)
+
+Download component source code directly into your `components/ui/` folder, just like shadcn. You own 100% of the code, with zero black-box dependencies and zero external Radix packages:
+
+```bash
+# 1. Initialize your project (Next.js, Vite, Remix)
+npx hesh-ui init
+
+# 2. Add components directly
+npx hesh-ui add button dialog calendar
+```
+
+### Option B: Pre-bundled NPM Package
+
+If you prefer installing pre-compiled components from the npm registry:
 
 ```bash
 npm install hesh-ui

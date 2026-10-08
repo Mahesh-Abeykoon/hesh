@@ -21,12 +21,18 @@ export interface TabItem {
   icon?: ReactNode;
 }
 
+export type TabsVariant = 'line' | 'pills' | 'boxed';
+export type TabsSize = 'sm' | 'md' | 'lg';
+
 export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'children'> {
   items: readonly TabItem[];
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   orientation?: 'horizontal' | 'vertical';
+  variant?: TabsVariant;
+  size?: TabsSize;
+  fullWidth?: boolean;
   /** Skip rendering inactive panels. Use for expensive or stateful content. */
   lazy?: boolean;
 }
@@ -53,6 +59,9 @@ export function Tabs({
   defaultValue,
   onValueChange,
   orientation = 'horizontal',
+  variant = 'line',
+  size = 'md',
+  fullWidth = false,
   lazy = false,
   className,
   ...props
@@ -111,13 +120,20 @@ export function Tabs({
   return (
     <TabsContext.Provider value={{ value: selected, select, baseId, registerRef }}>
       <div
-        className={cn('pui-tabs', orientation === 'vertical' && 'pui-tabs--vertical', className)}
+        className={cn(
+          'pui-tabs',
+          orientation === 'vertical' && 'pui-tabs--vertical',
+          `pui-tabs--${variant}`,
+          `pui-tabs--${size}`,
+          fullWidth && 'pui-tabs--full-width',
+          className
+        )}
         {...props}
       >
         <div
           role="tablist"
           aria-orientation={orientation}
-          className="pui-tabs__list"
+          className={cn('pui-tabs__list', `pui-tabs__list--${variant}`)}
           onKeyDown={onKeyDown}
         >
           {items.map((item) => {
@@ -134,7 +150,12 @@ export function Tabs({
                 // Roving tabindex: only the active tab is in the tab sequence.
                 tabIndex={isActive ? 0 : -1}
                 disabled={item.disabled}
-                className="pui-tab"
+                className={cn(
+                  'pui-tab',
+                  `pui-tab--${variant}`,
+                  `pui-tab--${size}`,
+                  fullWidth && 'pui-tab--full-width'
+                )}
                 onClick={() => select(item.value)}
               >
                 {item.icon && <span className="pui-btn__icon">{item.icon}</span>}

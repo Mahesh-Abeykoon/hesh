@@ -1,16 +1,29 @@
-MIT License
+MIT License with Commons Clause & Trademark Reservation
 
 Copyright (c) 2026 Mahesh Abeykoon (https://github.com/Mahesh-Abeykoon)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+to use, copy, modify, merge, publish, distribute, sublicense, and/or permit
+persons to whom the Software is furnished to do so, subject to the following
+conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+2. Commons Clause (No Commercial Resale):
+   The Software may NOT be sold, rented, leased, licensed, or distributed as a
+   standalone product, UI component library, theme, design template, or kit,
+   whether modified or unmodified. You may freely use, embed, and distribute the
+   Software as part of an application, website, or software service that has
+   substantial additional functionality beyond the Software itself.
+
+3. Trademark Reservation:
+   The names "Hesh", "Hesh UI", the Hesh logos, brand marks, and associated
+   visual assets are proprietary trademarks of Mahesh Abeykoon. This license
+   does not grant any rights to use these trademarks for commercial endorsement,
+   rebranding, or marketing competing products without prior written consent.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

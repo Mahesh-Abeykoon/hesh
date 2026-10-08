@@ -8,6 +8,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Carousel,
   Kbd,
   Progress,
   Separator,
@@ -17,6 +18,22 @@ import {
 import { ArrowRightIcon, PlusIcon } from '../../src/index';
 import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
+import { BadgeWorkbench } from '../components/PropsWorkbench';
+
+const CAROUSEL = `<Carousel autoPlay interval={4500}>
+  <div className="carousel-slide-demo carousel-slide-demo--1">
+    <h3>Real-time Analytics</h3>
+    <p>Stream events with sub-millisecond p99 latency.</p>
+  </div>
+  <div className="carousel-slide-demo carousel-slide-demo--2">
+    <h3>Enterprise Security</h3>
+    <p>SOC-2 Type II certified with end-to-end encryption.</p>
+  </div>
+  <div className="carousel-slide-demo carousel-slide-demo--3">
+    <h3>Global Edge Delivery</h3>
+    <p>Zero cold starts across 300+ edge locations worldwide.</p>
+  </div>
+</Carousel>`;
 
 const CARD = `<Card>
   <CardHeader
@@ -105,6 +122,83 @@ export function SurfacesPage() {
         </Showcase>
       </Section>
 
+      <Section title="Carousel" description="Touch-ready, accessible image and content slider with autoplay, loop, and keyboard arrows.">
+        <Showcase code={CAROUSEL} defaultOpen>
+          <div style={{ maxWidth: '42rem', width: '100%', margin: '0 auto' }}>
+            <Carousel autoPlay={false} interval={4000}>
+              <div
+                style={{
+                  height: 220,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'linear-gradient(135deg, var(--pui-primary-subtle), var(--pui-surface))',
+                  borderRadius: 'inherit',
+                  padding: '1.5rem',
+                  textAlign: 'center',
+                }}
+              >
+                <Badge tone="primary" dot>Next-gen</Badge>
+                <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>Real-time Analytics Engine</h3>
+                <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '28rem' }}>
+                  Stream live operational metrics with sub-millisecond p99 latency across distributed clusters.
+                </p>
+              </div>
+
+              <div
+                style={{
+                  height: 220,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'linear-gradient(135deg, var(--pui-surface-sunken), var(--pui-surface))',
+                  borderRadius: 'inherit',
+                  padding: '1.5rem',
+                  textAlign: 'center',
+                }}
+              >
+                <Badge tone="success" dot>Enterprise</Badge>
+                <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>Bank-Grade Security</h3>
+                <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '28rem' }}>
+                  SOC-2 Type II compliant with hardware security modules and automatic key rotation.
+                </p>
+              </div>
+
+              <div
+                style={{
+                  height: 220,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'linear-gradient(135deg, var(--pui-primary-subtle), var(--pui-surface-elevated))',
+                  borderRadius: 'inherit',
+                  padding: '1.5rem',
+                  textAlign: 'center',
+                }}
+              >
+                <Badge tone="info" dot>Global CDN</Badge>
+                <h3 style={{ margin: '0.75rem 0 0.25rem', fontSize: '1.25rem', fontWeight: 700 }}>Edge Routing Network</h3>
+                <p style={{ margin: 0, color: 'var(--pui-fg-muted)', fontSize: '0.875rem', maxWidth: '28rem' }}>
+                  Zero cold-starts and automatic geo-routing across 300+ PoPs worldwide.
+                </p>
+              </div>
+            </Carousel>
+          </div>
+        </Showcase>
+        <PropsTable
+          rows={[
+            { name: 'autoPlay', type: 'boolean', default: 'false', description: 'Automatically advances to next slide on an interval.' },
+            { name: 'interval', type: 'number', default: '4000', description: 'Autoplay duration per slide in milliseconds.' },
+            { name: 'loop', type: 'boolean', default: 'true', description: 'Wraps around to the first slide after the last slide.' },
+            { name: 'showArrows', type: 'boolean', default: 'true', description: 'Renders accessible previous and next navigation arrow buttons.' },
+            { name: 'showDots', type: 'boolean', default: 'true', description: 'Renders pagination dot indicators.' },
+          ]}
+        />
+      </Section>
+
       <Section title="Stat" description="Numeric metrics with tabular figures, so columns of numbers stay aligned as values change.">
         <Showcase>
           <div className="grid-3">
@@ -122,6 +216,7 @@ export function SurfacesPage() {
       </Section>
 
       <Section title="Badge" description="Status labels. Tones map to semantic tokens, so a rebrand updates them for free.">
+        <BadgeWorkbench />
         <Showcase code={BADGE}>
           <div className="row-wrap">
             <Badge tone="neutral">Draft</Badge>

@@ -66,6 +66,12 @@ globalThis.ResizeObserver = class {
   disconnect() {}
 };
 window.ResizeObserver = globalThis.ResizeObserver;
+globalThis.IntersectionObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+window.IntersectionObserver = globalThis.IntersectionObserver;
 window.MutationObserver = window.MutationObserver ?? globalThis.MutationObserver;
 window.matchMedia =
   window.matchMedia ||
@@ -86,6 +92,8 @@ Object.defineProperties(window.HTMLElement.prototype, {
 });
 
 window.scrollTo = () => {};
+window.HTMLElement.prototype.scrollTo = () => {};
+window.Element.prototype.scrollTo = () => {};
 window.HTMLElement.prototype.scrollIntoView = () => {};
 window.Element.prototype.scrollIntoView = () => {};
 

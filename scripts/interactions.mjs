@@ -72,7 +72,7 @@ export const INTERACTIONS = [
     route: 'tabs',
     name: 'tabs use roving tabindex and arrow keys move selection',
     run: async ({ document, wait, press, assert }) => {
-      const list = document.querySelector('[role="tablist"]');
+      const list = document.querySelector('.pui-tabs [role="tablist"]') ?? document.querySelector('[role="tablist"]');
       assert(list, 'tablist rendered');
 
       const tabs = [...list.querySelectorAll('[role="tab"]')];
@@ -322,6 +322,28 @@ export const INTERACTIONS = [
       const indeterminate = bars.find((bar) => !bar.hasAttribute('aria-valuenow'));
       assert(determinate, 'a determinate bar reports aria-valuenow');
       assert(indeterminate, 'an indeterminate bar omits aria-valuenow');
+    },
+  },
+
+  {
+    route: 'carousel',
+    name: 'multi-item carousel locks previous arrow at start and unlocks on forward click',
+    run: async ({ document, click, wait, assert }) => {
+      const multiCarousel = document.querySelector('.pui-carousel--multi-item');
+      assert(multiCarousel, 'multi-item carousel rendered');
+
+      const prevBtn = multiCarousel.querySelector('.pui-carousel__arrow--prev');
+      const nextBtn = multiCarousel.querySelector('.pui-carousel__arrow--next');
+      assert(prevBtn, 'previous arrow rendered');
+      assert(nextBtn, 'next arrow rendered');
+
+      assert(prevBtn.disabled, 'previous arrow starts locked/disabled at index 0');
+      assert(!nextBtn.disabled, 'next arrow starts enabled when items remain');
+
+      await click(nextBtn);
+      await wait();
+
+      assert(!prevBtn.disabled, 'previous arrow is unlocked after navigating forward');
     },
   },
 ];

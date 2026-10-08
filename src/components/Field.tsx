@@ -1,6 +1,7 @@
 import {
   forwardRef,
   useId,
+  useState,
   type InputHTMLAttributes,
   type ReactNode,
   type SelectHTMLAttributes,
@@ -93,8 +94,11 @@ export interface FieldBaseProps {
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'className'>,
     FieldBaseProps {
+  size?: 'sm' | 'md' | 'lg';
   leftAddon?: ReactNode;
   rightAddon?: ReactNode;
+  clearable?: boolean;
+  onClear?: () => void;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -107,14 +111,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     containerClassName,
     leftAddon,
     rightAddon,
+    clearable = false,
+    onClear,
+    size = 'md',
     required,
     id: providedId,
+    value,
     ...props
   },
   ref
 ) {
   const generated = useId();
   const id = providedId ?? generated;
+  const showClear = clearable && Boolean(value);
 
   const renderControl = (describedBy?: string) => (
     <input
@@ -123,22 +132,34 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       required={required}
       aria-invalid={error ? true : undefined}
       aria-describedby={describedBy}
-      className={cn('pui-control', className)}
+      value={value}
+      className={cn('pui-control', size !== 'md' && `pui-control--${size}`, className)}
       {...props}
     />
   );
 
   const shell = (describedBy?: string) =>
-    leftAddon || rightAddon ? (
+    leftAddon || rightAddon || showClear ? (
       <div
         className={cn(
           'pui-input-wrap',
           leftAddon && 'pui-input-wrap--start',
-          rightAddon && 'pui-input-wrap--end'
+          (rightAddon || showClear) && 'pui-input-wrap--end',
+          size !== 'md' && `pui-input-wrap--${size}`
         )}
       >
         {leftAddon && <span className="pui-affix pui-affix--start">{leftAddon}</span>}
         {renderControl(describedBy)}
+        {showClear && (
+          <button
+            type="button"
+            aria-label="Clear input"
+            onClick={onClear}
+            className="pui-input-clear-btn"
+          >
+            ×
+          </button>
+        )}
         {rightAddon && <span className="pui-affix pui-affix--end">{rightAddon}</span>}
       </div>
     ) : (
@@ -163,17 +184,52 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 /* ------------------------------------------------------------------ Textarea */
 
 export interface TextareaProps
-  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'className'>,
+  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'className' | 'size'>,
     FieldBaseProps {
   rows?: number;
+  size?: 'sm' | 'md' | 'lg';
+  showCount?: boolean;
+  maxLength?: number;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { label, hint, error, optionalText, className, containerClassName, required, id: providedId, rows = 4, ...props },
+  {
+    label,
+    hint,
+    error,
+    optionalText,
+    className,
+    containerClassName,
+    required,
+    id: providedId,
+    rows = 4,
+    size = 'md',
+    showCount = false,
+    maxLength,
+    value,
+    defaultValue,
+    onChange,
+    ...props
+  },
   ref
 ) {
   const generated = useId();
   const id = providedId ?? generated;
+  const [internalVal, setInternalVal] = useState<string>(() => String(value ?? defaultValue ?? ''));
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInternalVal(e.target.value);
+    onChange?.(e);
+  };
+
+  const currentLength = value !== undefined ? String(value).length : internalVal.length;
+  const limitState = maxLength
+    ? currentLength > maxLength
+      ? 'exceeded'
+      : currentLength >= maxLength * 0.9
+        ? 'warning'
+        : 'normal'
+    : 'normal';
 
   return (
     <FieldShell
@@ -186,16 +242,31 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       className={containerClassName}
     >
       {(describedBy) => (
-        <textarea
-          ref={ref}
-          id={id}
-          rows={rows}
-          required={required}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={describedBy}
-          className={cn('pui-control', className)}
-          {...props}
-        />
+        <div className="pui-textarea-wrap">
+          <textarea
+            ref={ref}
+            id={id}
+            rows={rows}
+            required={required}
+            maxLength={maxLength}
+            value={value}
+            defaultValue={defaultValue}
+            onChange={handleChange}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={describedBy}
+            className={cn('pui-control', size !== 'md' && `pui-control--${size}`, className)}
+            {...props}
+          />
+          {showCount && (
+            <div
+              className="pui-textarea-count"
+              data-limit={limitState}
+              aria-live="polite"
+            >
+              {currentLength} {maxLength ? `/ ${maxLength}` : 'chars'}
+            </div>
+          )}
+        </div>
       )}
     </FieldShell>
   );
@@ -207,13 +278,15 @@ export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
+  group?: string;
 }
 
 export interface SelectProps
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'className' | 'children'>,
+  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'className' | 'children' | 'size'>,
     FieldBaseProps {
   options: readonly SelectOption[];
   placeholder?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 /**
@@ -233,6 +306,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
     containerClassName,
     options,
     placeholder,
+    size = 'md',
     required,
     id: providedId,
     ...props
@@ -241,6 +315,17 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
 ) {
   const generated = useId();
   const id = providedId ?? generated;
+
+  // Group options if any option specifies a `group`
+  const hasGroups = options.some((opt) => opt.group);
+  const grouped = hasGroups
+    ? options.reduce<Record<string, SelectOption[]>>((acc, opt) => {
+        const grp = opt.group ?? 'Other';
+        if (!acc[grp]) acc[grp] = [];
+        acc[grp].push(opt);
+        return acc;
+      }, {})
+    : null;
 
   return (
     <FieldShell
@@ -259,19 +344,29 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
           required={required}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
-          className={cn('pui-control', className)}
+          className={cn('pui-control', size !== 'md' && `pui-control--${size}`, className)}
           {...props}
         >
-        {placeholder && (
-          <option value="" disabled>
-            {placeholder}
-          </option>
-        )}
-          {options.map((option) => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>
-              {option.label}
+          {placeholder && (
+            <option value="" disabled>
+              {placeholder}
             </option>
-          ))}
+          )}
+          {grouped
+            ? Object.entries(grouped).map(([groupName, groupOptions]) => (
+                <optgroup key={groupName} label={groupName}>
+                  {groupOptions.map((option) => (
+                    <option key={option.value} value={option.value} disabled={option.disabled}>
+                      {option.label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))
+            : options.map((option) => (
+                <option key={option.value} value={option.value} disabled={option.disabled}>
+                  {option.label}
+                </option>
+              ))}
         </select>
       )}
     </FieldShell>

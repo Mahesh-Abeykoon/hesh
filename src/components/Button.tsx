@@ -1,5 +1,6 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { cn } from '../utils/cn';
+import { Slot } from '../primitives/Slot';
 
 export type ButtonVariant =
   | 'primary'
@@ -8,13 +9,19 @@ export type ButtonVariant =
   | 'ghost'
   | 'danger'
   | 'subtle'
-  | 'link';
+  | 'link'
+  | 'gradient'
+  | 'glass'
+  | 'success';
 
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type ButtonShape = 'rounded' | 'pill' | 'square';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  shape?: ButtonShape;
+  glow?: boolean;
   /** Swaps the label for a spinner and blocks interaction. */
   loading?: boolean;
   /** Replaces the label while loading — keeps layout from shifting. */
@@ -23,6 +30,8 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   rightIcon?: ReactNode;
   fullWidth?: boolean;
   iconOnly?: boolean;
+  /** Merge button styles and behavior onto an immediate child element (e.g. Next.js or React Router Link) */
+  asChild?: boolean;
 }
 
 /**
@@ -32,11 +41,14 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
  * - A native `<button>`: Space/Enter activation and form submission work for free.
  * - `loading` sets `aria-busy` and `aria-disabled` rather than the `disabled`
  *   attribute, so the button keeps its place in the tab order (no focus loss).
+ * - `asChild` renders using `<Slot>` to delegate attributes cleanly to router `<Link>` or `<a>`.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     variant = 'primary',
     size = 'md',
+    shape = 'rounded',
+    glow = false,
     loading = false,
     loadingText,
     leftIcon,
@@ -47,11 +59,38 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     className,
     children,
     type = 'button',
+    asChild = false,
     ...props
   },
   ref
 ) {
   const isInert = disabled || loading;
+  const Comp = asChild ? Slot : 'button';
+
+  const buttonClass = cn(
+    'pui-btn',
+    `pui-btn--${variant}`,
+    `pui-btn--${size}`,
+    shape && shape !== 'rounded' && `pui-btn--${shape}`,
+    glow && 'pui-btn--glow',
+    fullWidth && 'pui-btn--block',
+    iconOnly && 'pui-btn--icon-only',
+    className
+  );
+
+  if (asChild) {
+    return (
+      <Comp
+        ref={ref}
+        aria-busy={loading || undefined}
+        aria-disabled={isInert || undefined}
+        className={buttonClass}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  }
 
   return (
     <button
@@ -60,14 +99,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={disabled || undefined}
       aria-busy={loading || undefined}
       aria-disabled={isInert || undefined}
-      className={cn(
-        'pui-btn',
-        `pui-btn--${variant}`,
-        `pui-btn--${size}`,
-        fullWidth && 'pui-btn--block',
-        iconOnly && 'pui-btn--icon-only',
-        className
-      )}
+      className={buttonClass}
       {...props}
     >
       {loading ? (
@@ -107,12 +139,29 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
 export interface ButtonGroupProps {
   children: ReactNode;
   className?: string;
+  orientation?: 'horizontal' | 'vertical';
+  attached?: boolean;
   'aria-label'?: string;
 }
 
-export function ButtonGroup({ children, className, ...props }: ButtonGroupProps) {
+export function ButtonGroup({
+  children,
+  orientation = 'horizontal',
+  attached = true,
+  className,
+  ...props
+}: ButtonGroupProps) {
   return (
-    <div role="group" className={cn('pui-btn-group', className)} {...props}>
+    <div
+      role="group"
+      className={cn(
+        'pui-btn-group',
+        `pui-btn-group--${orientation}`,
+        !attached && 'pui-btn-group--detached',
+        className
+      )}
+      {...props}
+    >
       {children}
     </div>
   );

@@ -1,12 +1,14 @@
 <div align="center">
 
+<img src="./docs/assets/logo/hesh-logo.png" alt="Hesh UI" width="96" height="96" style="border-radius: 22px;" />
+
 # Hesh
 
 **A high-performance React component library with polished defaults, token-driven theming and accessibility built in.**
 
 React is the only peer dependency. No CSS-in-JS runtime, no icon package, no positioning library.
 
-[![npm](https://img.shields.io/badge/npm-hesh-orange)](https://www.npmjs.com/package/hesh)
+[![npm](https://img.shields.io/badge/npm-hesh--ui-orange)](https://www.npmjs.com/package/hesh-ui)
 [![types](https://img.shields.io/badge/TypeScript-first-3178c6)](https://www.typescriptlang.org/)
 [![bundle](https://img.shields.io/badge/JS%20(gzip)-26.3%20kB-22c55e)](https://bundlephobia.com)
 [![css](https://img.shields.io/badge/CSS%20(gzip)-14.9%20kB-22c55e)](https://bundlephobia.com)
@@ -39,7 +41,7 @@ a 10-line CSS change, not a refactor.
 ## Install
 
 ```bash
-npm install hesh
+npm install hesh-ui
 ```
 
 React 18 or newer. Works with Vite, Next.js App Router and Pages Router, Remix
@@ -51,10 +53,10 @@ and CRA — there is no bundler plugin to configure.
 
 ```tsx
 // 1. Import the stylesheet once, near the root of your app
-import 'hesh/styles.css';
+import 'hesh-ui/styles.css';
 
 // 2. Wrap your tree in the theme provider
-import { ThemeProvider } from 'hesh';
+import { ThemeProvider } from 'hesh-ui';
 
 export default function RootLayout({ children }) {
   return (
@@ -69,7 +71,7 @@ export default function RootLayout({ children }) {
 
 ```tsx
 // 3. Build
-import { Button, Card, CardBody, CardHeader, Input } from 'hesh';
+import { Button, Card, CardBody, CardHeader, Input } from 'hesh-ui';
 
 export function SignupCard() {
   return (
@@ -96,7 +98,7 @@ server cannot know is the user's stored theme — drop in the init script to
 eliminate the flash of wrong theme:
 
 ```tsx
-import { themeInitScript } from 'hesh';
+import { themeInitScript } from 'hesh-ui';
 
 <html lang="en" suppressHydrationWarning>
   <head>
@@ -260,6 +262,10 @@ logical properties. No polyfills are included.
 Early release (`0.1.x`). The API is stable enough to build on, but expect
 refinements before `1.0`. See [the changelog](CHANGELOG.md).
 
-## License
+## License & Commercial Use
 
-MIT © [Mahesh Abeykoon](https://github.com/Mahesh-Abeykoon)
+MIT with Commons Clause & Trademark Reservation © [Mahesh Abeykoon](https://github.com/Mahesh-Abeykoon)
+
+- **Free for Applications & SaaS:** You are free to use, customize, and embed Hesh in your web applications, websites, SaaS platforms, and client projects without royalties.
+- **Anti-Resale Restriction:** You may not repackage, sell, or distribute Hesh as a standalone UI component library, theme template, or kit.
+- **Brand & Trademark:** The name "Hesh" and official Hesh logos are trademarks of Mahesh Abeykoon. See [LICENSE](LICENSE) for full legal terms.

@@ -1,6 +1,6 @@
 {
-  "name": "hesh",
-  "version": "0.1.0",
+  "name": "hesh-ui",
+  "version": "0.1.1",
   "description": "A high-performance React component library with polished defaults, token-driven theming, and built-in accessibility. Zero runtime dependencies beyond React.",
   "license": "MIT",
   "author": {
@@ -30,10 +30,14 @@
     },
     "./styles.css": "./dist/hesh.css",
     "./styles": "./dist/hesh.css",
+    "./hesh.css": "./dist/hesh.css",
+    "./dist/hesh.css": "./dist/hesh.css",
+    "./dist/styles.css": "./dist/hesh.css",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
+    "!dist/**/*.map",
     "README.md",
     "LICENSE"
   ],
@@ -46,7 +50,8 @@
     "build:html": "npm run build:docs && node scripts/bundle-html.mjs && node scripts/verify-html.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node scripts/smoke.mjs"
+    "test": "node scripts/smoke.mjs",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -61,6 +66,7 @@
     "jsdom": "^29.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sucrase": "^3.35.1",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
   },

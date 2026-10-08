@@ -1,0 +1,4 @@
+# Exclude source maps from npm tarball to hide source internals and minimize package size
+dist/**/*.map
+*.tsbuildinfo
+*.log

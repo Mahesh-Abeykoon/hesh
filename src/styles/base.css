@@ -34,7 +34,7 @@ button { background: none; border: none; padding: 0; cursor: pointer; }
 p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
 ul, ol { list-style: none; padding: 0; }
 a { color: var(--pui-primary-fg); text-decoration: none; }
-a:hover { text-decoration: underline; text-underline-offset: 2px; }
+a:hover { text-decoration: none; }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: var(--pui-weight-semibold);
@@ -105,6 +105,12 @@ code, kbd, samp, pre {
                             to   { opacity: 1; transform: none; } }
 @keyframes pui-slide-in-right { from { opacity: 0; transform: translateX(16px); }
                                 to   { opacity: 1; transform: none; } }
+@keyframes pui-slide-in-left  { from { opacity: 0; transform: translateX(-16px); }
+                                to   { opacity: 1; transform: none; } }
+@keyframes pui-slide-in-bottom { from { opacity: 0; transform: translateY(24px); }
+                                 to   { opacity: 1; transform: none; } }
+@keyframes pui-slide-in-top    { from { opacity: 0; transform: translateY(-24px); }
+                                 to   { opacity: 1; transform: none; } }
 @keyframes pui-spin       { to { transform: rotate(360deg); } }
 @keyframes pui-shimmer    { 100% { transform: translateX(100%); } }
 @keyframes pui-indeterminate {

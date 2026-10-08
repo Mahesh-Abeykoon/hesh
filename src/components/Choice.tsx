@@ -19,10 +19,11 @@ export interface CheckboxProps
   label?: ReactNode;
   description?: ReactNode;
   indeterminate?: boolean;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, description, indeterminate = false, disabled, className, id: providedId, ...props },
+  { label, description, indeterminate = false, size = 'md', disabled, className, id: providedId, ...props },
   forwardedRef
 ) {
   const generated = useId();
@@ -43,7 +44,12 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   return (
     <label
       htmlFor={id}
-      className={cn('pui-choice', disabled && 'pui-choice--disabled', className)}
+      className={cn(
+        'pui-choice',
+        `pui-choice--${size}`,
+        disabled && 'pui-choice--disabled',
+        className
+      )}
     >
       <input
         ref={setRef}
@@ -74,7 +80,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 
 /* ------------------------------------------------------------------ Radio */
 
-export interface RadioGroupProps {
+export interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -125,14 +131,26 @@ interface RadioGroupContextValue {
 const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);
 
 export interface RadioProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'name' | 'checked' | 'value' | 'onChange'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'name' | 'value' | 'size'> {
   value: string;
   label?: ReactNode;
   description?: ReactNode;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
-  { value, label, description, disabled, className, id: providedId, ...props },
+  {
+    value,
+    label,
+    description,
+    size = 'md',
+    disabled,
+    checked: providedChecked,
+    onChange,
+    className,
+    id: providedId,
+    ...props
+  },
   ref
 ) {
   const context = useContext(RadioGroupContext);
@@ -140,12 +158,24 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   const id = providedId ?? generated;
   const descriptionId = description ? `${id}-description` : undefined;
 
-  const checked = context ? context.selected === value : false;
+  const checked = context ? context.selected === value : Boolean(providedChecked);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (context) {
+      context.setSelected(value);
+    }
+    onChange?.(e);
+  };
 
   return (
     <label
       htmlFor={id}
-      className={cn('pui-choice', disabled && 'pui-choice--disabled', className)}
+      className={cn(
+        'pui-choice',
+        `pui-choice--${size}`,
+        disabled && 'pui-choice--disabled',
+        className
+      )}
     >
       <input
         ref={ref}
@@ -155,7 +185,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         checked={checked}
         disabled={disabled}
         aria-describedby={descriptionId}
-        onChange={() => context?.setSelected(value)}
+        onChange={handleChange}
         {...props}
       />
       <span className="pui-choice__box pui-choice__box--radio">
@@ -192,7 +222,7 @@ export interface SwitchProps
   onCheckedChange?: (checked: boolean) => void;
   label?: ReactNode;
   description?: ReactNode;
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 /**
@@ -247,7 +277,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
   if (!label && !description) return control;
 
   return (
-    <span className={cn('pui-choice', disabled && 'pui-choice--disabled')}>
+    <span className={cn('pui-choice', `pui-choice--${size}`, disabled && 'pui-choice--disabled')}>
       {control}
       {(label || description) && (
         <span className="pui-choice__text">
@@ -270,5 +300,32 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
         </span>
       )}
     </span>
+  );
+});
+
+/* ------------------------------------------------------------------ ChoiceCard */
+
+export interface ChoiceCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  checked?: boolean;
+  disabled?: boolean;
+  children: ReactNode;
+}
+
+/**
+ * Selectable card container for Checkbox and Radio items with active ring highlight.
+ */
+export const ChoiceCard = forwardRef<HTMLDivElement, ChoiceCardProps>(function ChoiceCard(
+  { checked, disabled, className, children, ...props },
+  ref
+) {
+  return (
+    <div
+      ref={ref}
+      data-checked={checked || undefined}
+      className={cn('pui-choice-card', disabled && 'pui-choice-card--disabled', className)}
+      {...props}
+    >
+      {children}
+    </div>
   );
 });

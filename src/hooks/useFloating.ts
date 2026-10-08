@@ -15,10 +15,18 @@ export interface FloatingCoords {
   x: number;
   y: number;
   placement: Placement;
+  anchorWidth?: number;
 }
 
 const GAP = 6;
 const VIEWPORT_PADDING = 8;
+
+export interface UseFloatingOptions {
+  placement?: Placement;
+  align?: Align;
+  offset?: number;
+  matchWidth?: boolean;
+}
 
 export interface UseFloatingReturn<T extends HTMLElement> {
   /**
@@ -35,6 +43,7 @@ export interface UseFloatingReturn<T extends HTMLElement> {
   /** False until the element has been measured — keep it hidden until then. */
   ready: boolean;
   update: () => void;
+  anchorWidth: number;
 }
 
 /**
@@ -46,14 +55,15 @@ export interface UseFloatingReturn<T extends HTMLElement> {
 export function useFloating<T extends HTMLElement>(
   anchorRef: RefObject<HTMLElement>,
   active: boolean,
-  options: { placement?: Placement; align?: Align; offset?: number } = {}
+  options: UseFloatingOptions = {}
 ): UseFloatingReturn<T> {
-  const { placement: preferred = 'bottom', align = 'start', offset = GAP } = options;
+  const { placement: preferred = 'bottom', align = 'start', offset = GAP, matchWidth = false } = options;
 
   const floatingRef = useRef<T | null>(null) as MutableRefObject<T | null>;
   const [floatingNode, setFloatingNode] = useState<T | null>(null);
   const [coords, setCoords] = useState<FloatingCoords>({ x: 0, y: 0, placement: preferred });
   const [ready, setReady] = useState(false);
+  const [measuredAnchorWidth, setMeasuredAnchorWidth] = useState(0);
 
   const setFloating = useCallback((node: T | null) => {
     floatingRef.current = node;
@@ -66,9 +76,22 @@ export function useFloating<T extends HTMLElement>(
     if (!anchor || !floating) return;
 
     const a = anchor.getBoundingClientRect();
-    const f = floating.getBoundingClientRect();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
+    const anchorW = Math.round(a.width);
+    setMeasuredAnchorWidth(anchorW);
+
+    if (matchWidth) {
+      const maxW = Math.max(160, vw - VIEWPORT_PADDING * 2);
+      const targetW = Math.min(anchorW, maxW);
+      floating.style.width = `${targetW}px`;
+      floating.style.maxWidth = `${maxW}px`;
+    }
+
+    // Keep floating popup from overflowing viewport height on mobile
+    floating.style.maxHeight = `min(calc(100vh - ${VIEWPORT_PADDING * 2}px), 24rem)`;
+
+    const f = floating.getBoundingClientRect();
 
     let placement: Placement = preferred;
     const fits = (p: Placement) => {
@@ -106,12 +129,12 @@ export function useFloating<T extends HTMLElement>(
     }
 
     setCoords((prev) =>
-      prev.x === x && prev.y === y && prev.placement === placement
+      prev.x === x && prev.y === y && prev.placement === placement && prev.anchorWidth === anchorW
         ? prev
-        : { x, y, placement }
+        : { x, y, placement, anchorWidth: anchorW }
     );
     setReady(true);
-  }, [anchorRef, floatingNode, preferred, align, offset]);
+  }, [anchorRef, floatingNode, preferred, align, offset, matchWidth]);
 
   useLayoutEffect(() => {
     if (!active) {
@@ -128,14 +151,23 @@ export function useFloating<T extends HTMLElement>(
     window.addEventListener('resize', onScrollOrResize);
     const observer = new ResizeObserver(update);
     if (floatingNode) observer.observe(floatingNode);
+    if (anchorRef.current) observer.observe(anchorRef.current);
     return () => {
       window.removeEventListener('scroll', onScrollOrResize, true);
       window.removeEventListener('resize', onScrollOrResize);
       observer.disconnect();
     };
-  }, [active, update, floatingNode]);
+  }, [active, update, floatingNode, anchorRef]);
 
-  return { setFloating, floatingRef, coords, placement: coords.placement, ready, update };
+  return {
+    setFloating,
+    floatingRef,
+    coords,
+    placement: coords.placement,
+    ready,
+    update,
+    anchorWidth: measuredAnchorWidth,
+  };
 }
 
 function clamp(value: number, min: number, max: number) {

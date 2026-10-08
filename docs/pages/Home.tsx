@@ -19,8 +19,9 @@ import {
   Switch,
   Tabs,
   useToast,
+  PresetSwitch,
 } from '../../src/index';
-import { ArrowRightIcon, CheckIcon, SparklesIcon } from '../../src/index';
+import { ArrowRightIcon, CheckIcon, ZapIcon } from '../../src/index';
 
 /* ------------------------------------------------------------------ hero */
 
@@ -61,10 +62,21 @@ function Hero() {
       </div>
 
       <div className="hero__inner">
-        <span className="hero__badge">
-          <SparklesIcon size={13} />
-          Zero dependencies · 33 components · accessible by default
-        </span>
+        <div className="hero__brand-row">
+          <div className="hero__brand-logo-wrap">
+            <img
+              src="/docs/assets/logo/hesh-logo.png"
+              alt="Hesh UI"
+              width="48"
+              height="48"
+              className="hero__brand-logo"
+            />
+          </div>
+          <span className="hero__badge">
+            <ZapIcon size={13} />
+            Zero dependencies · 48 components · accessible by default
+          </span>
+        </div>
 
         <h1 className="hero__title">
           Ship interfaces that look
@@ -115,12 +127,18 @@ function Mosaic() {
 
   return (
     <section className="section">
-      <div className="section__head">
-        <h2 className="section__title">Everything below is live</h2>
-        <p className="section__desc">
-          Not screenshots. Not sandboxed iframes. Real components on this page —
-          switch the theme or the density in the header and watch all of them respond.
-        </p>
+      <div className="section__head" style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+        <div>
+          <h2 className="section__title">Everything below is live</h2>
+          <p className="section__desc">
+            Not screenshots. Not sandboxed iframes. Real components on this page —
+            switch the theme, color presets, or density to watch all of them respond instantly.
+          </p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--pui-fg-muted)' }}>Color presets:</span>
+          <PresetSwitch />
+        </div>
       </div>
 
       <div className="mosaic">

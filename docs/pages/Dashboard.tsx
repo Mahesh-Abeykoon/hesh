@@ -37,11 +37,11 @@ import {
   PlusIcon,
   SearchIcon,
   SettingsIcon,
-  SparklesIcon,
+  ZapIcon,
   TrendingUpIcon,
   UsersIcon,
 } from '../../src/index';
-import { Callout, Showcase } from '../components/Showcase';
+import { Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
 
 /* ------------------------------------------------------------------ data */
@@ -231,11 +231,11 @@ function DashboardScreen() {
       sortable: true,
       accessor: (row) => row.name,
       cell: (row) => (
-        <div className="row-wrap" style={{ gap: '0.625rem' }}>
+        <div className="row-wrap" style={{ gap: '0.5rem', alignItems: 'center' }}>
           <Avatar name={row.name} size="sm" status={row.health > 80 ? 'online' : row.health > 60 ? 'away' : 'busy'} />
-          <div>
-            <div className="pui-table__primary">{row.name}</div>
-            <div className="cell-sub">{row.email}</div>
+          <div style={{ minWidth: 0 }}>
+            <div className="pui-table__primary" style={{ fontSize: '0.8125rem', whiteSpace: 'nowrap' }}>{row.name}</div>
+            <div className="cell-sub" style={{ fontSize: '0.6875rem' }}>{row.email}</div>
           </div>
         </div>
       ),
@@ -246,7 +246,8 @@ function DashboardScreen() {
       header: 'Account health',
       sortable: true,
       accessor: (row) => row.health,
-      width: 180,
+      hideBelow: 'mobile',
+      width: 160,
       cell: (row) => (
         <div className="row-wrap" style={{ gap: '0.5rem' }}>
           <Progress
@@ -274,7 +275,7 @@ function DashboardScreen() {
       <aside className="dash__sidebar">
         <div className="dash__brand">
           <span className="dash__logo">
-            <SparklesIcon size={16} />
+            <ZapIcon size={16} />
           </span>
           <span className="dash__brand-name">Northwind</span>
         </div>
@@ -285,17 +286,17 @@ function DashboardScreen() {
           groups={[
             {
               items: [
-                { id: 'overview', label: 'Overview', icon: <HomeIcon />, onClick: () => setActive('overview') },
-                { id: 'analytics', label: 'Analytics', icon: <BarChartIcon />, onClick: () => setActive('analytics') },
-                { id: 'customers', label: 'Customers', icon: <UsersIcon />, badge: <Badge tone="primary">1.2k</Badge>, onClick: () => setActive('customers') },
-                { id: 'projects', label: 'Projects', icon: <LayoutIcon />, onClick: () => setActive('projects') },
+                { id: 'overview', label: 'Overview', icon: <HomeIcon size={13} />, onClick: () => setActive('overview') },
+                { id: 'analytics', label: 'Analytics', icon: <BarChartIcon size={13} />, onClick: () => setActive('analytics') },
+                { id: 'customers', label: 'Customers', icon: <UsersIcon size={13} />, badge: <Badge tone="primary" pill>1.2k</Badge>, onClick: () => setActive('customers') },
+                { id: 'projects', label: 'Projects', icon: <LayoutIcon size={13} />, onClick: () => setActive('projects') },
               ],
             },
             {
               label: 'Account',
               items: [
-                { id: 'billing', label: 'Billing', icon: <CreditCardIcon />, onClick: () => setActive('billing') },
-                { id: 'settings', label: 'Settings', icon: <SettingsIcon />, onClick: () => setActive('settings') },
+                { id: 'billing', label: 'Billing', icon: <CreditCardIcon size={13} />, onClick: () => setActive('billing') },
+                { id: 'settings', label: 'Settings', icon: <SettingsIcon size={13} />, onClick: () => setActive('settings') },
               ],
             },
           ]}
@@ -322,7 +323,7 @@ function DashboardScreen() {
       {/* Main */}
       <div className="dash__main">
         <header className="dash__topbar">
-          <Breadcrumbs items={[{ label: 'Northwind' }, { label: 'Overview' }]} />
+          <Breadcrumbs items={[{ label: 'Northwind' }, { label: active.charAt(0).toUpperCase() + active.slice(1) }]} />
           <div className="dash__topbar-actions">
             <div className="dash__search">
               <Input placeholder="Search…" leftAddon={<SearchIcon />} />
@@ -356,9 +357,13 @@ function DashboardScreen() {
 
         <div className="dash__content">
           <PageHeader
-            eyebrow="Overview"
-            title="Good morning, Ada"
-            description="Here is how Northwind performed over the last thirty days."
+            eyebrow={active.charAt(0).toUpperCase() + active.slice(1)}
+            title={active === 'overview' ? 'Good morning, Ada' : `${active.charAt(0).toUpperCase() + active.slice(1)} Overview`}
+            description={
+              active === 'overview'
+                ? 'Here is how Northwind performed over the last thirty days.'
+                : `Live metrics, audit events, and controls for ${active}.`
+            }
             actions={
               <>
                 <DropdownMenu
@@ -508,36 +513,6 @@ function DashboardScreen() {
 
 /* ------------------------------------------------------------------ page */
 
-const COMPOSITION = `// The whole screen is composed from library primitives.
-// No page-level CSS framework, no grid system, no utility classes.
-
-<div className="dash">
-  <aside className="dash__sidebar">
-    <SidebarNav activeId={active} groups={groups} />
-  </aside>
-
-  <div className="dash__main">
-    <header className="dash__topbar">{/* search, notifications, menu */}</header>
-
-    <PageHeader
-      eyebrow="Overview"
-      title="Good morning, Ada"
-      actions={<Button leftIcon={<PlusIcon />}>New project</Button>}
-    />
-
-    <div className="dash__metrics">
-      {metrics.map((metric) => (
-        <Card key={metric.id} padded interactive>
-          <Stat label={metric.label} value={metric.value} delta={metric.delta} size="sm" />
-          <Sparkline data={metric.series} />
-        </Card>
-      ))}
-    </div>
-
-    <DataTable columns={columns} data={customers} rowKey={(r) => r.id} />
-  </div>
-</div>`;
-
 export function DashboardPage() {
   return (
     <DocPage
@@ -551,16 +526,6 @@ export function DashboardPage() {
             <DashboardScreen />
           </ToastProvider>
         </Showcase>
-      </Section>
-
-      <Section title="How it is composed">
-        <Showcase code={COMPOSITION} defaultOpen />
-        <Callout tone="info" title="Your layout, our components">
-          The dashboard ships with about 40 lines of layout CSS for the two-column
-          shell and the metric grid. Everything inside those regions is a library
-          component. That is the intended split: the library owns controls and
-          content, you own composition.
-        </Callout>
       </Section>
 
       <Section title="What to reuse">

@@ -1,5 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Badge, Button, Card, CardBody, Input, Separator, Switch } from '../../src/index';
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  Input,
+  Separator,
+  Switch,
+  PresetSwitch,
+  useTheme,
+  THEME_PRESETS,
+} from '../../src/index';
 import { CodeBlock } from '../components/CodeBlock';
 import { Callout, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
@@ -36,6 +47,20 @@ const SCOPED = `/* Scoped theming: invert a section without touching the rest of
 
 const DENSITY = `<html data-pui-density="compact">      <!-- 0.82× control height -->
 <html data-pui-density="comfortable">  <!-- 1.18× control height -->`;
+
+const PRESET_USAGE = `<!-- Apply directly to <html> or any container element -->
+<html data-pui-preset="forest">   <!-- Calm emerald & pine (ops & infra) -->
+<html data-pui-preset="sunset">   <!-- Warm terracotta & rose (consumer SaaS) -->
+<html data-pui-preset="mono">     <!-- Monochromatic brutalist zinc (dev tools) -->
+<html data-pui-preset="midnight"> <!-- Deep cyber navy & cyan (fintech & data) -->
+
+<!-- Or control dynamically in React -->
+import { useTheme, PresetSwitch } from 'hesh-ui';
+
+function Header() {
+  const { preset, setPreset } = useTheme();
+  return <PresetSwitch />;
+}`;
 
 const TOKEN_LAYERS = [
   {
@@ -91,6 +116,7 @@ function Swatch({ token, label }: { token: string; label: string }) {
 
 export function ThemingPage() {
   const [notifications, setNotifications] = useState(true);
+  const { preset, setPreset } = useTheme();
 
   return (
     <DocPage
@@ -184,6 +210,86 @@ export function ThemingPage() {
                 </Button>
               </div>
             ))}
+          </div>
+        </Showcase>
+      </Section>
+
+      <Section
+        title="Theme presets"
+        description="Hesh ships with 5 built-in palettes. Switch them globally via [data-pui-preset] or use the interactive picker below."
+      >
+        <CodeBlock code={PRESET_USAGE} language="html" />
+        <Showcase>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+              <div>
+                <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--pui-fg)' }}>
+                  Interactive Palette Picker
+                </span>
+                <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--pui-fg-muted)' }}>
+                  Click any card to re-theme the entire documentation in real time
+                </span>
+              </div>
+              <PresetSwitch />
+            </div>
+
+            <div className="preset-grid" role="radiogroup" aria-label="Theme color presets">
+              {THEME_PRESETS.map((p) => {
+                const isActive = preset === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isActive}
+                    className={`preset-card${isActive ? ' preset-card--active' : ''}`}
+                    onClick={() => setPreset(p.id)}
+                  >
+                    <div className="preset-card__top">
+                      <span
+                        className="preset-card__swatch"
+                        style={{
+                          borderRadius: p.radius,
+                          ...(p.badgeStyle || { backgroundColor: p.accentColor }),
+                        }}
+                        aria-hidden="true"
+                      >
+                        {isActive ? (
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        ) : (
+                          'Aa'
+                        )}
+                      </span>
+                      {isActive && <span className="preset-card__badge">Active</span>}
+                    </div>
+
+                    <div className="preset-card__title">{p.name}</div>
+                    <p className="preset-card__desc">{p.description}</p>
+
+                    <div className="preset-card__ramp" aria-hidden="true">
+                      {p.palette.map((color, idx) => (
+                        <span
+                          key={idx}
+                          className="preset-card__ramp-chip"
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </Showcase>
       </Section>

@@ -2,6 +2,17 @@
 
 All notable changes are documented here. The project follows semantic versioning.
 
+## 0.1.1
+
+### Fixed
+
+- **Package name references** — updated all import statements and documentation from `hesh` to `hesh-ui`.
+- **Component code blocks** — fixed missing code preview and copy sections on Calendar, DatePicker, OtpInput, Slider, TagInput, and Textarea component documentation pages.
+- **Stylesheet exports** — added `./hesh.css`, `./dist/hesh.css`, and `./dist/styles.css` subpath aliases to `package.json` exports.
+- **Stylesheet visibility** — added persistent global stylesheet reminder and 1-click copy badge on every component doc page.
+- **Development warning** — added dev-mode warning in `ThemeProvider` if global design tokens (`--pui-brand-500`) are not loaded.
+- **Tailwind CSS guide** — added explicit integration instructions and code snippets for Next.js App Router and Tailwind CSS setups in Getting Started documentation.
+
 ## 0.1.0
 
 ### Added

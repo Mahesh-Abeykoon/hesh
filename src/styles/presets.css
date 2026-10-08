@@ -1,0 +1,207 @@
+/* ==========================================================================
+   Hesh — Theme Presets
+   --------------------------------------------------------------------------
+   Presets are cohesive token overrides scoped to the [data-pui-preset] attribute.
+   Apply one with <html data-pui-preset="forest"> or via useTheme().setPreset().
+   Available presets:
+     - indigo   (default — Linear / Stripe electric indigo)
+     - forest   (calm emerald / sage / pine — ops & monitoring)
+     - sunset   (warm terracotta / rose / amber — friendly SaaS)
+     - mono     (monochromatic brutalist zinc / square radii — dev tools)
+     - midnight (deep navy / electric cyan — fintech & data)
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ 1. FOREST */
+[data-pui-preset="forest"] {
+  --pui-brand-50:  #ecfdf5;
+  --pui-brand-100: #d1fae5;
+  --pui-brand-200: #a7f3d0;
+  --pui-brand-300: #6ee7b7;
+  --pui-brand-400: #34d399;
+  --pui-brand-500: #10b981;
+  --pui-brand-600: #059669;
+  --pui-brand-700: #047857;
+  --pui-brand-800: #065f46;
+  --pui-brand-900: #064e3b;
+  --pui-brand-950: #022c22;
+
+  --pui-primary:        var(--pui-brand-600);
+  --pui-primary-hover:  var(--pui-brand-700);
+  --pui-primary-active: var(--pui-brand-800);
+  --pui-primary-subtle: var(--pui-brand-50);
+  --pui-primary-border: var(--pui-brand-200);
+  --pui-primary-fg:     var(--pui-brand-800);
+  --pui-focus-ring:     var(--pui-brand-500);
+
+  /* Tighter radii for technical / ops aesthetics */
+  --pui-radius-sm: 0.25rem;
+  --pui-radius-md: 0.375rem;
+  --pui-radius-lg: 0.5rem;
+  --pui-radius-xl: 0.625rem;
+}
+
+[data-pui-preset="forest"][data-pui-theme="dark"],
+[data-pui-theme="dark"] [data-pui-preset="forest"] {
+  --pui-primary:        var(--pui-brand-400);
+  --pui-primary-hover:  var(--pui-brand-300);
+  --pui-primary-active: var(--pui-brand-500);
+  --pui-primary-subtle: color-mix(in oklab, var(--pui-brand-500) 18%, transparent);
+  --pui-primary-border: color-mix(in oklab, var(--pui-brand-500) 38%, transparent);
+  --pui-primary-fg:     var(--pui-brand-200);
+
+  --pui-bg:             #04100c;
+  --pui-bg-subtle:      #081813;
+  --pui-bg-muted:       #0e241d;
+  --pui-surface:        #0a1d17;
+  --pui-surface-hover:  #0e271f;
+  --pui-surface-sunken: #04100c;
+  --pui-surface-elevated: #0f2b23;
+  --pui-border:         #133328;
+  --pui-border-strong:  #1b4638;
+}
+
+/* ------------------------------------------------------------------ 2. SUNSET */
+[data-pui-preset="sunset"] {
+  --pui-brand-50:  #fff1f2;
+  --pui-brand-100: #ffe4e6;
+  --pui-brand-200: #fecdd3;
+  --pui-brand-300: #fda4af;
+  --pui-brand-400: #fb7185;
+  --pui-brand-500: #f43f5e;
+  --pui-brand-600: #e11d48;
+  --pui-brand-700: #be123c;
+  --pui-brand-800: #9f1239;
+  --pui-brand-900: #881337;
+  --pui-brand-950: #4c0519;
+
+  --pui-primary:        var(--pui-brand-500);
+  --pui-primary-hover:  var(--pui-brand-600);
+  --pui-primary-active: var(--pui-brand-700);
+  --pui-primary-subtle: var(--pui-brand-50);
+  --pui-primary-border: var(--pui-brand-200);
+  --pui-primary-fg:     var(--pui-brand-800);
+  --pui-focus-ring:     var(--pui-brand-500);
+
+  /* Friendly, soft rounded radii */
+  --pui-radius-sm: 0.5rem;
+  --pui-radius-md: 0.75rem;
+  --pui-radius-lg: 1rem;
+  --pui-radius-xl: 1.25rem;
+}
+
+[data-pui-preset="sunset"][data-pui-theme="dark"],
+[data-pui-theme="dark"] [data-pui-preset="sunset"] {
+  --pui-primary:        var(--pui-brand-400);
+  --pui-primary-hover:  var(--pui-brand-300);
+  --pui-primary-active: var(--pui-brand-500);
+  --pui-primary-subtle: color-mix(in oklab, var(--pui-brand-500) 18%, transparent);
+  --pui-primary-border: color-mix(in oklab, var(--pui-brand-500) 38%, transparent);
+  --pui-primary-fg:     var(--pui-brand-200);
+
+  --pui-bg:             #14070a;
+  --pui-bg-subtle:      #1c0c11;
+  --pui-bg-muted:       #29131a;
+  --pui-surface:        #200d14;
+  --pui-surface-hover:  #2b121c;
+  --pui-surface-sunken: #14070a;
+  --pui-surface-elevated: #311520;
+  --pui-border:         #3b1826;
+  --pui-border-strong:  #522135;
+}
+
+/* ------------------------------------------------------------------ 3. MONO */
+[data-pui-preset="mono"] {
+  --pui-brand-50:  #fafafa;
+  --pui-brand-100: #f4f4f5;
+  --pui-brand-200: #e4e4e7;
+  --pui-brand-300: #d4d4d8;
+  --pui-brand-400: #a1a1aa;
+  --pui-brand-500: #18181b;
+  --pui-brand-600: #09090b;
+  --pui-brand-700: #000000;
+  --pui-brand-800: #000000;
+  --pui-brand-900: #000000;
+  --pui-brand-950: #000000;
+
+  --pui-primary:        #18181b;
+  --pui-primary-hover:  #27272a;
+  --pui-primary-active: #09090b;
+  --pui-primary-subtle: #f4f4f5;
+  --pui-primary-border: #d4d4d8;
+  --pui-primary-fg:     #18181b;
+  --pui-on-primary:     #ffffff;
+  --pui-focus-ring:     #18181b;
+
+  /* Square brutalist radii */
+  --pui-radius-xs: 0px;
+  --pui-radius-sm: 0px;
+  --pui-radius-md: 0px;
+  --pui-radius-lg: 0px;
+  --pui-radius-xl: 0px;
+  --pui-radius-2xl: 0px;
+}
+
+[data-pui-preset="mono"][data-pui-theme="dark"],
+[data-pui-theme="dark"] [data-pui-preset="mono"] {
+  --pui-primary:        #f4f4f5;
+  --pui-primary-hover:  #ffffff;
+  --pui-primary-active: #e4e4e7;
+  --pui-primary-subtle: #27272a;
+  --pui-primary-border: #3f3f46;
+  --pui-primary-fg:     #f4f4f5;
+  --pui-on-primary:     #09090b;
+  --pui-focus-ring:     #ffffff;
+
+  --pui-bg:             #09090b;
+  --pui-bg-subtle:      #121215;
+  --pui-bg-muted:       #1c1c21;
+  --pui-surface:        #121215;
+  --pui-surface-hover:  #18181c;
+  --pui-surface-sunken: #09090b;
+  --pui-surface-elevated: #1f1f25;
+  --pui-border:         #27272f;
+  --pui-border-strong:  #3f3f4b;
+}
+
+/* ------------------------------------------------------------------ 4. MIDNIGHT */
+[data-pui-preset="midnight"] {
+  --pui-brand-50:  #ecfeff;
+  --pui-brand-100: #cffafe;
+  --pui-brand-200: #a5f3fc;
+  --pui-brand-300: #67e8f9;
+  --pui-brand-400: #22d3ee;
+  --pui-brand-500: #06b6d4;
+  --pui-brand-600: #0891b2;
+  --pui-brand-700: #0e7490;
+  --pui-brand-800: #155e75;
+  --pui-brand-900: #164e63;
+  --pui-brand-950: #083344;
+
+  --pui-primary:        var(--pui-brand-600);
+  --pui-primary-hover:  var(--pui-brand-700);
+  --pui-primary-active: var(--pui-brand-800);
+  --pui-primary-subtle: var(--pui-brand-50);
+  --pui-primary-border: var(--pui-brand-200);
+  --pui-primary-fg:     var(--pui-brand-800);
+  --pui-focus-ring:     var(--pui-brand-500);
+}
+
+[data-pui-preset="midnight"][data-pui-theme="dark"],
+[data-pui-theme="dark"] [data-pui-preset="midnight"] {
+  --pui-primary:        var(--pui-brand-400);
+  --pui-primary-hover:  var(--pui-brand-300);
+  --pui-primary-active: var(--pui-brand-500);
+  --pui-primary-subtle: color-mix(in oklab, var(--pui-brand-500) 18%, transparent);
+  --pui-primary-border: color-mix(in oklab, var(--pui-brand-500) 38%, transparent);
+  --pui-primary-fg:     var(--pui-brand-200);
+
+  --pui-bg:             #020617;
+  --pui-bg-subtle:      #071026;
+  --pui-bg-muted:       #0d1d42;
+  --pui-surface:        #091533;
+  --pui-surface-hover:  #0e204d;
+  --pui-surface-sunken: #020617;
+  --pui-surface-elevated: #11265c;
+  --pui-border:         #152e66;
+  --pui-border-strong:  #1e408a;
+}

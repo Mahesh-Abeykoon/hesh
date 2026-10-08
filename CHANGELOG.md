@@ -12,6 +12,7 @@ All notable changes are documented here. The project follows semantic versioning
 - **Stylesheet visibility** — added persistent global stylesheet reminder and 1-click copy badge on every component doc page.
 - **Development warning** — added dev-mode warning in `ThemeProvider` if global design tokens (`--pui-brand-500`) are not loaded.
 - **Tailwind CSS guide** — added explicit integration instructions and code snippets for Next.js App Router and Tailwind CSS setups in Getting Started documentation.
+- **Vercel deployment** — added `vercel.json` to configure `npm run build:docs` command and `dist-docs` output directory for hosting.
 
 ## 0.1.0
 

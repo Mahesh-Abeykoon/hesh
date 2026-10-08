@@ -8,7 +8,7 @@
 
 React is the only peer dependency. No CSS-in-JS runtime, no icon package, no positioning library.
 
-[![npm](https://img.shields.io/badge/npm-hesh-orange)](https://www.npmjs.com/package/hesh)
+[![npm](https://img.shields.io/badge/npm-hesh--ui-orange)](https://www.npmjs.com/package/hesh-ui)
 [![types](https://img.shields.io/badge/TypeScript-first-3178c6)](https://www.typescriptlang.org/)
 [![bundle](https://img.shields.io/badge/JS%20(gzip)-26.3%20kB-22c55e)](https://bundlephobia.com)
 [![css](https://img.shields.io/badge/CSS%20(gzip)-14.9%20kB-22c55e)](https://bundlephobia.com)
@@ -41,7 +41,7 @@ a 10-line CSS change, not a refactor.
 ## Install
 
 ```bash
-npm install hesh
+npm install hesh-ui
 ```
 
 React 18 or newer. Works with Vite, Next.js App Router and Pages Router, Remix
@@ -53,10 +53,10 @@ and CRA — there is no bundler plugin to configure.
 
 ```tsx
 // 1. Import the stylesheet once, near the root of your app
-import 'hesh/styles.css';
+import 'hesh-ui/styles.css';
 
 // 2. Wrap your tree in the theme provider
-import { ThemeProvider } from 'hesh';
+import { ThemeProvider } from 'hesh-ui';
 
 export default function RootLayout({ children }) {
   return (
@@ -71,7 +71,7 @@ export default function RootLayout({ children }) {
 
 ```tsx
 // 3. Build
-import { Button, Card, CardBody, CardHeader, Input } from 'hesh';
+import { Button, Card, CardBody, CardHeader, Input } from 'hesh-ui';
 
 export function SignupCard() {
   return (
@@ -98,7 +98,7 @@ server cannot know is the user's stored theme — drop in the init script to
 eliminate the flash of wrong theme:
 
 ```tsx
-import { themeInitScript } from 'hesh';
+import { themeInitScript } from 'hesh-ui';
 
 <html lang="en" suppressHydrationWarning>
   <head>

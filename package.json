@@ -1,5 +1,5 @@
 {
-  "name": "hesh",
+  "name": "hesh-ui",
   "version": "0.1.0",
   "description": "A high-performance React component library with polished defaults, token-driven theming, and built-in accessibility. Zero runtime dependencies beyond React.",
   "license": "MIT",

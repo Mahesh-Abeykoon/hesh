@@ -16,7 +16,7 @@ const QR_DEMO = `const [url, setUrl] = useState('https://github.com/esh');
 const LOGO_QR_DEMO = `<QRCode
   value="https://hesh.dev"
   size={140}
-  fgColor="#4f46e5"
+  fgColor="#2596f4"
   bordered
   logoUrl="/docs/assets/logo/hesh-logo.png"
 />`;
@@ -76,7 +76,7 @@ export function QRCodePage() {
               <QRCode
                 value="https://hesh.dev"
                 size={140}
-                fgColor="#4f46e5"
+                fgColor="#2596f4"
                 bordered
                 logoUrl="/docs/assets/logo/hesh-logo.png"
               />

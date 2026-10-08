@@ -7,18 +7,18 @@
 :root {
   /* ---------------------------------------------------------- 1. PRIMITIVES */
 
-  /* Brand ramp — "Electric Indigo". Swap these 11 values for a new identity. */
-  --pui-brand-50:  #eef2ff;
-  --pui-brand-100: #e0e7ff;
-  --pui-brand-200: #c7d2fe;
-  --pui-brand-300: #a5b4fc;
-  --pui-brand-400: #818cf8;
-  --pui-brand-500: #6366f1;   /* ← primary brand — Linear/Stripe indigo */
-  --pui-brand-600: #4f46e5;
-  --pui-brand-700: #4338ca;
-  --pui-brand-800: #3730a3;
-  --pui-brand-900: #312e81;
-  --pui-brand-950: #1e1b4b;
+  /* Brand ramp — "Luminous Electric Blue / Radiant Sky". Vibrant, light, modern. */
+  --pui-brand-50:  #f0f7ff;
+  --pui-brand-100: #e0f0fe;
+  --pui-brand-200: #bae3fd;
+  --pui-brand-300: #7dd3fc;
+  --pui-brand-400: #38bdf8;
+  --pui-brand-500: #2596f4;   /* ← vibrant luminous electric blue (never dark/dull) */
+  --pui-brand-600: #1d82e2;
+  --pui-brand-700: #176bbd;
+  --pui-brand-800: #185899;
+  --pui-brand-900: #194a7a;
+  --pui-brand-950: #102d4e;
 
   /* Neutral ramp — cool graphite; pairs with a warm accent */
   --pui-neutral-0:   #ffffff;
@@ -233,6 +233,13 @@
   /* The hairline highlight that separates "premium" from "flat".
      A 1px light line along the top edge of every raised surface. */
   --pui-edge-highlight: rgb(255 255 255 / 0.9);
+
+  /* Radiant iridescent hover glow: Electric Sky Blue + Crisp White + Luminous Pink */
+  --pui-glow-hover-radiant:
+    0 0 0 1px rgba(56, 189, 248, 0.55),
+    0 4px 18px -2px rgba(37, 150, 244, 0.22),
+    0 0 20px -4px rgba(236, 72, 153, 0.28),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
 }
 
 /* ---------------------------------------------------------- 3. SEMANTIC (dark) */
@@ -304,6 +311,13 @@
   --pui-shadow-2xl: 0 12px 24px -6px rgb(0 0 0 / 0.55),
                     0 48px 80px -16px rgb(0 0 0 / 0.80);
   --pui-shadow-inner: inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+
+  /* Radiant iridescent hover glow (dark): Electric Sky Blue + Crisp White + Luminous Pink */
+  --pui-glow-hover-radiant:
+    0 0 0 1px rgba(56, 189, 248, 0.75),
+    0 0 22px -2px rgba(56, 189, 248, 0.35),
+    0 0 30px -3px rgba(244, 114, 182, 0.38),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.20);
 }
 
 /* ---------------------------------------------------------- 4. DENSITY */

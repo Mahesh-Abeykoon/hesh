@@ -5,7 +5,11 @@ export const SiteFooter: FC = () => {
 
   return (
     <footer className="site-footer" role="contentinfo">
+      {/* Radiant ambient glow line along the top edge */}
+      <div className="site-footer__radiant-line" aria-hidden="true" />
+
       <div className="site-footer__inner">
+        {/* Brand column */}
         <div className="site-footer__col-brand">
           <div className="site-footer__logo-wrap">
             <img
@@ -16,16 +20,24 @@ export const SiteFooter: FC = () => {
               className="site-footer__logo"
             />
             <span className="site-footer__name">Hesh UI</span>
-            <span className="site-footer__version">v0.2.0</span>
+            <span className="site-footer__version-badge">v0.2.0</span>
           </div>
-          <p className="site-footer__copyright">
-            &copy; {currentYear} Mahesh Abeykoon. Released under the MIT License.
-          </p>
+
           <p className="site-footer__tagline">
             Zero-dependency, accessible, token-driven React UI components.
           </p>
+
+          <div className="site-footer__status-pill">
+            <span className="site-footer__status-dot" aria-hidden="true" />
+            <span className="site-footer__status-text">All systems operational</span>
+          </div>
+
+          <p className="site-footer__copyright">
+            &copy; {currentYear} Mahesh Abeykoon. Released under the MIT License.
+          </p>
         </div>
 
+        {/* Multi-column navigation links */}
         <div className="site-footer__col-links">
           <div className="site-footer__group">
             <span className="site-footer__heading">Documentation</span>

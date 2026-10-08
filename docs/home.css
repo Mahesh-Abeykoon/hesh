@@ -11,6 +11,7 @@
 /* Break the landing page out of the 900px docs column. */
 .content--home {
   padding-top: 0;
+  padding-bottom: 0;
 }
 
 .content--home .content__inner {
@@ -140,14 +141,14 @@
   height: 44px;
   border-radius: 12px;
   display: block;
-  box-shadow: 0 4px 18px -2px rgba(79, 70, 229, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 18px -2px rgba(37, 150, 244, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
   transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
   object-fit: cover;
 }
 
 .hero__brand-logo:hover {
   transform: scale(1.06) rotate(-1.5deg);
-  box-shadow: 0 8px 24px -2px rgba(99, 102, 241, 0.6), 0 3px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 24px -2px rgba(56, 189, 248, 0.6), 0 3px 10px rgba(0, 0, 0, 0.35);
 }
 
 .hero__badge {
@@ -207,8 +208,8 @@
 
 .hero__btn-get-started:hover {
   background: #f8fafc !important;
-  border-color: #94a3b8 !important;
-  box-shadow: 0 6px 20px -2px rgba(15, 23, 42, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(56, 189, 248, 0.8) !important;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4), 0 6px 20px -2px rgba(37, 150, 244, 0.25), 0 0 18px -2px rgba(236, 72, 153, 0.3) !important;
   transform: translateY(-1px);
 }
 
@@ -223,7 +224,8 @@
 :root[data-theme='dark'] .hero__btn-get-started:hover,
 [data-pui-theme='dark'] .hero__btn-get-started:hover {
   background: #f4f4f5 !important;
-  box-shadow: 0 0 32px -2px rgba(255, 255, 255, 0.5), 0 6px 16px rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(186, 230, 253, 0.9) !important;
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6), 0 0 32px -2px rgba(56, 189, 248, 0.45), 0 0 28px -3px rgba(244, 114, 182, 0.4) !important;
   transform: translateY(-1px);
 }
 
@@ -239,12 +241,13 @@
   box-shadow: var(--pui-shadow-sm);
   font-family: var(--pui-font-mono);
   font-size: var(--pui-text-sm);
-  transition: border-color 140ms, box-shadow 140ms;
+  transition: border-color 160ms, box-shadow 160ms, transform 160ms;
 }
 
 .install:hover {
-  border-color: var(--pui-primary-border);
-  box-shadow: var(--pui-shadow-md);
+  border-color: rgba(56, 189, 248, 0.75);
+  box-shadow: var(--pui-glow-hover-radiant, var(--pui-shadow-md));
+  transform: translateY(-1px);
 }
 
 .install__prompt {
@@ -337,7 +340,8 @@
 
 .why__card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--pui-shadow-lg);
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow: var(--pui-glow-hover-radiant, var(--pui-shadow-lg));
 }
 
 .why__card::before {
@@ -347,7 +351,7 @@
   top: 0;
   height: 2px;
   border-radius: 0 0 2px 2px;
-  background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+  background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #ec4899 100%);
   opacity: 0.85;
 }
 
@@ -370,6 +374,12 @@
   border-radius: var(--pui-radius-xl);
   overflow-x: auto;
   background: var(--pui-surface);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.compare-table-wrap:hover {
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: var(--pui-glow-hover-radiant, var(--pui-shadow-md));
 }
 
 .compare-table {
@@ -426,6 +436,12 @@
     radial-gradient(120% 120% at 0% 0%, color-mix(in oklab, var(--pui-primary) 8%, transparent), transparent 55%),
     var(--pui-surface);
   box-shadow: var(--pui-shadow-lg);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.cta:hover {
+  border-color: rgba(56, 189, 248, 0.65);
+  box-shadow: var(--pui-glow-hover-radiant, var(--pui-shadow-lg));
 }
 
 .cta__head {

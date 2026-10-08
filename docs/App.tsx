@@ -392,6 +392,7 @@ function Shell() {
             />
           </span>
           <span className="topbar__name">Hesh</span>
+          <span className="topbar__version">v0.2.0</span>
         </a>
 
         <div className="topbar__spacer" />
@@ -500,8 +501,8 @@ function Shell() {
                 <Button onClick={() => navigate('home')}>Back to docs</Button>
               </div>
             )}
-            <SiteFooter />
           </div>
+          {route !== 'playground' && <SiteFooter />}
         </main>
       </div>
 

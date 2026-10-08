@@ -323,8 +323,14 @@ function Shell() {
     }
   }, [active]);
 
-  // Close the mobile drawer on navigation.
-  useEffect(() => setMobileNavOpen(false), [route]);
+  // Close the mobile drawer on navigation and smooth scroll content to top.
+  useEffect(() => {
+    setMobileNavOpen(false);
+    const contentEl = document.querySelector('.content');
+    if (contentEl) {
+      contentEl.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [route]);
 
   // Animate browser tab icon (alternating black and colored logo)
   useEffect(() => {
@@ -337,7 +343,10 @@ function Shell() {
     let index = 0;
     const interval = setInterval(() => {
       index = (index + 1) % icons.length;
-      favicon.href = icons[index];
+      const nextIcon = icons[index];
+      if (nextIcon) {
+        favicon.href = nextIcon;
+      }
     }, 3000);
     return () => clearInterval(interval);
   }, []);
@@ -369,9 +378,6 @@ function Shell() {
             />
           </span>
           <span className="topbar__name">Hesh</span>
-          <Badge tone="primary" pill className="topbar__version">
-            v0.1.0
-          </Badge>
         </a>
 
         <div className="topbar__spacer" />

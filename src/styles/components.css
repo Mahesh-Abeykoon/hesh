@@ -129,11 +129,12 @@
   color: var(--pui-primary-fg);
   padding-inline: 0;
   height: auto;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: color-mix(in oklab, var(--pui-primary) 40%, transparent);
+  text-decoration: none;
 }
-.pui-btn--link:hover { text-decoration-color: currentColor; }
+.pui-btn--link:hover {
+  text-decoration: none;
+  opacity: 0.85;
+}
 
 .pui-btn--gradient {
   background: linear-gradient(135deg, var(--pui-brand-500) 0%, #ec4899 100%);

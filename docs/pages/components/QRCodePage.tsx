@@ -22,7 +22,7 @@ const LOGO_QR_DEMO = `<QRCode
 />`;
 
 export function QRCodePage() {
-  const [text, setText] = useState('https://github.com/esh');
+  const [text, setText] = useState('https://hesh.dev');
   const [size, setSize] = useState(160);
 
   return (

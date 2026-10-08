@@ -74,7 +74,7 @@
 
 .pui-dropzone__body { display: flex; flex-direction: column; gap: 0.25rem; }
 .pui-dropzone__title { font-size: var(--pui-text-base); font-weight: 600; color: var(--pui-fg); }
-.pui-dropzone__action { color: var(--pui-primary-fg); text-decoration: underline; text-underline-offset: 3px; }
+.pui-dropzone__action { color: var(--pui-primary-fg); text-decoration: none; font-weight: 500; }
 .pui-dropzone__hint { font-size: var(--pui-text-sm); color: var(--pui-fg-subtle); }
 
 .pui-dropzone__error { font-size: var(--pui-text-sm); color: var(--pui-danger-fg); background: var(--pui-danger-subtle); border: 1px solid color-mix(in oklab, var(--pui-danger) 22%, transparent); padding: 0.5rem 0.75rem; border-radius: var(--pui-radius-md); }

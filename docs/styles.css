@@ -3398,3 +3398,139 @@ body { margin: 0; height: 100%; background: var(--pui-bg); overflow: hidden; }
     padding: 1.25rem 0.75rem;
   }
 }
+
+/* ==========================================================================
+   SITE FOOTER (Vercel sponsorship & dynamic copyright)
+   ========================================================================== */
+.site-footer {
+  margin-top: 4rem;
+  padding: 3rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--pui-border);
+  background: var(--pui-surface-sunken);
+  color: var(--pui-fg);
+}
+
+:root[data-theme='dark'] .site-footer {
+  background: rgba(10, 10, 16, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.site-footer__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.site-footer__col-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 22rem;
+}
+
+.site-footer__logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+
+.site-footer__version {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--pui-radius-full);
+  background: var(--pui-bg-muted);
+  color: var(--pui-fg-muted);
+  border: 1px solid var(--pui-border);
+}
+
+.site-footer__copyright {
+  font-size: 0.8125rem;
+  color: var(--pui-fg-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.site-footer__tagline {
+  font-size: 0.75rem;
+  color: var(--pui-fg-subtle);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.site-footer__col-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem 3.5rem;
+}
+
+.site-footer__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-width: 8rem;
+}
+
+.site-footer__heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--pui-fg-subtle);
+}
+
+.site-footer__link {
+  font-size: 0.8125rem;
+  color: var(--pui-fg-muted);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.site-footer__link:hover {
+  color: var(--pui-primary, #6366f1);
+}
+
+/* Official Vercel sponsorship badge */
+.site-footer__vercel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-surface);
+  border: 1px solid var(--pui-border);
+  color: var(--pui-fg);
+  font-size: 0.75rem;
+  text-decoration: none;
+  box-shadow: var(--pui-shadow-xs);
+  transition: all 140ms ease;
+  width: fit-content;
+}
+
+.site-footer__vercel-badge:hover {
+  border-color: var(--pui-fg-muted);
+  box-shadow: var(--pui-shadow-sm);
+  transform: translateY(-1px);
+}
+
+:root[data-theme='dark'] .site-footer__vercel-badge {
+  background: #11111a;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme='dark'] .site-footer__vercel-badge:hover {
+  background: #161622;
+  border-color: rgba(255, 255, 255, 0.25);
+}

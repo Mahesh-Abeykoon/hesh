@@ -100,6 +100,7 @@ import { TreePage } from './pages/components/TreePage';
 import { DocNavigationContext } from './components/DocPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeCustomizer, ThemeCustomizerTrigger } from './components/ThemeCustomizer';
+import { SiteFooter } from './components/SiteFooter';
 
 interface DocPage {
   id: string;
@@ -499,6 +500,7 @@ function Shell() {
                 <Button onClick={() => navigate('home')}>Back to docs</Button>
               </div>
             )}
+            <SiteFooter />
           </div>
         </main>
       </div>

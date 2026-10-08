@@ -56,6 +56,7 @@
     "build:demo": "npm run build:docs",
     "build:html": "npm run build:docs && node scripts/bundle-html.mjs && node scripts/verify-html.mjs",
     "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "test:smoke": "node scripts/smoke.mjs",
     "test:cli": "node scripts/test-cli.mjs",
     "test": "node scripts/smoke.mjs && node scripts/test-cli.mjs",

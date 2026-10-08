@@ -14,11 +14,11 @@ const QR_DEMO = `const [url, setUrl] = useState('https://github.com/esh');
 />`;
 
 const LOGO_QR_DEMO = `<QRCode
-  value="https://hesh.dev/download"
-  size={180}
+  value="https://hesh.dev"
+  size={140}
   fgColor="#4f46e5"
   bordered
-  logoUrl="https://api.iconify.design/lucide:zap.svg"
+  logoUrl="/docs/assets/logo/hesh-logo.png"
 />`;
 
 export function QRCodePage() {
@@ -72,6 +72,17 @@ export function QRCodePage() {
       >
         <Showcase code={LOGO_QR_DEMO} width="full">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ textAlign: 'center' }}>
+              <QRCode
+                value="https://hesh.dev"
+                size={140}
+                fgColor="#4f46e5"
+                bordered
+                logoUrl="/docs/assets/logo/hesh-logo.png"
+              />
+              <span className="cell-sub" style={{ marginTop: '0.5rem', display: 'block' }}>Hesh Brand</span>
+            </div>
+
             <div style={{ textAlign: 'center' }}>
               <QRCode
                 value="https://stripe.com"

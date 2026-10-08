@@ -326,6 +326,22 @@ function Shell() {
   // Close the mobile drawer on navigation.
   useEffect(() => setMobileNavOpen(false), [route]);
 
+  // Animate browser tab icon (alternating black and colored logo)
+  useEffect(() => {
+    const favicon = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+    if (!favicon) return;
+    const icons = [
+      '/docs/assets/logo/hesh-icon.svg',
+      '/docs/assets/logo/hesh-icon-black.svg',
+    ];
+    let index = 0;
+    const interval = setInterval(() => {
+      index = (index + 1) % icons.length;
+      favicon.href = icons[index];
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="app" data-theme={theme}>
       <header className="topbar">
@@ -341,39 +357,16 @@ function Shell() {
 
         <a className="topbar__brand" href="#/home">
           <span className="topbar__logo" aria-hidden="true">
-            <svg width="28" height="28" viewBox="0 0 512 512" fill="none">
-              <defs>
-                <linearGradient id="topbarSquircleBg" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#2a2d35"/>
-                  <stop offset="100%" stop-color="#14161a"/>
-                </linearGradient>
-                <linearGradient id="topbarNeon" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#818cf8"/>
-                  <stop offset="100%" stop-color="#4f46e5"/>
-                </linearGradient>
-                <linearGradient id="topbarSilver" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#94a3b8"/>
-                </linearGradient>
-              </defs>
-              <rect x="24" y="24" width="464" height="464" rx="104" fill="url(#topbarSquircleBg)"/>
-              <rect x="25" y="25" width="462" height="462" rx="103" stroke="rgba(255,255,255,0.14)" strokeWidth="2"/>
-              <g transform="translate(256, 256) scale(0.68) translate(-512, -511)">
-                <g opacity="0.95">
-                  <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z" fill="url(#topbarNeon)"/>
-                  <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="url(#topbarNeon)"/>
-                  <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z" fill="url(#topbarNeon)"/>
-                </g>
-                <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="#181a20" stroke="#818cf8" strokeWidth="3"/>
-                <polygon points="260,511 483,358 483,419 336,511" fill="#ffffff"/>
-                <polygon points="260,511 336,511 483,603 483,664" fill="url(#topbarSilver)"/>
-                <path d="M 483 358 L 260 511 L 483 664 L 483 603 L 336 511 L 483 419 Z" stroke="#ffffff" strokeWidth="2.5"/>
-                <polygon points="763,511 687,511 540,419 540,358" fill="#ffffff"/>
-                <polygon points="763,511 540,664 540,603 687,511" fill="url(#topbarSilver)"/>
-                <path d="M 540 358 L 763 511 L 540 664 L 540 603 L 687 511 L 540 419 Z" stroke="#ffffff" strokeWidth="2.5"/>
-                <path d="M 422 358 H 470 V 485 H 553 V 358 H 601 V 664 H 553 V 537 H 470 V 664 H 422 Z" fill="none" stroke="#ffffff" strokeWidth="2.5"/>
-              </g>
-            </svg>
+            <img
+              src="/docs/assets/logo/hesh-icon-black.svg"
+              alt="Hesh Dark Logo"
+              className="topbar__logo-img topbar__logo-img--black"
+            />
+            <img
+              src="/docs/assets/logo/hesh-logo.png"
+              alt="Hesh Color Logo"
+              className="topbar__logo-img topbar__logo-img--color"
+            />
           </span>
           <span className="topbar__name">Hesh</span>
           <Badge tone="primary" pill className="topbar__version">
@@ -397,7 +390,7 @@ function Shell() {
               variant="secondary"
               size="sm"
               aria-label="View source on GitHub"
-              onClick={() => window.open('https://github.com/premium-ui/react', '_blank', 'noopener')}
+              onClick={() => window.open('https://github.com/Mahesh-Abeykoon/hesh', '_blank', 'noopener')}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.84-2.34 4.68-4.57 4.93.36.31.69.92.69 1.85V21c0 .27.16.59.67.5A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z" />
@@ -429,9 +422,8 @@ function Shell() {
                       <a
                         key={page.id}
                         href={`#/${page.id}`}
-                        className={`sidebar__link${isPageActive ? ' sidebar__link--active' : ''}${
-                          isFirstOfChar && pageIdx > 0 ? ' sidebar__link--letter-gap' : ''
-                        }`}
+                        className={`sidebar__link${isPageActive ? ' sidebar__link--active' : ''}${isFirstOfChar && pageIdx > 0 ? ' sidebar__link--letter-gap' : ''
+                          }`}
                         aria-current={isPageActive ? 'page' : undefined}
                       >
                         <span className="sidebar__link-text">{page.title}</span>
@@ -464,9 +456,8 @@ function Shell() {
         )}
 
         <main
-          className={`content${route === 'home' ? ' content--home' : ''}${
-            route === 'playground' ? ' content--playground' : ''
-          }`}
+          className={`content${route === 'home' ? ' content--home' : ''}${route === 'playground' ? ' content--playground' : ''
+            }`}
           id="main"
         >
           <div className="content__inner">

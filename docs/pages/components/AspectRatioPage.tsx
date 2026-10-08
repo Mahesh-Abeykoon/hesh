@@ -44,8 +44,8 @@ export function AspectRatioPage() {
             <div style={{ fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--pui-fg-muted)' }}>1:1 Ratio (Square)</div>
             <AspectRatio ratio={1}>
               <img
-                src="https://images.pexels.com/photos/7135005/pexels-photo-7135005.jpeg?w=600&auto=format&fit=crop&q=80"
-                alt="Abstract art"
+                src="/docs/assets/logo/hesh-logo.png"
+                alt="Hesh colorful logo"
                 style={{ borderRadius: 'var(--pui-radius-lg)', objectFit: 'cover' }}
               />
             </AspectRatio>

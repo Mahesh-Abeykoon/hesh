@@ -19,7 +19,7 @@ export function BannerPage() {
       eyebrow="Components"
       title="Banner"
       lede="Top announcement and status bar for prominent site-wide notifications, promotional campaigns, and service alerts."
-      importStatement="import { Banner } from 'hesh';"
+      importStatement="import { Banner } from 'hesh-ui';"
     >
       <Section
         title="Announcement Banner"

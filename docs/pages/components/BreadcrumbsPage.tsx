@@ -17,7 +17,7 @@ export function BreadcrumbsPage() {
       eyebrow="Components"
       title="Breadcrumbs"
       lede="Displays the current location within a hierarchical hierarchy with accessible landmark structure."
-      importStatement="import { Breadcrumbs } from 'hesh';"
+      importStatement="import { Breadcrumbs } from 'hesh-ui';"
     >
       <Section
         title="Hierarchical path"

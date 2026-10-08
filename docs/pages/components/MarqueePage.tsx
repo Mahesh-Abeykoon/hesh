@@ -25,7 +25,7 @@ export function MarqueePage() {
       eyebrow="Components"
       title="Marquee"
       lede="Smooth infinite looping marquee ticker for client logos, partner showcases, reviews, and announcement banners."
-      importStatement="import { Marquee } from 'hesh';"
+      importStatement="import { Marquee } from 'hesh-ui';"
     >
       <Section
         title="Interactive Logo & Partner Ticker"

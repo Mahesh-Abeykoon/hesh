@@ -20,7 +20,7 @@ export function StatPage() {
       eyebrow="Components"
       title="Stat"
       lede="Displays prominent numerical KPIs, values, and percentage trend deltas with tabular figures."
-      importStatement="import { Stat } from 'hesh';"
+      importStatement="import { Stat } from 'hesh-ui';"
     >
       <Section
         title="Key Metric Displays"

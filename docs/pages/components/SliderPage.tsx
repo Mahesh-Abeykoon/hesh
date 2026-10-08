@@ -59,7 +59,7 @@ export function SliderPage() {
       eyebrow="Components"
       title="Slider"
       lede="Single and dual-thumb range controls for selecting numeric values along a horizontal track — with optional ticks, marks, and live tooltips."
-      importStatement={`import { Slider, RangeSlider } from 'hesh';`}
+      importStatement={`import { Slider, RangeSlider } from 'hesh-ui';`}
     >
       {/* ── Interactive Props Workbench ── */}
       <Section
@@ -75,7 +75,7 @@ export function SliderPage() {
         description="Fluid mouse and touch drag with full keyboard support (arrows, Home, End, PageUp/Down). showTooltip surfaces the live value above the thumb."
         code={SLIDER_DEMO}
       >
-        <Showcase>
+        <Showcase code={SLIDER_DEMO} defaultOpen width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <Slider
               label="Volume"
@@ -99,7 +99,7 @@ export function SliderPage() {
         description="RangeSlider exposes two thumbs for selecting a min–max window. Perfect for price filters, date ranges, or bounded selections."
         code={RANGE_DEMO}
       >
-        <Showcase>
+        <Showcase code={RANGE_DEMO} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <RangeSlider
               label="Price Range"
@@ -123,7 +123,7 @@ export function SliderPage() {
         description="Pass a marks array to render tick dots with optional labels beneath the track — ideal for discrete plan selectors."
         code={MARKS_DEMO}
       >
-        <Showcase>
+        <Showcase code={MARKS_DEMO} width="md">
           <div style={{ width: '100%', maxWidth: 480, paddingBottom: '1.5rem' }}>
             <Slider
               label="Storage Plan"
@@ -149,7 +149,7 @@ export function SliderPage() {
         description="Three track heights — sm, md (default), lg — to match surrounding UI density."
         code={SIZES_DEMO}
       >
-        <Showcase>
+        <Showcase code={SIZES_DEMO} width="md">
           <div style={{ width: '100%', maxWidth: 480, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <Slider label="Small" size="sm" defaultValue={40} />
             <Slider label="Medium" size="md" defaultValue={60} />
@@ -164,7 +164,7 @@ export function SliderPage() {
         description="The disabled prop locks the thumb in place and mutes all visual interaction."
         code={`<Slider label="Locked threshold" defaultValue={30} disabled />`}
       >
-        <Showcase>
+        <Showcase code={`<Slider label="Locked threshold" defaultValue={30} disabled />`} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <Slider label="Locked threshold" defaultValue={30} disabled />
           </div>

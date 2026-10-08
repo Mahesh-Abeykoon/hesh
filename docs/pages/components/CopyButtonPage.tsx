@@ -17,7 +17,7 @@ export function CopyButtonPage() {
       eyebrow="Components"
       title="CopyButton"
       lede="One-click clipboard copy utility with micro-animation checkmark feedback, plus preformatted CodeSnippet blocks."
-      importStatement="import { CopyButton, CodeSnippet } from 'hesh';"
+      importStatement="import { CopyButton, CodeSnippet } from 'hesh-ui';"
     >
       <Section
         title="Copy Buttons"

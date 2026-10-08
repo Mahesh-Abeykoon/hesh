@@ -45,7 +45,7 @@ export function NavigationMenuPage() {
       eyebrow="Components"
       title="NavigationMenu"
       lede="Desktop mega-menu navigation bar with accessible triggers, multi-column flyout panels, and rich preview links."
-      importStatement="import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink } from 'hesh';"
+      importStatement="import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink } from 'hesh-ui';"
     >
       <Section
         title="Interactive Mega-Menu"

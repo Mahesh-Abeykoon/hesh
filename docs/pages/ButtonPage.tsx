@@ -76,7 +76,7 @@ export function ButtonPage() {
       eyebrow="Components"
       title="Button"
       lede="The core interactive action primitive. Fully accessible, featuring 10 variants, 5 sizes, custom shapes, glow effects, loading states, and split button combos."
-      importStatement="import { Button, IconButton, ButtonGroup } from 'hesh';"
+      importStatement="import { Button, IconButton, ButtonGroup } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

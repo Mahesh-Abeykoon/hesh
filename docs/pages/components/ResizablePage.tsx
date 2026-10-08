@@ -22,7 +22,7 @@ export function ResizablePage() {
       eyebrow="Components"
       title="Resizable"
       lede="Accessible, draggable split-pane layouts supporting horizontal and vertical directions with min/max constraints."
-      importStatement="import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from 'hesh';"
+      importStatement="import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from 'hesh-ui';"
     >
       <Section
         title="Horizontal Split Panels"

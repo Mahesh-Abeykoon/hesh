@@ -42,6 +42,23 @@ const DEMO_SIZES = `<DatePicker label="Small"  size="sm" />
 <DatePicker label="Medium" size="md" />
 <DatePicker label="Large"  size="lg" />`;
 
+const DEMO_RANGE = `const [range, setRange] = useState<[Date | null, Date | null]>([new Date(), addDays(new Date(), 7)]);
+
+<DatePicker
+  label="Booking Window"
+  mode="range"
+  rangeValue={range}
+  onRangeChange={setRange}
+  presets={[
+    { label: 'Today', range: [new Date(), new Date()] },
+    { label: 'Next 7 Days', range: [new Date(), addDays(new Date(), 7)] },
+    { label: 'Next 30 Days', range: [new Date(), addDays(new Date(), 30)] },
+  ]}
+  clearable
+/>`;
+
+const DEMO_DISABLED = `<DatePicker label="Locked Date" value={new Date()} disabled />`;
+
 function addDays(d: Date, n: number) {
   const r = new Date(d); r.setDate(r.getDate() + n); return r;
 }
@@ -66,7 +83,7 @@ export function DatePickerPage() {
       eyebrow="Components"
       title="DatePicker"
       lede="Input field with an anchored calendar dropdown for selecting single dates — supports presets, min/max bounds, a clearable button, and three size scales."
-      importStatement="import { DatePicker } from 'hesh';"
+      importStatement="import { DatePicker } from 'hesh-ui';"
     >
       {/* ── Basic ── */}
       <Section
@@ -74,7 +91,7 @@ export function DatePickerPage() {
         description="Click the input or press ↓ to open the calendar. Press Escape to close and restore focus to the trigger."
         code={DEMO_BASIC}
       >
-        <Showcase>
+        <Showcase code={DEMO_BASIC} defaultOpen width="md">
           <div style={{ width: '100%', maxWidth: 320 }}>
             <DatePicker
               label="Launch Date"
@@ -97,7 +114,7 @@ export function DatePickerPage() {
         description="Provide a presets array to render shortcut buttons (Today, Tomorrow, Next week, Next month) alongside the calendar grid."
         code={DEMO_PRESETS}
       >
-        <Showcase>
+        <Showcase code={DEMO_PRESETS} width="md">
           <div style={{ width: '100%', maxWidth: 320 }}>
             <DatePicker
               label="Due Date"
@@ -120,22 +137,9 @@ export function DatePickerPage() {
       <Section
         title="Date Range Picker & Range Presets"
         description="Set mode='range' to select a start and end date interval with range presets (Next 7 Days, Next 30 Days) and formatted range display."
-        code={`const [range, setRange] = useState<[Date | null, Date | null]>([new Date(), addDays(new Date(), 7)]);
-
-<DatePicker
-  label="Booking Window"
-  mode="range"
-  rangeValue={range}
-  onRangeChange={setRange}
-  presets={[
-    { label: 'Today', range: [new Date(), new Date()] },
-    { label: 'Next 7 Days', range: [new Date(), addDays(new Date(), 7)] },
-    { label: 'Next 30 Days', range: [new Date(), addDays(new Date(), 30)] },
-  ]}
-  clearable
-/>`}
+        code={DEMO_RANGE}
       >
-        <Showcase>
+        <Showcase code={DEMO_RANGE} width="md">
           <div style={{ width: '100%', maxWidth: 360 }}>
             <DatePicker
               label="Booking Window"
@@ -159,7 +163,7 @@ export function DatePickerPage() {
         description="Use min and max to constrain the selectable range. clearable adds an × button to reset the value to null."
         code={DEMO_BOUNDS}
       >
-        <Showcase>
+        <Showcase code={DEMO_BOUNDS} width="md">
           <div style={{ width: '100%', maxWidth: 320 }}>
             <DatePicker
               label="Event Date"
@@ -181,7 +185,7 @@ export function DatePickerPage() {
         description="Three size scales — sm, md (default), lg — scale the input height and font."
         code={DEMO_SIZES}
       >
-        <Showcase>
+        <Showcase code={DEMO_SIZES} width="md">
           <div style={{ width: '100%', maxWidth: 320, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <DatePicker label="Small"  size="sm" placeholder="sm date picker" />
             <DatePicker label="Medium" size="md" placeholder="md (default)" />
@@ -194,9 +198,9 @@ export function DatePickerPage() {
       <Section
         title="Disabled"
         description="The disabled prop locks the input and hides the calendar trigger entirely."
-        code={`<DatePicker label="Locked Date" value={new Date()} disabled />`}
+        code={DEMO_DISABLED}
       >
-        <Showcase>
+        <Showcase code={DEMO_DISABLED} width="md">
           <div style={{ width: '100%', maxWidth: 320 }}>
             <DatePicker label="Locked Date" value={new Date()} disabled />
           </div>

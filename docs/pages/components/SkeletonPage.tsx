@@ -16,7 +16,7 @@ export function SkeletonPage() {
       eyebrow="Components"
       title="Skeleton"
       lede="Placeholder preview shapes rendered while data loads asynchronously to prevent sudden content layout shifts (CLS)."
-      importStatement="import { Skeleton } from 'hesh';"
+      importStatement="import { Skeleton } from 'hesh-ui';"
     >
       <Section
         title="Interactive Loading State"

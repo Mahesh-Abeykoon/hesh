@@ -26,7 +26,7 @@ export function NumberInputPage() {
       eyebrow="Components"
       title="NumberInput"
       lede="Precision numeric input with increment/decrement steppers, keyboard arrow acceleration, prefix/suffix units, and clamping."
-      importStatement="import { NumberInput } from 'hesh';"
+      importStatement="import { NumberInput } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section

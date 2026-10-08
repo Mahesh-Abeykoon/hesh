@@ -3,12 +3,12 @@ import { CodeBlock } from '../components/CodeBlock';
 import { Callout, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
 
-const INSTALL = `npm install hesh`;
+const INSTALL = `npm install hesh-ui`;
 
 const SETUP = `// app/layout.tsx (Next.js) or src/main.tsx (Vite)
-import 'hesh/styles.css';
+import 'hesh-ui/styles.css';
 
-import { ThemeProvider } from 'hesh';
+import { ThemeProvider } from 'hesh-ui';
 
 export default function RootLayout({ children }) {
   return (
@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
   );
 }`;
 
-const FIRST = `import { Button, Input, Card, CardHeader } from 'hesh';
+const FIRST = `import { Button, Input, Card, CardHeader } from 'hesh-ui';
 
 export function SignupCard() {
   return (
@@ -40,7 +40,7 @@ export function SignupCard() {
 }`;
 
 const NEXT_SSR = `// app/layout.tsx — avoid a flash of the wrong theme on first paint
-import { themeInitScript } from 'hesh';
+import { themeInitScript } from 'hesh-ui';
 
 export default function RootLayout({ children }) {
   return (
@@ -56,6 +56,27 @@ export default function RootLayout({ children }) {
 const VITE = `// vite.config.ts — nothing special required.
 // Tree-shaking works out of the box because the package ships ESM with
 // "sideEffects": ["**/*.css"].`;
+
+const TAILWIND_SETUP = `/* app/globals.css */
+@import 'hesh-ui/styles.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;`;
+
+const TAILWIND_USAGE = `import { Button, Badge } from 'hesh-ui';
+
+export function Hero() {
+  return (
+    <div className="flex flex-col items-center gap-4 p-8">
+      <Badge tone="primary">New Feature</Badge>
+      {/* Tailwind utility classes merge cleanly onto hesh-ui components */}
+      <Button className="shadow-xl hover:shadow-indigo-500/25">
+        Get Started
+      </Button>
+    </div>
+  );
+}`;
 
 export function GettingStartedPage() {
   return (
@@ -93,6 +114,20 @@ export function GettingStartedPage() {
           theme and <code>useTheme()</code> will throw. The provider exists to
           manage the attribute, persist the choice, and follow the OS setting.
         </Callout>
+      </Section>
+
+      <Section
+        title="Using with Tailwind CSS"
+        description="hesh-ui works seamlessly alongside Tailwind CSS. It does not require Tailwind, but if your project uses Tailwind, they pair perfectly."
+      >
+        <p className="prose">
+          Add <code>@import 'hesh-ui/styles.css';</code> to the top of your <code>app/globals.css</code> (or import it in <code>app/layout.tsx</code> before your globals):
+        </p>
+        <CodeBlock code={TAILWIND_SETUP} language="css" />
+        <p className="prose" style={{ marginTop: '1rem' }}>
+          All hesh-ui components accept a <code>className</code> prop. You can add Tailwind layout, spacing, and utility classes directly:
+        </p>
+        <CodeBlock code={TAILWIND_USAGE} />
       </Section>
 
       <Section title="Build something" description="Every import is tree-shakeable. Nothing else is pulled in.">

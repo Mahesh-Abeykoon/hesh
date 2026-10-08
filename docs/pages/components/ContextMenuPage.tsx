@@ -109,7 +109,7 @@ export function ContextMenuPage() {
       eyebrow="Components"
       title="ContextMenu"
       lede="Displays a floating action menu positioned at cursor coordinates on right-click or long-press on touch devices, with viewport collision detection and full keyboard accessibility."
-      importStatement="import { ContextMenu } from 'hesh';"
+      importStatement="import { ContextMenu } from 'hesh-ui';"
     >
       <Section
         title="Interactive Context Menu"

@@ -48,7 +48,7 @@ export function OtpInputPage() {
       eyebrow="Components"
       title="OtpInput"
       lede="Multi-digit slot input for 2FA codes, SMS verification, masked PINs, and alphanumeric tokens — with paste support and automatic focus progression."
-      importStatement="import { OtpInput } from 'hesh';"
+      importStatement="import { OtpInput } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section
@@ -64,7 +64,7 @@ export function OtpInputPage() {
         description="Type digits or paste a complete code. Focus auto-advances to the next slot; Backspace retreats to the previous one."
         code={DEMO_6}
       >
-        <Showcase>
+        <Showcase code={DEMO_6} defaultOpen width="md">
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%', maxWidth: 360 }}>
             <p style={{ fontSize: '0.875rem', color: 'var(--pui-fg-subtle)', textAlign: 'center', margin: 0 }}>
               We sent a code to <strong>user@example.com</strong>
@@ -93,7 +93,7 @@ export function OtpInputPage() {
         description="Enable mask to hide the entered digits behind password bullets — ideal for device PINs and ATM-style flows."
         code={DEMO_4_PIN}
       >
-        <Showcase>
+        <Showcase code={DEMO_4_PIN} width="md">
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', width: '100%', maxWidth: 280 }}>
             <OtpInput
               length={4}
@@ -114,7 +114,7 @@ export function OtpInputPage() {
         description="Set type='alphanumeric' for 8-character backup codes, invite tokens, or license keys."
         code={DEMO_ALPHA}
       >
-        <Showcase>
+        <Showcase code={DEMO_ALPHA} width="md">
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', width: '100%', maxWidth: 420 }}>
             <OtpInput
               length={8}
@@ -135,7 +135,7 @@ export function OtpInputPage() {
         description="Pass invalid to show the slots in the danger style — used when the submitted code doesn't match."
         code={DEMO_INVALID}
       >
-        <Showcase>
+        <Showcase code={DEMO_INVALID} width="md">
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%', maxWidth: 360 }}>
             <OtpInput
               length={6}
@@ -159,7 +159,7 @@ export function OtpInputPage() {
         description="The disabled prop locks all slots and prevents interaction."
         code={`<OtpInput length={6} value="123456" disabled />`}
       >
-        <Showcase>
+        <Showcase code={`<OtpInput length={6} value="123456" disabled />`} width="md">
           <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <OtpInput length={6} value="123456" disabled />
           </div>

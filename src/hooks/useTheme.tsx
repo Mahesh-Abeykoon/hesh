@@ -222,6 +222,24 @@ export function ThemeProvider({
 
   const theme: ResolvedTheme = mode === 'system' ? systemPreference : mode;
 
+  // In development, verify that hesh-ui/styles.css is loaded (skip in JSDOM / test runners)
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      typeof window !== 'undefined' &&
+      typeof document !== 'undefined' &&
+      !(window as any).IS_REACT_ACT_ENVIRONMENT &&
+      !(navigator.userAgent && navigator.userAgent.includes('jsdom'))
+    ) {
+      const computed = window.getComputedStyle(document.documentElement).getPropertyValue('--pui-brand-500');
+      if (!computed || !computed.trim()) {
+        console.warn(
+          "[hesh-ui] Warning: Design token CSS variables were not detected. Did you forget to import 'hesh-ui/styles.css' in your root layout or entry file? (e.g. `import 'hesh-ui/styles.css';`)"
+        );
+      }
+    }
+  }, []);
+
   // Apply light/dark mode attribute and color-scheme
   useEffect(() => {
     const el = target ?? document.documentElement;

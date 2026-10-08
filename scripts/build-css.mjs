@@ -18,7 +18,7 @@ const banner = `/**
  * Hesh — stylesheet
  *
  * Load once, near the root of your app:
- *   import 'hesh/styles.css';
+ *   import 'hesh-ui/styles.css';
  *
  * The whole library reads from the custom properties in the token layer.
  * Override any of them to re-theme every component.

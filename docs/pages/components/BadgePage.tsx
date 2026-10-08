@@ -52,7 +52,7 @@ export function BadgePage() {
       eyebrow="Components"
       title="Badge"
       lede="Status chips, metadata tags, live indicators, and count badges with solid/subtle variants, pulsing dots, and removable filters."
-      importStatement="import { Badge } from 'hesh';"
+      importStatement="import { Badge } from 'hesh-ui';"
     >
       <Section
         title="Interactive Workbench"

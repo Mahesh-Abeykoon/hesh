@@ -1151,7 +1151,7 @@ export function PlaygroundPage() {
       <header className="playground-page__header">
         <div className="playground-page__title-group">
           <h1 className="playground-page__title">Playground</h1>
-          <code className="playground-page__quick-import">import * as Hesh from 'hesh';</code>
+          <code className="playground-page__quick-import">import * as Hesh from 'hesh-ui';</code>
         </div>
 
         <div className="playground-page__templates">

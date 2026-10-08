@@ -80,7 +80,7 @@ export function ChartsPage() {
       eyebrow="Components"
       title="Charts"
       lede="Ultra-lightweight, zero-dependency SVG visualization primitives (Area, Bar, Donut, and Sparkline) designed for modern high-density SaaS dashboards and real-time operational telemetry."
-      importStatement="import { AreaChart, BarChart, DonutChart, Sparkline } from 'hesh';"
+      importStatement="import { AreaChart, BarChart, DonutChart, Sparkline } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

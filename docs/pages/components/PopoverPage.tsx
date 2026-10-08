@@ -74,7 +74,7 @@ export function PopoverPage() {
       eyebrow="Components"
       title="Popover"
       lede="An anchored floating container for displaying rich interactive controls and supplementary content, featuring title headers, dedicated close buttons, anchor arrows, uncontrolled support, and modal backdrops."
-      importStatement="import { Popover } from 'hesh';"
+      importStatement="import { Popover } from 'hesh-ui';"
     >
       <Section
         title="Anchored Floating Panel"

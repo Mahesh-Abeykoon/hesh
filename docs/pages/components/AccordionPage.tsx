@@ -89,7 +89,7 @@ export function AccordionPage() {
       eyebrow="Components"
       title="Accordion"
       lede="Vertically stacked interactive panels that allow users to show and hide sections of content, featuring icons, subtitles, badges, and multiple visual styles."
-      importStatement="import { Accordion } from 'hesh';"
+      importStatement="import { Accordion } from 'hesh-ui';"
     >
       <Section
         title="Rich Interactive Accordion"

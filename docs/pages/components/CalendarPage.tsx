@@ -49,7 +49,7 @@ export function CalendarPage() {
       eyebrow="Components"
       title="Calendar"
       lede="Keyboard-accessible month grid supporting single-date and date-range selection with hover preview, adhering to the WAI-ARIA datepicker pattern without external dependencies."
-      importStatement="import { Calendar } from 'hesh';"
+      importStatement="import { Calendar } from 'hesh-ui';"
     >
       {/* ── Basic ── */}
       <Section
@@ -57,7 +57,7 @@ export function CalendarPage() {
         description="Click any day cell to select it. Arrow keys navigate day by day, PageUp/Down switches months, and Shift+Page flips the year."
         code={CALENDAR_DEMO}
       >
-        <Showcase>
+        <Showcase code={CALENDAR_DEMO} defaultOpen width="md">
           <div style={{ maxWidth: '20rem', margin: '0 auto' }}>
             <Card padded>
               <Calendar value={date} onChange={setDate} />
@@ -77,7 +77,7 @@ export function CalendarPage() {
         description="Set mode='range' to enable picking start and end dates with interactive hover range highlighting."
         code={RANGE_DEMO}
       >
-        <Showcase>
+        <Showcase code={RANGE_DEMO} width="md">
           <div style={{ maxWidth: '20rem', margin: '0 auto' }}>
             <Card padded>
               <Calendar
@@ -102,7 +102,7 @@ export function CalendarPage() {
         description="Use min and max to restrict the selectable range. Days outside the window are rendered disabled and non-interactive."
         code={BOUNDS_DEMO}
       >
-        <Showcase>
+        <Showcase code={BOUNDS_DEMO} width="md">
           <div style={{ maxWidth: '20rem', margin: '0 auto' }}>
             <Card padded>
               <Calendar

@@ -33,7 +33,7 @@ export function KanbanPage() {
       eyebrow="Components"
       title="Kanban"
       lede="Drag-and-drop workflow board for project tasks, swimlanes, and multi-status tracking."
-      importStatement="import { Kanban } from 'hesh';"
+      importStatement="import { Kanban } from 'hesh-ui';"
     >
       <Section
         title="Interactive Board"

@@ -60,7 +60,7 @@ export function TextareaPage() {
       eyebrow="Components"
       title="Textarea"
       lede="Multi-line plain text field with label association, live character counter, size variants, and validation feedback."
-      importStatement="import { Textarea } from 'hesh';"
+      importStatement="import { Textarea } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section
@@ -76,7 +76,7 @@ export function TextareaPage() {
         description="Use label, hint, placeholder, and rows to define a standard multi-line input."
         code={TEXTAREA_DEMO}
       >
-        <Showcase>
+        <Showcase code={TEXTAREA_DEMO} defaultOpen width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <Textarea
               label="Release Notes"
@@ -96,7 +96,7 @@ export function TextareaPage() {
         description="Add maxLength + showCount to show a live counter badge. Turns amber at 90% usage, red when exceeded."
         code={COUNT_DEMO}
       >
-        <Showcase>
+        <Showcase code={COUNT_DEMO} width="md">
           <div style={{ width: '100%', maxWidth: 480, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <Textarea
               label="Bio (160 chars)"
@@ -131,7 +131,7 @@ export function TextareaPage() {
         description="Three sizes — sm, md (default), lg — scale the font size and padding uniformly."
         code={SIZES_DEMO}
       >
-        <Showcase>
+        <Showcase code={SIZES_DEMO} width="md">
           <div style={{ width: '100%', maxWidth: 480, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <Textarea label="Small"  size="sm" placeholder="sm textarea" rows={2} />
             <Textarea label="Medium" size="md" placeholder="md textarea (default)" rows={3} />
@@ -146,7 +146,7 @@ export function TextareaPage() {
         description="Pass an error string to show inline feedback. The border, label, and icon all switch to the danger colour."
         code={ERROR_DEMO}
       >
-        <Showcase>
+        <Showcase code={ERROR_DEMO} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <Textarea
               label="Project Description"
@@ -169,7 +169,13 @@ export function TextareaPage() {
   rows={3}
 />`}
       >
-        <Showcase>
+        <Showcase code={`<Textarea
+  label="Additional Comments"
+  optionalText="optional"
+  hint="We read every message carefully."
+  placeholder="Anything else you'd like to share?"
+  rows={3}
+/>`} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <Textarea
               label="Additional Comments"
@@ -188,7 +194,7 @@ export function TextareaPage() {
         description="The disabled prop mutes the field and blocks all user interaction."
         code={`<Textarea label="Read-only notes" disabled defaultValue="This field is locked." rows={3} />`}
       >
-        <Showcase>
+        <Showcase code={`<Textarea label="Read-only notes" disabled defaultValue="This field is locked." rows={3} />`} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <Textarea
               label="Read-only notes"

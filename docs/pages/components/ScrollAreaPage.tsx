@@ -20,7 +20,7 @@ export function ScrollAreaPage() {
       eyebrow="Components"
       title="ScrollArea"
       lede="Custom cross-browser styled scrollable container with inertia, edge gradient masks, and hover visibility."
-      importStatement="import { ScrollArea } from 'hesh';"
+      importStatement="import { ScrollArea } from 'hesh-ui';"
     >
       <Section
         title="Scroll Container with Edge Fades"

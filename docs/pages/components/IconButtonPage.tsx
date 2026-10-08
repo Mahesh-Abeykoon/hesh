@@ -21,7 +21,7 @@ export function IconButtonPage() {
       eyebrow="Components"
       title="IconButton"
       lede="Square icon-only button requiring mandatory accessible labelling for screen readers."
-      importStatement="import { IconButton } from 'hesh';"
+      importStatement="import { IconButton } from 'hesh-ui';"
     >
       <Section
         title="Icon Button Variants"

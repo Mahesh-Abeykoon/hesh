@@ -12,7 +12,7 @@ export function KbdPage() {
       eyebrow="Components"
       title="Kbd"
       lede="Displays keyboard keys, input shortcuts, and combinations with a realistic beveled mechanical keyboard appearance."
-      importStatement="import { Kbd } from 'hesh';"
+      importStatement="import { Kbd } from 'hesh-ui';"
     >
       <Section
         title="Keyboard Shortcuts"

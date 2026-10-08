@@ -35,7 +35,7 @@ export function NotificationBadgePage() {
       eyebrow="Components"
       title="NotificationBadge"
       lede="Floating corner badge counter or pulsating status dot anchored to avatars, buttons, or navigation icons."
-      importStatement="import { NotificationBadge } from 'hesh';"
+      importStatement="import { NotificationBadge } from 'hesh-ui';"
     >
       <Section
         title="Interactive Anchored Notification Badges"

@@ -2441,7 +2441,7 @@ export function ConfettiWorkbench() {
     });
   };
 
-  const jsx = `import { fireConfetti } from 'hesh';
+  const jsx = `import { fireConfetti } from 'hesh-ui';
 
 fireConfetti({
   particleCount: ${particleCount},

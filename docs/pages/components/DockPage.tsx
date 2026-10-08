@@ -18,7 +18,7 @@ export function DockPage() {
       eyebrow="Components"
       title="Dock"
       lede="macOS-inspired floating action bar with glassmorphic elevation, hover magnification, and tooltip integration."
-      importStatement="import { Dock, DockIcon } from 'hesh';"
+      importStatement="import { Dock, DockIcon } from 'hesh-ui';"
     >
       <Section
         title="Interactive Floating Dock"

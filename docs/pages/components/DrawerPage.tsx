@@ -112,7 +112,7 @@ export function DrawerPage() {
       eyebrow="Components"
       title="Drawer"
       lede="An edge-anchored sliding panel for secondary navigation, filters, contextual workflows, and mobile bottom sheets."
-      importStatement="import { Drawer } from 'hesh';"
+      importStatement="import { Drawer } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

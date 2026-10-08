@@ -29,7 +29,7 @@ export function BottomNavPage() {
       eyebrow="Components"
       title="BottomNav"
       lede="Mobile-optimized bottom navigation bar with active indicators, badges, keyboard navigation, and responsive layout."
-      importStatement="import { BottomNav, BottomNavItem } from 'hesh';"
+      importStatement="import { BottomNav, BottomNavItem } from 'hesh-ui';"
     >
       <Section
         title="Interactive Mobile Navigation Bar"

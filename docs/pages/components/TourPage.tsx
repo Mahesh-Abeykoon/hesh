@@ -68,7 +68,7 @@ export function TourPage() {
       eyebrow="Components"
       title="Tour"
       lede="Guided onboarding walkthrough with an elevated spotlight cutout mask, step indicators, and keyboard navigation."
-      importStatement="import { Tour } from 'hesh';"
+      importStatement="import { Tour } from 'hesh-ui';"
     >
       <Section
         title="Interactive Guided Walkthrough"

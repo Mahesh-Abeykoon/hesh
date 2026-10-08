@@ -4,7 +4,7 @@ import { Callout, PropsTable, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
 import { InputWorkbench } from '../components/PropsWorkbench';
 
-const BASIC = `import { Input } from 'hesh';
+const BASIC = `import { Input } from 'hesh-ui';
 
 <Input label="Work email" type="email" placeholder="you@company.com" required />
 <Input

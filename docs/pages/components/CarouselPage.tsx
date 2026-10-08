@@ -157,7 +157,7 @@ export function CarouselPage() {
       eyebrow="Components"
       title="Carousel"
       lede="Touch-ready, accessible image and content slider with autoplay, loop, drag gestures, frosted glass navigation arrows, and modern expanding bar indicators."
-      importStatement="import { Carousel } from 'hesh';"
+      importStatement="import { Carousel } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

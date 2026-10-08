@@ -39,7 +39,7 @@ export function SwitchPage() {
       eyebrow="Components"
       title="Switch"
       lede="A toggle control that switches instantly between on and off states. Implements WAI-ARIA role='switch' with keyboard space and enter triggers."
-      importStatement="import { Switch } from 'hesh';"
+      importStatement="import { Switch } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section

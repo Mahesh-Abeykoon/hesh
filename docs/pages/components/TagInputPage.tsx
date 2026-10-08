@@ -39,7 +39,7 @@ export function TagInputPage() {
       eyebrow="Components"
       title="TagInput"
       lede="Chip-based input for tags, keyword filters, and multi-recipient lists. Press Enter or comma to add; Backspace on an empty input removes the last chip."
-      importStatement="import { TagInput } from 'hesh';"
+      importStatement="import { TagInput } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section
@@ -55,7 +55,7 @@ export function TagInputPage() {
         description="Type a word and press Enter or comma (,) to create a chip. Click the × icon or press Backspace on an empty input to remove the last tag."
         code={DEMO_BASIC}
       >
-        <Showcase>
+        <Showcase code={DEMO_BASIC} defaultOpen width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <div style={{ fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.375rem', color: 'var(--pui-fg)' }}>
               Skills & Technologies
@@ -78,7 +78,7 @@ export function TagInputPage() {
         description="Use maxTags to limit the number of entries. The input locks when the limit is reached."
         code={DEMO_EMAIL}
       >
-        <Showcase>
+        <Showcase code={DEMO_EMAIL} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <div style={{ fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.375rem', color: 'var(--pui-fg)' }}>
               Invite Colleagues (Max 5)
@@ -102,7 +102,7 @@ export function TagInputPage() {
         description="When the cap is hit the input placeholder changes to signal no more entries can be added."
         code={`<TagInput value={tags} onChange={setTags} maxTags={2} placeholder="Max 2 tags" />`}
       >
-        <Showcase>
+        <Showcase code={`<TagInput value={tags} onChange={setTags} maxTags={2} placeholder="Max 2 tags" />`} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <TagInput
               value={limited}
@@ -120,7 +120,7 @@ export function TagInputPage() {
         description="Set addOnBlur to commit the pending text as a tag when the field loses focus — handy for form submission workflows."
         code={DEMO_ADDBLUR}
       >
-        <Showcase>
+        <Showcase code={DEMO_ADDBLUR} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <TagInput
               value={skills}
@@ -138,7 +138,7 @@ export function TagInputPage() {
         description="The disabled prop renders all chips as read-only and blocks new entries."
         code={`<TagInput value={['Locked', 'Read-only']} onChange={() => {}} disabled />`}
       >
-        <Showcase>
+        <Showcase code={`<TagInput value={['Locked', 'Read-only']} onChange={() => {}} disabled />`} width="md">
           <div style={{ width: '100%', maxWidth: 480 }}>
             <TagInput
               value={['Locked', 'Read-only', 'Cannot Edit']}

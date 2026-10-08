@@ -55,7 +55,7 @@ const PRESET_USAGE = `<!-- Apply directly to <html> or any container element -->
 <html data-pui-preset="midnight"> <!-- Deep cyber navy & cyan (fintech & data) -->
 
 <!-- Or control dynamically in React -->
-import { useTheme, PresetSwitch } from 'hesh';
+import { useTheme, PresetSwitch } from 'hesh-ui';
 
 function Header() {
   const { preset, setPreset } = useTheme();

@@ -137,7 +137,7 @@ export function ComboboxPage() {
       eyebrow="Forms"
       title="Combobox"
       lede="A high-performance searchable select with accessible WAI-ARIA combobox behavior, multi-select tag chips, categorized option groups, and custom option renderers."
-      importStatement="import { Combobox } from 'hesh';"
+      importStatement="import { Combobox } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

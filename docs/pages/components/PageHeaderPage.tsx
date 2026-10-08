@@ -19,7 +19,7 @@ export function PageHeaderPage() {
       eyebrow="Components"
       title="PageHeader"
       lede="Top landmark for application pages containing page title, description, badge tags, and primary action buttons."
-      importStatement="import { PageHeader } from 'hesh';"
+      importStatement="import { PageHeader } from 'hesh-ui';"
     >
       <Section
         title="Standard Page Header"

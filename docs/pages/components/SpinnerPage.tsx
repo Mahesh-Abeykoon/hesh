@@ -12,7 +12,7 @@ export function SpinnerPage() {
       eyebrow="Components"
       title="Spinner"
       lede="Indeterminate loading indicator conveying ongoing asynchronous background tasks and requests."
-      importStatement="import { Spinner } from 'hesh';"
+      importStatement="import { Spinner } from 'hesh-ui';"
     >
       <Section
         title="Spinner Sizes"

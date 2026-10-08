@@ -30,7 +30,7 @@ export function StepperPage() {
       eyebrow="Components"
       title="Stepper"
       lede="Displays sequential steps in a multi-step checkout or onboarding wizard with completed, active, and upcoming indicators."
-      importStatement="import { Stepper } from 'hesh';"
+      importStatement="import { Stepper } from 'hesh-ui';"
     >
       <Section
         title="Horizontal Wizard Flow"

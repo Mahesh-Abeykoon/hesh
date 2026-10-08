@@ -30,7 +30,7 @@ export function QRCodePage() {
       eyebrow="Components"
       title="QRCode"
       lede="Zero-dependency SVG QR code generator with crisp vector scaling, Galois Field error correction, border framing, and center logo embedding."
-      importStatement="import { QRCode } from 'hesh';"
+      importStatement="import { QRCode } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

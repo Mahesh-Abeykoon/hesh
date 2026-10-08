@@ -20,7 +20,7 @@ export function ToggleGroupPage() {
       eyebrow="Components"
       title="ToggleGroup"
       lede="A set of two-state buttons that can be toggled on or off, supporting both single and multiple selection."
-      importStatement="import { ToggleGroup, ToggleGroupItem } from 'hesh';"
+      importStatement="import { ToggleGroup, ToggleGroupItem } from 'hesh-ui';"
     >
       <Section
         title="Single Selection (Alignment Toolbar)"

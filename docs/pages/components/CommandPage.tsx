@@ -34,7 +34,7 @@ export function CommandPage() {
       eyebrow="Components"
       title="Command"
       lede="A fast, keyboard-navigable command palette with fuzzy filtering, grouped search results, and global shortcut listeners."
-      importStatement="import { Command, useCommandShortcut } from 'hesh';"
+      importStatement="import { Command, useCommandShortcut } from 'hesh-ui';"
     >
       <Section
         title="Command Palette Trigger"

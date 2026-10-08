@@ -52,7 +52,7 @@ export function PaginationPage() {
       eyebrow="Components"
       title="Pagination"
       lede="Responsive navigation for chunked datasets, tables, and product catalogs. Supports total summaries, page size changers, and compact mobile modes."
-      importStatement="import { Pagination } from 'hesh';"
+      importStatement="import { Pagination } from 'hesh-ui';"
     >
       <Section
         title="Interactive Standard Pagination"

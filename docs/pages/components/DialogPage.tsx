@@ -141,7 +141,7 @@ export function DialogPage() {
       eyebrow="Components"
       title="Dialog"
       lede="A modal window overlaid onto the viewport. Traps keyboard focus, locks background scrolling, and complies with the WAI-ARIA 1.2 modal dialog specification."
-      importStatement="import { Dialog, ConfirmDialog } from 'hesh';"
+      importStatement="import { Dialog, ConfirmDialog } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

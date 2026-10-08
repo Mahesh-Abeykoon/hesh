@@ -29,7 +29,7 @@ export function AvatarPage() {
       eyebrow="Components"
       title="Avatar"
       lede="Visual representation of an entity, user profile, or organization with automatic initial generation and deterministic hue calculation."
-      importStatement="import { Avatar, AvatarGroup } from 'hesh';"
+      importStatement="import { Avatar, AvatarGroup } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

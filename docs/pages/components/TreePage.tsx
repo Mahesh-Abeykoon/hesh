@@ -64,7 +64,7 @@ export function TreePage() {
       eyebrow="Components"
       title="Tree"
       lede="A hierarchical directory explorer and file tree with expand/collapse animations, keyboard arrow navigation, and selection states."
-      importStatement="import { Tree } from 'hesh';"
+      importStatement="import { Tree } from 'hesh-ui';"
     >
       <Section
         title="Interactive File Explorer"

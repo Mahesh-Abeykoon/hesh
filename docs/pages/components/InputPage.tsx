@@ -43,7 +43,7 @@ export function InputPage() {
       eyebrow="Components"
       title="Input"
       lede="Text field with built-in accessible label association, helper hints, error validation, affixes, sizes, and clear actions."
-      importStatement="import { Input } from 'hesh';"
+      importStatement="import { Input } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

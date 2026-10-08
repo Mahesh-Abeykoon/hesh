@@ -19,7 +19,7 @@ export function TogglePage() {
       eyebrow="Components"
       title="Toggle"
       lede="A two-state button that can be either pressed or unpressed, with complete ARIA compliance."
-      importStatement="import { Toggle } from 'hesh';"
+      importStatement="import { Toggle } from 'hesh-ui';"
     >
       <Section
         title="Interactive Toggle"

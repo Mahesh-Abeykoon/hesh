@@ -32,7 +32,7 @@ export function ToastPage() {
       eyebrow="Components"
       title="Toast"
       lede="Transient, non-modal notification messages that announce asynchronous task completion, alerts, or actionable system events."
-      importStatement="import { useToast, ToastProvider } from 'hesh';"
+      importStatement="import { useToast, ToastProvider } from 'hesh-ui';"
     >
       <Section
         title="Trigger Toast Notifications"
@@ -149,7 +149,7 @@ export function ToastPage() {
         description="Mount ToastProvider once at the root of your application."
       >
         <Showcase
-          code={`import { ToastProvider } from 'hesh';
+          code={`import { ToastProvider } from 'hesh-ui';
 
 function Root() {
   return (

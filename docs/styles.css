@@ -536,6 +536,87 @@ body { margin: 0; height: 100%; background: var(--pui-bg); overflow: hidden; }
   to { opacity: 1; transform: scale(1); }
 }
 
+/* Import group container */
+.doc-import-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.75rem;
+}
+
+/* Quick stylesheet reminder badge */
+.doc-stylesheet-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.35rem 0.65rem;
+  background: var(--pui-surface-sunken);
+  border: 1px dashed var(--pui-border);
+  border-radius: var(--pui-radius-md);
+  font-size: 0.75rem;
+  color: var(--pui-fg-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease;
+}
+
+:root[data-theme='dark'] .doc-stylesheet-tip {
+  background: #0d0d14;
+  border-color: rgb(255 255 255 / 0.12);
+}
+
+.doc-stylesheet-tip:hover {
+  border-color: var(--pui-primary, #6366f1);
+  background: var(--pui-surface);
+  color: var(--pui-fg);
+}
+
+:root[data-theme='dark'] .doc-stylesheet-tip:hover {
+  border-color: var(--pui-primary, #818cf8);
+  background: #12121c;
+}
+
+.doc-stylesheet-tip--copied {
+  border-color: var(--pui-success-border) !important;
+  background: var(--pui-success-subtle) !important;
+  color: var(--pui-success-fg) !important;
+}
+
+.doc-stylesheet-tip__icon {
+  font-size: 0.8125rem;
+}
+
+.doc-stylesheet-tip__text {
+  font-weight: 500;
+}
+
+.doc-stylesheet-tip__code {
+  font-family: var(--pui-font-mono, ui-monospace, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--pui-primary, #6366f1);
+  background: transparent;
+  padding: 0;
+}
+
+.doc-stylesheet-tip__badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.1rem 0.35rem;
+  background: var(--pui-surface-muted, rgb(0 0 0 / 0.05));
+  border-radius: var(--pui-radius-sm);
+  color: var(--pui-fg-subtle);
+  margin-left: 0.25rem;
+}
+
+.doc-stylesheet-tip--copied .doc-stylesheet-tip__badge {
+  background: var(--pui-success-fg);
+  color: #fff;
+}
+
 /* Right-side Sticky Table of Contents */
 .doc-toc-wrap {
   display: none;

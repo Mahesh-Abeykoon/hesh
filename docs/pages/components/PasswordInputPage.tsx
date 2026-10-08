@@ -23,7 +23,7 @@ export function PasswordInputPage() {
       eyebrow="Components"
       title="PasswordInput"
       lede="Password input with reveal/hide toggle, multi-tier strength calculation meter, and live interactive requirement checklist."
-      importStatement="import { PasswordInput } from 'hesh';"
+      importStatement="import { PasswordInput } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section

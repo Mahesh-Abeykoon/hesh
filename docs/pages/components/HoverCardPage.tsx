@@ -160,7 +160,7 @@ export function HoverCardPage() {
       eyebrow="Components"
       title="HoverCard"
       lede="Displays rich preview cards on hover or keyboard focus, enabling users to glimpse contextual metadata without navigating away, featuring anchor arrows, custom widths, and smooth bridge timing."
-      importStatement="import { HoverCard } from 'hesh';"
+      importStatement="import { HoverCard } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

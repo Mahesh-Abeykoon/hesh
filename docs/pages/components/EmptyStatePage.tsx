@@ -15,7 +15,7 @@ export function EmptyStatePage() {
       eyebrow="Components"
       title="EmptyState"
       lede="Engaging placeholder screen displayed when no data or content is present, steering users to clear next steps."
-      importStatement="import { EmptyState } from 'hesh';"
+      importStatement="import { EmptyState } from 'hesh-ui';"
     >
       <Section
         title="Action-oriented Empty State"

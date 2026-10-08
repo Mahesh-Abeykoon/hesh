@@ -67,7 +67,7 @@ export function TooltipPage() {
       eyebrow="Components"
       title="Tooltip"
       lede="An informative text bubble that appears when an element receives pointer hover or keyboard focus, complete with anchor arrows, hotkey badges, tones, and interactive modes."
-      importStatement="import { Tooltip } from 'hesh';"
+      importStatement="import { Tooltip } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

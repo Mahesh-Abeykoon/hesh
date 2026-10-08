@@ -21,7 +21,7 @@ export function RatingPage() {
       eyebrow="Components"
       title="Rating"
       lede="Displays intuitive star ratings and customer reviews with half-star precision, hover previews, and full keyboard navigation."
-      importStatement="import { Rating } from 'hesh';"
+      importStatement="import { Rating } from 'hesh-ui';"
     >
       <Section
         title="Interactive Star Review"

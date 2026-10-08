@@ -18,7 +18,7 @@ export function SeparatorPage() {
       eyebrow="Components"
       title="Separator"
       lede="Visual divider that separates content into distinct sections, with support for horizontal rules, vertical bars, and centered text labels."
-      importStatement="import { Separator } from 'hesh';"
+      importStatement="import { Separator } from 'hesh-ui';"
     >
       <Section
         title="Horizontal & Vertical Dividers"

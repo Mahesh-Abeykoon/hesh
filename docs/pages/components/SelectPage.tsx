@@ -56,7 +56,7 @@ export function SelectPage() {
       eyebrow="Components"
       title="Select"
       lede="Restyled native dropdown menu delivering 100% native operating system behavior on iOS, Android, macOS, and Windows with optgroups, sizes, and validation states."
-      importStatement="import { Select } from 'hesh';"
+      importStatement="import { Select } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section

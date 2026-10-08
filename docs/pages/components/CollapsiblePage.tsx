@@ -31,7 +31,7 @@ export function CollapsiblePage() {
       eyebrow="Components"
       title="Collapsible"
       lede="An interactive disclosure component that allows users to toggle the visibility of specific content."
-      importStatement="import { Collapsible, CollapsibleTrigger, CollapsibleContent } from 'hesh';"
+      importStatement="import { Collapsible, CollapsibleTrigger, CollapsibleContent } from 'hesh-ui';"
     >
       <Section
         title="Interactive Disclosure"

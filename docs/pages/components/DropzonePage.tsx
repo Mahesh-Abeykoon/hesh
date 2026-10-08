@@ -21,7 +21,7 @@ export function DropzonePage() {
       eyebrow="Components"
       title="Dropzone"
       lede="Drag-and-drop file upload target with file type validation, size constraints, preview chips, and accessible file browsing."
-      importStatement="import { Dropzone } from 'hesh';"
+      importStatement="import { Dropzone } from 'hesh-ui';"
     >
       <Section
         title="Interactive Dropzone"

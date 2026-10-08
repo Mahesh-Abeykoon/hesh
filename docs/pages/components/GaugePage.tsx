@@ -21,7 +21,7 @@ export function GaugePage() {
       eyebrow="Components"
       title="Gauge"
       lede="Circular, semicircular, and speedometer arc meters with animated stroke transitions and customizable tone palettes."
-      importStatement="import { Gauge } from 'hesh';"
+      importStatement="import { Gauge } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

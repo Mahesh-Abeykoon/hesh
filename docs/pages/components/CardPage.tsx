@@ -70,7 +70,7 @@ export function CardPage() {
       eyebrow="Components"
       title="Card"
       lede="Flexible surface container for grouping content, media, KPI metrics, actions, and pricing tiers into cohesive cards."
-      importStatement="import { Card, CardHeader, CardBody, CardFooter, CardMedia } from 'hesh';"
+      importStatement="import { Card, CardHeader, CardBody, CardFooter, CardMedia } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

@@ -29,7 +29,7 @@ export function SidebarNavPage() {
       eyebrow="Components"
       title="SidebarNav"
       lede="Structured sidebar navigation links grouped under category headers with icons, active state indicators, and counter badges."
-      importStatement="import { SidebarNav } from 'hesh';"
+      importStatement="import { SidebarNav } from 'hesh-ui';"
     >
       <Section
         title="Navigation Groups"

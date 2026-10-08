@@ -1,5 +1,8 @@
 import {
+  Children,
+  cloneElement,
   createContext,
+  isValidElement,
   useContext,
   useEffect,
   useRef,
@@ -30,10 +33,40 @@ export interface DocPageProps {
   importStatement?: string;
 }
 
+function QuickStylesheetBadge() {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText("import 'hesh-ui/styles.css';");
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  return (
+    <div
+      className={`doc-stylesheet-tip ${copied ? 'doc-stylesheet-tip--copied' : ''}`}
+      onClick={handleCopy}
+      role="button"
+      tabIndex={0}
+      title="Click to copy stylesheet import"
+      aria-label="Click to copy stylesheet import statement"
+    >
+      <span className="doc-stylesheet-tip__icon" aria-hidden="true">💡</span>
+      <span className="doc-stylesheet-tip__text">Global CSS required at app root:</span>
+      <code className="doc-stylesheet-tip__code">import 'hesh-ui/styles.css';</code>
+      <span className="doc-stylesheet-tip__badge">{copied ? 'Copied!' : 'Copy CSS'}</span>
+    </div>
+  );
+}
+
 function QuickImportBar({ statement }: { statement: string }) {
   const [copied, setCopied] = useState(false);
 
-  // Match: import { ... } from 'hesh'; or import ... from 'hesh';
+  // Match: import { ... } from 'hesh-ui'; or import ... from 'hesh-ui';
   const match = statement.match(/^(import\s+)(\{[^}]+\}|\w+)(\s+from\s+)((?:'[^']+'|"[^"]+"))(;?)$/);
   const symbols = match?.[2] ?? '';
   const pkg = match?.[4] ?? '';
@@ -160,7 +193,7 @@ export function DocPage({
           .split(' · ')
           .map((s) => s.trim().split(' ')[0])
           .filter(Boolean)
-          .join(', ')} } from 'hesh';`
+          .join(', ')} } from 'hesh-ui';`
       : undefined);
 
   return (
@@ -171,7 +204,14 @@ export function DocPage({
           <h1 className="doc-title">{title}</h1>
           {lede && <p className="doc-lede">{lede}</p>}
 
-          {defaultImport && <QuickImportBar statement={defaultImport} />}
+          {defaultImport && (
+            <div className="doc-import-group">
+              <QuickImportBar statement={defaultImport} />
+              {eyebrow && !['Foundations', 'Examples', 'Start here'].includes(eyebrow) && (
+                <QuickStylesheetBadge />
+              )}
+            </div>
+          )}
         </header>
 
         {children}
@@ -281,13 +321,23 @@ export function Section({
     .replace(/(^-|-$)/g, '');
   const sectionId = id || generatedId;
 
+  // Defensive fallback: If code was provided to Section and child is a React element missing its code prop, forward it
+  const resolvedChildren = code
+    ? Children.map(children, (child) => {
+        if (isValidElement(child) && !(child.props as any)?.code) {
+          return cloneElement(child as any, { code });
+        }
+        return child;
+      })
+    : children;
+
   return (
     <section className="section" id={sectionId} data-doc-section={title}>
       <div className="section__head">
         <h2 className="section__title">{title}</h2>
         {description && <p className="section__desc">{description}</p>}
       </div>
-      {children}
+      {resolvedChildren}
     </section>
   );
 }

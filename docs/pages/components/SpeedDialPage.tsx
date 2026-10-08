@@ -27,7 +27,7 @@ export function SpeedDialPage() {
       eyebrow="Components"
       title="SpeedDial"
       lede="Floating action button (FAB) that blossoms into a speed dial of quick contextual actions with micro-staggered animations."
-      importStatement="import { SpeedDial } from 'hesh';"
+      importStatement="import { SpeedDial } from 'hesh-ui';"
     >
       <Section
         title="Interactive Speed Dial"

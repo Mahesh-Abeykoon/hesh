@@ -18,7 +18,7 @@ export function ConfettiPage() {
       eyebrow="Components"
       title="Confetti"
       lede="Lightweight zero-dependency canvas particle celebration blast with gravity, air drag, flutter rotations, and full 60fps performance."
-      importStatement="import { Confetti, fireConfetti } from 'hesh';"
+      importStatement="import { Confetti, fireConfetti } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

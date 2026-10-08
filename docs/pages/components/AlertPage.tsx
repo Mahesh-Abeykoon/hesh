@@ -63,7 +63,7 @@ export function AlertPage() {
       eyebrow="Components"
       title="Alert"
       lede="Displays prominent, persistent feedback and contextual banners in multiple tones, variants, and action compositions."
-      importStatement="import { Alert } from 'hesh';"
+      importStatement="import { Alert } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

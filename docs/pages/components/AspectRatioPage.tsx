@@ -16,7 +16,7 @@ export function AspectRatioPage() {
       eyebrow="Components"
       title="AspectRatio"
       lede="Displays content within a desired geometric aspect ratio. Guarantees 100% responsiveness without aspect distortion across all screen widths."
-      importStatement="import { AspectRatio } from 'hesh';"
+      importStatement="import { AspectRatio } from 'hesh-ui';"
     >
       <Section
         title="16:9 Video & Media Ratio"

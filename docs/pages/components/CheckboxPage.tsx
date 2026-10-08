@@ -60,7 +60,7 @@ export function CheckboxPage() {
       eyebrow="Components"
       title="Checkbox"
       lede="Control that allows users to select one or multiple items, supporting indeterminate states, hierarchical trees, sizing scales, and selectable cards."
-      importStatement="import { Checkbox, ChoiceCard } from 'hesh';"
+      importStatement="import { Checkbox, ChoiceCard } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section

@@ -16,7 +16,7 @@ export function ColorPickerPage() {
       eyebrow="Components"
       title="ColorPicker"
       lede="Color selection control with clickable swatch, preset palette swatches, hex text entry, and native color dialog integration."
-      importStatement="import { ColorPicker } from 'hesh';"
+      importStatement="import { ColorPicker } from 'hesh-ui';"
     >
       <Section
         title="Interactive Color Picker"

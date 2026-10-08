@@ -49,7 +49,7 @@ export function RadioPage() {
       eyebrow="Components"
       title="Radio"
       lede="Mutually exclusive single-choice controls organized in an accessible RadioGroup with roving keyboard arrow focus and rich selectable card styles."
-      importStatement="import { Radio, RadioGroup, ChoiceCard } from 'hesh';"
+      importStatement="import { Radio, RadioGroup, ChoiceCard } from 'hesh-ui';"
     >
       <Section
         title="Interactive Radio Group"

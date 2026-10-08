@@ -33,7 +33,7 @@ export function DiffViewerPage() {
       eyebrow="Components"
       title="DiffViewer"
       lede="Git-style text and source code difference visualizer with LCS line diffing, added/deleted line statistics, and unified or split views."
-      importStatement="import { DiffViewer } from 'hesh';"
+      importStatement="import { DiffViewer } from 'hesh-ui';"
     >
       <Section
         title="Interactive Diff Comparison"

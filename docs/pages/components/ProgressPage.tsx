@@ -41,7 +41,7 @@ export function ProgressPage() {
       eyebrow="Components"
       title="Progress"
       lede="Visual indicators displaying completion percentage, multi-category resource allocation, and indeterminate background task activity."
-      importStatement="import { Progress } from 'hesh';"
+      importStatement="import { Progress } from 'hesh-ui';"
     >
       <Section
         title="Interactive Props Workbench"

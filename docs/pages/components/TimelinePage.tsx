@@ -17,7 +17,7 @@ export function TimelinePage() {
       eyebrow="Components"
       title="Timeline"
       lede="Displays chronological sequences of events, deployments, audit records, or history milestones."
-      importStatement="import { Timeline, TimelineItem } from 'hesh';"
+      importStatement="import { Timeline, TimelineItem } from 'hesh-ui';"
     >
       <Section
         title="Chronological Event Stream"

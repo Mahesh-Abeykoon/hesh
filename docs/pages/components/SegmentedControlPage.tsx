@@ -72,7 +72,7 @@ export function SegmentedControlPage() {
       eyebrow="Components"
       title="SegmentedControl"
       lede="A linear switcher for mutually exclusive options featuring a smooth animated sliding background pill, full keyboard roving focus, and auto-scrolling mobile viewport clamping."
-      importStatement="import { SegmentedControl } from 'hesh';"
+      importStatement="import { SegmentedControl } from 'hesh-ui';"
     >
       {/* ── Interactive Props Workbench ── */}
       <Section

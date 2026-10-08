@@ -1,0 +1,19 @@
+{
+  "name": "slot",
+  "title": "Slot",
+  "type": "primitive",
+  "category": "Primitives",
+  "description": "Slot enables asChild composition merging props and refs onto immediate child",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Slot.tsx",
+      "target": "components/ui/primitives/Slot.tsx",
+      "content": "import * as React from 'react';\r\nimport { cn } from '../utils/cn';\r\n\r\n/** Compose multiple refs into a single callback ref. */\r\nexport function composeRefs<T>(...refs: Array<React.Ref<T> | undefined>) {\r\n  return (node: T | null) => {\r\n    for (const ref of refs) {\r\n      if (typeof ref === 'function') ref(node);\r\n      else if (ref) (ref as React.MutableRefObject<T | null>).current = node;\r\n    }\r\n  };\r\n}\r\n\r\nconst REACT_MAJOR = parseInt(React.version || '18', 10);\r\n\r\nfunction getElementRef(element: React.ReactElement): React.Ref<unknown> | undefined {\r\n  // React 19 exposes `ref` as a prop; React 18 keeps it on the element object.\r\n  if (REACT_MAJOR >= 19) return (element.props as { ref?: React.Ref<unknown> }).ref;\r\n  return (element as unknown as { ref?: React.Ref<unknown> }).ref;\r\n}\r\n\r\ntype AnyProps = Record<string, unknown>;\r\n\r\nfunction mergeProps(slotProps: AnyProps, childProps: AnyProps): AnyProps {\r\n  const merged: AnyProps = { ...slotProps, ...childProps };\r\n  for (const key of Object.keys(slotProps)) {\r\n    const a = slotProps[key];\r\n    const b = childProps[key];\r\n    if (/^on[A-Z]/.test(key)) {\r\n      if (typeof a === 'function' && typeof b === 'function') {\r\n        merged[key] = (...args: unknown[]) => {\r\n          (b as (...a: unknown[]) => void)(...args);\r\n          (a as (...a: unknown[]) => void)(...args);\r\n        };\r\n      } else if (typeof a === 'function') {\r\n        merged[key] = a;\r\n      }\r\n    } else if (key === 'className') {\r\n      merged[key] = cn(a as string, b as string);\r\n    } else if (key === 'style') {\r\n      merged[key] = { ...(a as object), ...(b as object) };\r\n    }\r\n  }\r\n  return merged;\r\n}\r\n\r\nexport interface SlotProps extends React.HTMLAttributes<HTMLElement> {\r\n  children?: React.ReactNode;\r\n}\r\n\r\n/**\r\n * Slot enables `asChild` composition: merges props, styles, event handlers,\r\n * and forwarded refs directly onto its immediate child element.\r\n */\r\nexport const Slot = React.forwardRef<HTMLElement, SlotProps>(function Slot(\r\n  { children, ...slotProps },\r\n  forwardedRef\r\n) {\r\n  if (!React.isValidElement(children)) return null;\r\n  const child = children as React.ReactElement<AnyProps>;\r\n  const childRef = getElementRef(child);\r\n  return React.cloneElement(child, {\r\n    ...mergeProps(slotProps as AnyProps, child.props),\r\n    ref: forwardedRef ? composeRefs(forwardedRef, childRef as React.Ref<HTMLElement>) : childRef,\r\n  });\r\n});\r\n",
+      "type": "primitive"
+    }
+  ]
+}

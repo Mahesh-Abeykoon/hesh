@@ -1,0 +1,17 @@
+{
+  "name": "use-focus-trap",
+  "title": "useFocusTrap",
+  "type": "hook",
+  "category": "Hooks",
+  "description": "Custom React hook useFocusTrap",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "useFocusTrap.ts",
+      "target": "hooks/useFocusTrap.ts",
+      "content": "import { useEffect, type RefObject } from 'react';\n\nconst FOCUSABLE = [\n  'a[href]',\n  'button:not([disabled])',\n  'input:not([disabled]):not([type=\"hidden\"])',\n  'select:not([disabled])',\n  'textarea:not([disabled])',\n  '[tabindex]:not([tabindex=\"-1\"])',\n].join(',');\n\nfunction getFocusable(container: HTMLElement): HTMLElement[] {\n  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(\n    (el) => el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement\n  );\n}\n\n/**\n * Traps Tab focus inside `container` while `active`.\n * Restores focus to the previously focused element on teardown, which is what\n * makes a dialog feel correct when it closes.\n *\n * Takes the node rather than a ref on purpose. `<Portal>` renders `null` on its\n * first commit, so a ref handed to this hook is still empty when the effect\n * runs and the trap would silently never engage. Consumers should pass a node\n * held in state (`ref={setNode}`), which re-runs the effect once the panel\n * actually exists.\n *\n * A `RefObject` is still accepted for panels that mount synchronously.\n */\nexport interface FocusTrapOptions {\n  /** Focus this element on open instead of the first focusable child. */\n  initialFocus?: RefObject<HTMLElement> | null;\n}\n\nexport function useFocusTrap(\n  container: HTMLElement | null | RefObject<HTMLElement>,\n  active: boolean,\n  options: FocusTrapOptions = {}\n) {\n  const node =\n    container && typeof container === 'object' && 'current' in container\n      ? container.current\n      : (container as HTMLElement | null);\n\n  const { initialFocus } = options;\n\n  useEffect(() => {\n    if (!active || !node) return;\n\n    const previouslyFocused = document.activeElement as HTMLElement | null;\n\n    // Move focus in after paint so entry animations don't fight it.\n    const raf = requestAnimationFrame(() => {\n      const [first] = getFocusable(node);\n      const target =\n        initialFocus?.current ??\n        node.querySelector<HTMLElement>('[data-autofocus]') ??\n        first;\n      target?.focus();\n    });\n\n    const onKeyDown = (event: KeyboardEvent) => {\n      if (event.key !== 'Tab') return;\n      const items = getFocusable(node);\n      if (items.length === 0) {\n        event.preventDefault();\n        return;\n      }\n      const first = items[0]!;\n      const last = items[items.length - 1]!;\n      const activeEl = document.activeElement;\n\n      if (event.shiftKey && (activeEl === first || !node.contains(activeEl))) {\n        event.preventDefault();\n        last.focus();\n      } else if (!event.shiftKey && activeEl === last) {\n        event.preventDefault();\n        first.focus();\n      }\n    };\n\n    document.addEventListener('keydown', onKeyDown, true);\n    return () => {\n      cancelAnimationFrame(raf);\n      document.removeEventListener('keydown', onKeyDown, true);\n      previouslyFocused?.focus?.();\n    };\n  }, [node, active, initialFocus]);\n}\n",
+      "type": "hook"
+    }
+  ]
+}

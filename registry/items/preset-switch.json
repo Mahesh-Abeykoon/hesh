@@ -1,0 +1,20 @@
+{
+  "name": "preset-switch",
+  "title": "PresetSwitch",
+  "type": "component",
+  "category": "Components",
+  "description": "Accessible, token-driven PresetSwitch component",
+  "dependencies": [],
+  "registryDependencies": [
+    "use-theme",
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "PresetSwitch.tsx",
+      "target": "components/ui/PresetSwitch.tsx",
+      "content": "import { useTheme, THEME_PRESETS, type ThemePreset } from '../hooks/useTheme';\r\nimport { cn } from '../utils/cn';\r\n\r\nexport interface PresetSwitchProps {\r\n  className?: string;\r\n  /** Size variant: compact pill group or dropdown */\r\n  variant?: 'pills' | 'select';\r\n  /** Optional custom presets list */\r\n  presets?: { id: ThemePreset; name: string; accentColor: string }[];\r\n}\r\n\r\n/**\r\n * Interactive Theme Preset switcher allowing users to toggle between\r\n * predefined color palettes (Indigo, Forest, Sunset, Mono, Midnight).\r\n */\r\nexport function PresetSwitch({\r\n  className,\r\n  variant = 'pills',\r\n  presets = THEME_PRESETS,\r\n}: PresetSwitchProps) {\r\n  const { preset: activePreset, setPreset } = useTheme();\r\n\r\n  if (variant === 'select') {\r\n    return (\r\n      <select\r\n        className={cn('pui-select pui-preset-select', className)}\r\n        value={activePreset}\r\n        onChange={(e) => setPreset(e.target.value as ThemePreset)}\r\n        aria-label=\"Select theme preset\"\r\n      >\r\n        {presets.map((p) => (\r\n          <option key={p.id} value={p.id}>\r\n            {p.name}\r\n          </option>\r\n        ))}\r\n      </select>\r\n    );\r\n  }\r\n\r\n  return (\r\n    <div\r\n      className={cn('pui-preset-switch', className)}\r\n      role=\"group\"\r\n      aria-label=\"Theme color preset\"\r\n    >\r\n      {presets.map((p) => {\r\n        const isActive = activePreset === p.id;\r\n        return (\r\n          <button\r\n            key={p.id}\r\n            type=\"button\"\r\n            className={cn('pui-preset-switch__opt', isActive && 'pui-preset-switch__opt--active')}\r\n            aria-pressed={isActive}\r\n            aria-label={`${p.name} palette`}\r\n            title={`${p.name} palette`}\r\n            onClick={() => setPreset(p.id)}\r\n          >\r\n            <span\r\n              className={cn('pui-preset-switch__dot', `pui-preset-switch__dot--${p.id}`)}\r\n              style={\r\n                p.id === 'mono'\r\n                  ? { background: 'linear-gradient(135deg, #ffffff 50%, #18181b 50%)' }\r\n                  : { backgroundColor: p.accentColor }\r\n              }\r\n              aria-hidden=\"true\"\r\n            />\r\n            <span className=\"pui-preset-switch__name\">{p.name}</span>\r\n          </button>\r\n        );\r\n      })}\r\n    </div>\r\n  );\r\n}\r\n",
+      "type": "component"
+    }
+  ]
+}

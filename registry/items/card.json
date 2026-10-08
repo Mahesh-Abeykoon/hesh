@@ -1,0 +1,19 @@
+{
+  "name": "card",
+  "title": "Card",
+  "type": "component",
+  "category": "Data Display & Layout",
+  "description": "Accessible, token-driven Card component",
+  "dependencies": [],
+  "registryDependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "name": "Card.tsx",
+      "target": "components/ui/Card.tsx",
+      "content": "import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';\r\nimport { cn } from '../utils/cn';\r\n\r\nexport interface CardProps extends HTMLAttributes<HTMLElement> {\r\n  /** Adds hover lift + pointer cursor. Automatically enabled when onClick is provided. */\r\n  interactive?: boolean;\r\n  padded?: boolean;\r\n  elevation?: 'flat' | 'default' | 'elevated';\r\n  /** Underlying HTML element to render. Defaults to 'div'. */\r\n  as?: 'div' | 'button' | 'article' | 'section';\r\n}\r\n\r\nexport const Card = forwardRef<HTMLElement, CardProps>(function Card(\r\n  {\r\n    as: Tag = 'div',\r\n    interactive = false,\r\n    padded = false,\r\n    elevation = 'default',\r\n    className,\r\n    children,\r\n    ...props\r\n  },\r\n  ref\r\n) {\r\n  const isInteractive = interactive || Boolean(props.onClick);\r\n\r\n  return (\r\n    <Tag\r\n      ref={ref as any}\r\n      type={Tag === 'button' ? 'button' : undefined}\r\n      className={cn(\r\n        'pui-card',\r\n        padded && 'pui-card--pad',\r\n        elevation === 'flat' && 'pui-card--flat',\r\n        elevation === 'elevated' && 'pui-card--elevated',\r\n        isInteractive && 'pui-card--interactive',\r\n        className\r\n      )}\r\n      {...props}\r\n    >\r\n      {children}\r\n    </Tag>\r\n  );\r\n});\r\n\r\nexport interface CardHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {\r\n  title?: ReactNode;\r\n  description?: ReactNode;\r\n  action?: ReactNode;\r\n}\r\n\r\n/**\r\n * `action` sits outside the heading so a button in the corner is not read as\r\n * part of the card's title by screen readers.\r\n */\r\nexport function CardHeader({ title, description, action, className, children, ...props }: CardHeaderProps) {\r\n  return (\r\n    <div className={cn('pui-card__header', className)} {...props}>\r\n      <div className=\"pui-card__heading\">\r\n        {title && <div className=\"pui-card__title\">{title}</div>}\r\n        {description && <div className=\"pui-card__desc\">{description}</div>}\r\n        {children}\r\n      </div>\r\n      {action}\r\n    </div>\r\n  );\r\n}\r\n\r\nexport function CardBody({ className, ...props }: HTMLAttributes<HTMLDivElement>) {\r\n  return <div className={cn('pui-card__body', className)} {...props} />;\r\n}\r\n\r\nexport function CardFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {\r\n  return <div className={cn('pui-card__footer', className)} {...props} />;\r\n}\r\n\r\nexport interface CardMediaProps extends HTMLAttributes<HTMLDivElement> {\r\n  src?: string;\r\n  alt?: string;\r\n  aspectRatio?: string | number;\r\n}\r\n\r\nexport function CardMedia({\r\n  src,\r\n  alt = '',\r\n  aspectRatio = '16/9',\r\n  className,\r\n  children,\r\n  style,\r\n  ...props\r\n}: CardMediaProps) {\r\n  return (\r\n    <div\r\n      className={cn('pui-card__media', className)}\r\n      style={{ aspectRatio: String(aspectRatio), ...style }}\r\n      {...props}\r\n    >\r\n      {src && <img src={src} alt={alt} className=\"pui-card__media-img\" />}\r\n      {children}\r\n    </div>\r\n  );\r\n}\r\n",
+      "type": "component"
+    }
+  ]
+}

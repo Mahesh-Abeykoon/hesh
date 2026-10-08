@@ -1,0 +1,19 @@
+{
+  "name": "portal",
+  "title": "Portal",
+  "type": "component",
+  "category": "Overlays & Dialogs",
+  "description": "Accessible, token-driven Portal component",
+  "dependencies": [],
+  "registryDependencies": [
+    "use-scroll-lock"
+  ],
+  "files": [
+    {
+      "name": "Portal.tsx",
+      "target": "components/ui/Portal.tsx",
+      "content": "import { useEffect, useState, type ReactNode } from 'react';\nimport { createPortal } from 'react-dom';\n\n/**\n * Renders children into `document.body` (or a custom container) once mounted.\n * Returns null during SSR so server and client markup stay identical.\n */\nexport function Portal({ children, container }: { children: ReactNode; container?: HTMLElement | null }) {\n  const [mounted, setMounted] = useState(false);\n\n  useEffect(() => {\n    setMounted(true);\n    return () => setMounted(false);\n  }, []);\n\n  if (!mounted) return null;\n  return createPortal(children, container ?? document.body);\n}\n\nexport { useScrollLock } from '../hooks/useScrollLock';\n",
+      "type": "component"
+    }
+  ]
+}

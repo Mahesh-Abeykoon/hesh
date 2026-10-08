@@ -2,6 +2,17 @@
 
 All notable changes are documented here. The project follows semantic versioning.
 
+## 0.2.0
+
+### Added
+
+- **Hesh UI CLI (`npx hesh-ui`)** — added shadcn-style component source code scaffolding tool (`bin/hesh.js`) to allow developers to download and own 100% of their component source code directly in their codebase.
+- **Project Initializer (`npx hesh-ui init`)** — auto-detects Next.js, Vite, and Remix frameworks, configures `hesh.json`, generates `lib/utils.ts` (`cn` helper), and configures global CSS imports.
+- **Component Installer (`npx hesh-ui add <components...>`)** — installs components directly into `components/ui/` with intelligent transitive primitive/hook resolution, automatic path alias rewriting, and zero external Radix dependencies.
+- **Component Registry Builder (`scripts/build-registry.mjs`)** — automated registry generator that indexes all 75 components, primitives, hooks, and utilities into `registry/registry.json` and `registry/items/*.json`.
+- **Documentation CLI Tabs** — added dual-mode `CLI` and `npm` tabs to the component quick-import banner across all documentation pages.
+- **CLI Integration Test Suite (`scripts/test-cli.mjs`)** — automated test suite covering initialization, single component addition, transitive dependency resolution, and catalog indexing.
+
 ## 0.1.1
 
 ### Fixed

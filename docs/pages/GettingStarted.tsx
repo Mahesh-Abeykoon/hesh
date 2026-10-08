@@ -3,6 +3,9 @@ import { CodeBlock } from '../components/CodeBlock';
 import { Callout, Showcase } from '../components/Showcase';
 import { DocPage, Section } from '../components/DocPage';
 
+const CLI_INIT = `npx hesh-ui init`;
+const CLI_ADD = `npx hesh-ui add button dialog calendar`;
+
 const INSTALL = `npm install hesh-ui`;
 
 const SETUP = `// app/layout.tsx (Next.js) or src/main.tsx (Vite)
@@ -91,7 +94,28 @@ export function GettingStartedPage() {
         </>
       }
     >
-      <Section title="Install">
+      <Section
+        title="CLI: Own your components (Recommended)"
+        description="Copy and own clean source code directly into your codebase. Zero black-box dependencies, complete customizability, and automatic transitive primitive resolution."
+      >
+        <div className="stack">
+          <p className="prose">
+            1. Initialize Hesh UI in your Next.js, Vite, or Remix project:
+          </p>
+          <CodeBlock code={CLI_INIT} language="bash" />
+          <p className="prose" style={{ marginTop: '0.75rem' }}>
+            2. Add any component directly into your <code>components/ui/</code> folder:
+          </p>
+          <CodeBlock code={CLI_ADD} language="bash" />
+          <Callout tone="success" title="Zero External Radix Dependencies">
+            Unlike shadcn which installs 15+ external <code>@radix-ui/*</code> npm packages,
+            Hesh UI primitives are 100% self-contained. The CLI scaffolds clean, readable TSX
+            files that you fully control and own.
+          </Callout>
+        </div>
+      </Section>
+
+      <Section title="Alternative: Install via npm" description="If you prefer installing pre-bundled components from the npm registry:">
         <div className="stack">
           <CodeBlock code={INSTALL} language="bash" />
           <div className="requirement-row">

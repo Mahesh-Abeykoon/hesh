@@ -92,6 +92,8 @@ Object.defineProperties(window.HTMLElement.prototype, {
 });
 
 window.scrollTo = () => {};
+window.HTMLElement.prototype.scrollTo = () => {};
+window.Element.prototype.scrollTo = () => {};
 window.HTMLElement.prototype.scrollIntoView = () => {};
 window.Element.prototype.scrollIntoView = () => {};
 

@@ -242,8 +242,15 @@ export function DocPage({
               type="button"
               className="doc-toc__top-btn"
               onClick={() => {
-                document.getElementById('main')?.scrollTo({ top: 0, behavior: 'smooth' });
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                const mainEl = document.getElementById('main');
+                if (mainEl && typeof mainEl.scrollTo === 'function') {
+                  mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (mainEl) {
+                  mainEl.scrollTop = 0;
+                }
+                if (typeof window.scrollTo === 'function') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
               }}
             >
               ↑ Back to top

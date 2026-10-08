@@ -264,8 +264,17 @@ function useRoute() {
 
   const navigate = (id: string) => {
     window.location.hash = `/${id}`;
-    document.getElementById('main')?.scrollTo({ top: 0 });
-    window.scrollTo({ top: 0 });
+    const mainEl = document.getElementById('main');
+    if (mainEl) {
+      if (typeof mainEl.scrollTo === 'function') {
+        mainEl.scrollTo({ top: 0 });
+      } else {
+        mainEl.scrollTop = 0;
+      }
+    }
+    if (typeof window.scrollTo === 'function') {
+      window.scrollTo({ top: 0 });
+    }
   };
 
   return { route, navigate };
@@ -328,7 +337,11 @@ function Shell() {
     setMobileNavOpen(false);
     const contentEl = document.querySelector('.content');
     if (contentEl) {
-      contentEl.scrollTo({ top: 0, behavior: 'smooth' });
+      if (typeof contentEl.scrollTo === 'function') {
+        contentEl.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        contentEl.scrollTop = 0;
+      }
     }
   }, [route]);
 

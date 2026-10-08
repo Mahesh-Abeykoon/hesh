@@ -262,6 +262,10 @@ logical properties. No polyfills are included.
 Early release (`0.1.x`). The API is stable enough to build on, but expect
 refinements before `1.0`. See [the changelog](CHANGELOG.md).
 
-## License
+## License & Commercial Use
 
-MIT © [Mahesh Abeykoon](https://github.com/Mahesh-Abeykoon)
+MIT with Commons Clause & Trademark Reservation © [Mahesh Abeykoon](https://github.com/Mahesh-Abeykoon)
+
+- **Free for Applications & SaaS:** You are free to use, customize, and embed Hesh in your web applications, websites, SaaS platforms, and client projects without royalties.
+- **Anti-Resale Restriction:** You may not repackage, sell, or distribute Hesh as a standalone UI component library, theme template, or kit.
+- **Brand & Trademark:** The name "Hesh" and official Hesh logos are trademarks of Mahesh Abeykoon. See [LICENSE](LICENSE) for full legal terms.

@@ -100,6 +100,7 @@ import { TreePage } from './pages/components/TreePage';
 import { DocNavigationContext } from './components/DocPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ThemeCustomizer, ThemeCustomizerTrigger } from './components/ThemeCustomizer';
+import { SiteFooter } from './components/SiteFooter';
 
 interface DocPage {
   id: string;
@@ -391,6 +392,7 @@ function Shell() {
             />
           </span>
           <span className="topbar__name">Hesh</span>
+          <span className="topbar__version">v0.2.0</span>
         </a>
 
         <div className="topbar__spacer" />
@@ -500,6 +502,7 @@ function Shell() {
               </div>
             )}
           </div>
+          {route !== 'playground' && <SiteFooter />}
         </main>
       </div>
 

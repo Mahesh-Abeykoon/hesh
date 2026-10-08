@@ -20,7 +20,7 @@ import { CardWorkbench } from '../../components/PropsWorkbench';
 const MEDIA_CARD_CODE = `<Card style={{ maxWidth: '340px' }}>
   <CardMedia
     aspectRatio="16/9"
-    style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    style={{ background: 'linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #ec4899 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
   >
     <div style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
       <PaletteIcon size={24} /> Design System 2.0
@@ -89,7 +89,7 @@ export function CardPage() {
               <CardMedia
                 aspectRatio="16/9"
                 style={{
-                  background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%)',
+                  background: 'linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #ec4899 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

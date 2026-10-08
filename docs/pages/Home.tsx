@@ -27,7 +27,7 @@ import { ArrowRightIcon, CheckIcon, ZapIcon } from '../../src/index';
 
 function InstallCommand() {
   const [copied, setCopied] = useState(false);
-  const command = 'npm install hesh';
+  const command = 'npx hesh-ui add button';
 
   return (
     <button
@@ -92,7 +92,12 @@ function Hero() {
         </p>
 
         <div className="hero__cta">
-          <Button size="lg" rightIcon={<ArrowRightIcon />} onClick={() => (window.location.hash = '/getting-started')}>
+          <Button
+            size="lg"
+            className="hero__btn-get-started"
+            rightIcon={<ArrowRightIcon />}
+            onClick={() => (window.location.hash = '/getting-started')}
+          >
             Get started
           </Button>
           <Button size="lg" variant="secondary" onClick={() => (window.location.hash = '/dashboard')}>
@@ -344,7 +349,11 @@ function CTA() {
           composition and 40 lines of layout CSS.
         </p>
         <div className="cta__actions">
-          <Button size="lg" onClick={() => (window.location.hash = '/dashboard')}>
+          <Button
+            size="lg"
+            className="hero__btn-get-started"
+            onClick={() => (window.location.hash = '/dashboard')}
+          >
             Open the dashboard
           </Button>
           <Button
@@ -359,10 +368,10 @@ function CTA() {
 
       <div className="cta__stats">
         {[
-          { value: '33', label: 'components & patterns' },
-          { value: '17.5 kB', label: 'JS, gzipped' },
+          { value: '48+', label: 'components & patterns' },
+          { value: '75', label: 'CLI registry items' },
           { value: '0', label: 'runtime dependencies' },
-          { value: '15/15', label: 'routes tested' },
+          { value: '78/78', label: 'routes tested' },
         ].map((stat) => (
           <div key={stat.label} className="cta__stat">
             <div className="cta__stat-value">{stat.value}</div>

@@ -38,9 +38,9 @@
   box-shadow: var(--pui-shadow-sm);
 }
 .pui-card--interactive:hover {
-  box-shadow: var(--pui-shadow-lg);
+  box-shadow: var(--pui-glow-hover-radiant, var(--pui-shadow-lg));
   transform: translateY(-3px);
-  border-color: color-mix(in oklab, var(--pui-primary) 28%, var(--pui-border));
+  border-color: rgba(56, 189, 248, 0.7);
 }
 
 /* Softer, deeper input well. */

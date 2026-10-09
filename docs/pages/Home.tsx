@@ -26,28 +26,103 @@ import { ArrowRightIcon, CheckIcon, ZapIcon } from '../../src/index';
 /* ------------------------------------------------------------------ hero */
 
 function InstallCommand() {
+  const [mode, setMode] = useState<'cli' | 'npm' | 'styles'>('cli');
   const [copied, setCopied] = useState(false);
-  const command = 'npx hesh-ui add button';
+
+  const snippets = {
+    cli: 'npx hesh-ui add button',
+    npm: 'npm i hesh-ui',
+    styles: "import 'hesh-ui/styles.css';",
+  };
+
+  const command = snippets[mode];
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(command);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
+
+  const guideText = {
+    cli: (
+      <>
+        Scaffold zero-dependency component source directly into your project via the <code>hesh-ui</code> CLI.
+      </>
+    ),
+    npm: (
+      <>
+        Install the precompiled React library with TypeScript types and zero runtime dependencies.
+      </>
+    ),
+    styles: (
+      <>
+        Import once in your root layout (<code>app/layout.tsx</code> or <code>src/main.tsx</code>) to enable design tokens.
+      </>
+    ),
+  };
 
   return (
-    <button
-      type="button"
-      className="install"
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(command);
-          setCopied(true);
-          window.setTimeout(() => setCopied(false), 1600);
-        } catch {
-          /* clipboard unavailable */
-        }
-      }}
-      aria-label={`Copy install command: ${command}`}
-    >
-      <span className="install__prompt">$</span>
-      <code>{command}</code>
-      <span className="install__action">{copied ? 'copied' : 'copy'}</span>
-    </button>
+    <div className="hero__install-widget">
+      <div className="hero__install-tabs" role="tablist" aria-label="Installation options">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === 'cli'}
+          className={`hero__install-tab ${mode === 'cli' ? 'is-active' : ''}`}
+          onClick={() => setMode('cli')}
+        >
+          CLI Component
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === 'npm'}
+          className={`hero__install-tab ${mode === 'npm' ? 'is-active' : ''}`}
+          onClick={() => setMode('npm')}
+        >
+          NPM Package
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === 'styles'}
+          className={`hero__install-tab ${mode === 'styles' ? 'is-active' : ''}`}
+          onClick={() => setMode('styles')}
+        >
+          Global Styles
+        </button>
+      </div>
+
+      <div
+        className="hero__install-box"
+        onClick={handleCopy}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCopy();
+          }
+        }}
+        title={`Click to copy ${mode.toUpperCase()} snippet`}
+        aria-label={`Click to copy ${command}`}
+      >
+        <div className="hero__install-code">
+          {mode !== 'styles' && <span className="hero__install-prompt">$ </span>}
+          <code>{command}</code>
+        </div>
+        <span className="hero__install-action">{copied ? 'copied' : 'copy'}</span>
+      </div>
+
+      <div className="hero__install-guide">
+        <span className="hero__install-guide-dot" aria-hidden="true" />
+        <span className="hero__install-guide-text">{guideText[mode]}</span>
+      </div>
+    </div>
   );
 }
 
@@ -108,7 +183,7 @@ function Hero() {
         <InstallCommand />
 
         <p className="hero__hint">
-          Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> anywhere on this site to jump to any page.
+          Press <Kbd>Ctrl</Kbd> <Kbd>K</Kbd> or <Kbd>Alt</Kbd> <Kbd>K</Kbd> anywhere on this site to jump to any page.
         </p>
       </div>
     </section>
@@ -194,27 +269,49 @@ function Mosaic() {
           </div>
         </Card>
 
-        <Card padded>
+        <Card padded className="mosaic__chart-card">
           <div className="mosaic__label">Charts</div>
-          <AreaChart data={revenue} height={130} showGrid={false} format={(v) => `${v}k`} />
+          <div className="mosaic__chart-header">
+            <span className="mosaic__chart-value">$54.2k</span>
+            <span className="mosaic__chart-trend">↑ 18.4% monthly</span>
+          </div>
+          <AreaChart data={revenue} height={210} showGrid={false} format={(v) => `${v}k`} />
         </Card>
 
-        <Card padded>
+        <Card padded className="mosaic__people-card">
           <div className="mosaic__label">People</div>
-          <div className="mosaic__stack">
-            <AvatarGroup
-              size="md"
-              max={5}
-              people={[
-                { name: 'Ada Lovelace' }, { name: 'Grace Hopper' },
-                { name: 'Alan Turing' }, { name: 'Katherine Johnson' },
-                { name: 'Linus Torvalds' }, { name: 'Margaret Hamilton' },
-              ]}
-            />
+          <div className="mosaic__people-content">
+            <div className="mosaic__people-head">
+              <AvatarGroup
+                size="md"
+                max={5}
+                people={[
+                  { name: 'Ada Lovelace' },
+                  { name: 'Grace Hopper' },
+                  { name: 'Alan Turing' },
+                  { name: 'Katherine Johnson' },
+                  { name: 'Linus Torvalds' },
+                  { name: 'Margaret Hamilton' },
+                ]}
+              />
+              <span className="mosaic__people-count">6 members</span>
+            </div>
             <Separator />
-            <div className="mosaic__row">
-              <Sparkline data={[12, 18, 14, 22, 28, 24, 31]} />
-              <Sparkline data={[30, 26, 28, 22, 18, 20, 14]} color="var(--pui-chart-6)" />
+            <div className="mosaic__metrics">
+              <div className="mosaic__metric-row">
+                <div className="mosaic__metric-info">
+                  <span className="mosaic__metric-title">Activity</span>
+                  <span className="mosaic__metric-value">+28%</span>
+                </div>
+                <Sparkline data={[12, 18, 14, 22, 28, 24, 31]} width={105} height={26} />
+              </div>
+              <div className="mosaic__metric-row">
+                <div className="mosaic__metric-info">
+                  <span className="mosaic__metric-title">Velocity</span>
+                  <span className="mosaic__metric-value">94.2%</span>
+                </div>
+                <Sparkline data={[30, 26, 28, 22, 18, 20, 14]} color="var(--pui-chart-6)" width={105} height={26} />
+              </div>
             </div>
           </div>
         </Card>

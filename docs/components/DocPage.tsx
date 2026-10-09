@@ -33,42 +33,14 @@ export interface DocPageProps {
   importStatement?: string;
 }
 
-function QuickStylesheetBadge() {
-  const [copied, setCopied] = useState(false);
-  const handleCopy = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await navigator.clipboard.writeText("import 'hesh-ui/styles.css';");
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch {
-      /* ignore */
-    }
-  };
-
-  return (
-    <div
-      className={`doc-stylesheet-tip ${copied ? 'doc-stylesheet-tip--copied' : ''}`}
-      onClick={handleCopy}
-      role="button"
-      tabIndex={0}
-      title="Click to copy stylesheet import"
-      aria-label="Click to copy stylesheet import statement"
-    >
-      <span className="doc-stylesheet-tip__icon" aria-hidden="true">💡</span>
-      <span className="doc-stylesheet-tip__text">Global CSS required at app root:</span>
-      <code className="doc-stylesheet-tip__code">import 'hesh-ui/styles.css';</code>
-      <span className="doc-stylesheet-tip__badge">{copied ? 'Copied!' : 'Copy CSS'}</span>
-    </div>
-  );
-}
-
 function QuickImportBar({ statement, slug }: { statement: string; slug?: string }) {
-  const [mode, setMode] = useState<'cli' | 'npm'>('cli');
+  const [mode, setMode] = useState<'cli' | 'install' | 'import'>('cli');
   const [copied, setCopied] = useState(false);
 
   const cliCommand = `npx hesh-ui add ${slug || 'button'}`;
-  const textToCopy = mode === 'cli' ? cliCommand : statement;
+  const installCommand = 'npm i hesh-ui';
+  const textToCopy =
+    mode === 'cli' ? cliCommand : mode === 'install' ? installCommand : statement;
 
   // Match: import { ... } from 'hesh-ui'; or import ... from 'hesh-ui';
   const match = statement.match(/^(import\s+)(\{[^}]+\}|\w+)(\s+from\s+)((?:'[^']+'|"[^"]+"))(;?)$/);
@@ -111,10 +83,17 @@ function QuickImportBar({ statement, slug }: { statement: string; slug?: string 
         </button>
         <button
           type="button"
-          className={`doc-quick-import__tab ${mode === 'npm' ? 'is-active' : ''}`}
-          onClick={() => setMode('npm')}
+          className={`doc-quick-import__tab ${mode === 'install' ? 'is-active' : ''}`}
+          onClick={() => setMode('install')}
         >
-          npm
+          Install
+        </button>
+        <button
+          type="button"
+          className={`doc-quick-import__tab ${mode === 'import' ? 'is-active' : ''}`}
+          onClick={() => setMode('import')}
+        >
+          Import
         </button>
       </div>
 
@@ -125,6 +104,13 @@ function QuickImportBar({ statement, slug }: { statement: string; slug?: string 
             <span className="doc-syntax__keyword">npx </span>
             <span className="doc-syntax__symbol">hesh-ui add </span>
             <span className="doc-syntax__string">{slug || 'button'}</span>
+          </>
+        ) : mode === 'install' ? (
+          <>
+            <span className="doc-syntax__prompt">$ </span>
+            <span className="doc-syntax__keyword">npm </span>
+            <span className="doc-syntax__symbol">i </span>
+            <span className="doc-syntax__string">hesh-ui</span>
           </>
         ) : match && symbols && pkg ? (
           <>
@@ -238,9 +224,6 @@ export function DocPage({
                 statement={defaultImport}
                 slug={(nav?.currentPageId || title).toLowerCase().replace(/\s+/g, '-')}
               />
-              {eyebrow && !['Foundations', 'Examples', 'Start here'].includes(eyebrow) && (
-                <QuickStylesheetBadge />
-              )}
             </div>
           )}
         </header>

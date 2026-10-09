@@ -10,7 +10,7 @@ import {
   useCommandShortcut,
   type CommandItem,
 } from '../src/index';
-import { MenuIcon, PaletteIcon, XIcon } from '../src/index';
+import { MenuIcon, PaletteIcon, SearchIcon, XIcon } from '../src/index';
 
 import { HomePage } from './pages/Home';
 import { GettingStartedPage } from './pages/GettingStarted';
@@ -398,6 +398,18 @@ function Shell() {
         <div className="topbar__spacer" />
 
         <div className="topbar__actions">
+          <button
+            type="button"
+            className="topbar__search-btn"
+            onClick={() => setCommandOpen(true)}
+            aria-label="Search documentation (Ctrl + K or Alt + K)"
+            title="Search documentation (Ctrl + K / Alt + K)"
+          >
+            <SearchIcon size={14} className="topbar__search-icon" />
+            <span className="topbar__search-label">Search docs…</span>
+            <kbd className="topbar__search-kbd">Ctrl K</kbd>
+          </button>
+
           <ThemeCustomizerTrigger onClick={() => setCustomizerOpen(true)} />
 
           <Tooltip content="Toggle colour theme">

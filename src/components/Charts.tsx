@@ -97,10 +97,11 @@ export function AreaChart({
   }
 
   const { min, max } = useMemo(() => niceBounds(data.map((d) => d.value)), [data]);
-  const innerW = width - PADDING.left - PADDING.right;
+  const padLeft = showGrid ? PADDING.left : PADDING.right;
+  const innerW = width - padLeft - PADDING.right;
   const innerH = height - PADDING.top - PADDING.bottom;
 
-  const x = (i: number) => PADDING.left + (i / Math.max(1, data.length - 1)) * innerW;
+  const x = (i: number) => padLeft + (i / Math.max(1, data.length - 1)) * innerW;
   const y = (v: number) => scaleY(v, min, max, innerH, PADDING.top);
 
   const pts = data.map((d, i) => ({ x: x(i), y: y(d.value) }));
@@ -112,7 +113,7 @@ export function AreaChart({
 
   const areaPath = smooth
     ? `${linePath} L ${pts[pts.length - 1]!.x.toFixed(1)},${bottomY.toFixed(1)} L ${pts[0]!.x.toFixed(1)},${bottomY.toFixed(1)} Z`
-    : `M ${PADDING.left},${bottomY} ${pts.map((p) => `L ${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')} L ${PADDING.left + innerW},${bottomY} Z`;
+    : `M ${padLeft},${bottomY} ${pts.map((p) => `L ${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')} L ${padLeft + innerW},${bottomY} Z`;
 
   const ticks = [0, 0.25, 0.5, 0.75, 1].map((r) => ({
     ratio: r,
@@ -144,14 +145,14 @@ export function AreaChart({
               <g key={tick.ratio}>
                 <line
                   className="pui-chart__grid"
-                  x1={PADDING.left}
+                  x1={padLeft}
                   x2={width - PADDING.right}
                   y1={gy}
                   y2={gy}
                   strokeDasharray={tick.ratio === 1 ? undefined : '3 4'}
                   opacity={0.65}
                 />
-                <text className="pui-chart__axis-label" x={PADDING.left - 10} y={gy + 4} textAnchor="end">
+                <text className="pui-chart__axis-label" x={padLeft - 10} y={gy + 4} textAnchor="end">
                   {format(Math.round(tick.value))}
                 </text>
               </g>

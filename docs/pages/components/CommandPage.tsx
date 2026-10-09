@@ -38,13 +38,13 @@ export function CommandPage() {
     >
       <Section
         title="Command Palette Trigger"
-        description="Launch an accessible modal command menu by clicking below or pressing ⌘K / Ctrl+K anywhere on the documentation site."
+        description="Launch an accessible modal command menu by clicking below or pressing Ctrl+K, Alt+K, or ⌘K anywhere on the documentation site."
       >
         <Showcase code={COMMAND_DEMO} defaultOpen width="md">
           <div className="row-wrap" style={{ alignItems: 'center', gap: '1rem' }}>
             <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
             <span className="prose">
-              Or press <Kbd>⌘</Kbd> <Kbd>K</Kbd> on your keyboard.
+              Or press <Kbd>Ctrl</Kbd> <Kbd>K</Kbd> (or <Kbd>Alt</Kbd> <Kbd>K</Kbd>) on your keyboard.
             </span>
           </div>
           <Command items={items} open={open} onOpenChange={setOpen} />

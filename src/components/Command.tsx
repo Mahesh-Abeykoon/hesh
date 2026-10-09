@@ -93,7 +93,9 @@ export function Command({
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
+      const isAltK = event.altKey && event.key.toLowerCase() === 'k';
+      if (isCmdK || isAltK) {
         event.preventDefault();
         setOpen(false);
       }
@@ -247,11 +249,13 @@ export function Command({
   );
 }
 
-/** Registers the ⌘K shortcut and reports whether the palette should open. */
+/** Registers the Ctrl+K / Alt+K / ⌘K shortcut and reports whether the palette should open. */
 export function useCommandShortcut(onToggle: () => void) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
+      const isAltK = event.altKey && event.key.toLowerCase() === 'k';
+      if (isCmdK || isAltK) {
         event.preventDefault();
         onToggle();
       }

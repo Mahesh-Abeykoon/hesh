@@ -392,7 +392,7 @@ function Shell() {
             />
           </span>
           <span className="topbar__name">Hesh</span>
-          <span className="topbar__version">v0.2.0</span>
+          <span className="topbar__version">v1.0.0</span>
         </a>
 
         <div className="topbar__spacer" />

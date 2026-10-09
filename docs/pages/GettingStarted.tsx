@@ -100,17 +100,24 @@ export function GettingStartedPage() {
       >
         <div className="stack">
           <p className="prose">
-            1. Initialize Hesh UI in your Next.js, Vite, or Remix project:
+            1. Install Hesh UI (provides the core design tokens and stylesheet):
+          </p>
+          <CodeBlock code={INSTALL} language="bash" />
+          <p className="prose" style={{ marginTop: '0.75rem' }}>
+            2. Initialize your project configuration (sets up <code>hesh.json</code> and imports):
           </p>
           <CodeBlock code={CLI_INIT} language="bash" />
           <p className="prose" style={{ marginTop: '0.75rem' }}>
-            2. Add any component directly into your <code>components/ui/</code> folder:
+            3. Add any component directly into your <code>components/ui/</code> folder:
           </p>
           <CodeBlock code={CLI_ADD} language="bash" />
           <Callout tone="success" title="Zero External Radix Dependencies">
             Unlike shadcn which installs 15+ external <code>@radix-ui/*</code> npm packages,
             Hesh UI primitives are 100% self-contained. The CLI scaffolds clean, readable TSX
             files that you fully control and own.
+          </Callout>
+          <Callout tone="info" title="Next.js App Router Note">
+            When using interactive components (such as <code>Carousel</code>, <code>Dialog</code>, or <code>Tabs</code>) inside Next.js Server Components, ensure the component file has <code>'use client';</code> at the top.
           </Callout>
         </div>
       </Section>

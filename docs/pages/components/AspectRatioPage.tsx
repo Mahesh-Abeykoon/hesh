@@ -54,7 +54,7 @@ export function AspectRatioPage() {
             <div style={{ fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--pui-fg-muted)' }}>4:3 Ratio (Classic)</div>
             <AspectRatio ratio={4 / 3}>
               <img
-                src="https://images.pexels.com/photos/7134990/pexels-photo-7134990.jpeg?w=600&auto=format&fit=crop&q=80"
+                src="/docs/assets/logo/hesh-logo.png"
                 alt="Colorful fluid"
                 style={{ borderRadius: 'var(--pui-radius-lg)', objectFit: 'cover' }}
               />
